@@ -5,11 +5,12 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
 import AvenirText from '../components/avenirText';
 import AvenirTextBold from '../components/boldText';
+import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Icons from '../constants/Icons';
 import MapView from 'react-native-maps';
 
-export default function TutorProfile({ route }) {
+export default function TutorProfile({ route, navigation}) {
 
     const[firstName] = React.useState(route.params.firstName);
     const[lastName] = React.useState(route.params.lastName);
@@ -37,7 +38,7 @@ export default function TutorProfile({ route }) {
                 <AvenirText style={{fontSize:20}} text={'$'+price+"/h"}/>        
             </View>
             <View style={styles.full}>
-                <AvenirText style={{fontSize:18, lineHeight: 30}} text={"is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}/>
+                <LongText style={{fontSize:18, lineHeight: 30}} text={"is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}/>
             </View>
             <View style={styles.skills}>
                 {Object.keys(skills).map((skill) => {
@@ -64,7 +65,7 @@ export default function TutorProfile({ route }) {
 
 
         </ScrollView>
-        <TouchableOpacity style={styles.button} >
+        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Hire', {name: firstName+' '+lastName})} >
                 <AvenirText style={styles.buttonText} text={"Hire"}/>
         </TouchableOpacity>
     </View>
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         alignSelf: 'flex-end',
         minWidth: 100,
-        backgroundColor: Colors.secondaryLight
+        backgroundColor: Colors.secondary
     },
     buttonText:{
     alignSelf: 'center',

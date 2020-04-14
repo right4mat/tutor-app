@@ -1,41 +1,63 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 
+import Context from '../context/Context';
+import Colors from '../constants/Colors';
+
 export default function BasicInfo({navigation}) {
-    const [firstName, setFirstName] = React.useState('Luke');
-    const [lastName, setLastName] = React.useState('Daniels');
-    const [phone, setPhone] = React.useState('12345678');
-    const [address, setAddress] = React.useState('7-9 gilbert street');
-    const [email] = React.useState('lukesdaniels92@gmail.com');
+    const {firstName, setFirstName} = React.useContext(Context);
+    const {lastName, setLastName} = React.useContext(Context);
+    const {phone, setPhone} = React.useContext(Context);    
+    const {email} = React.useContext(Context);
+    const {address} = React.useContext(Context);
+
+    const [firstNamePossible, setFirstNamePossible] = React.useState(firstName);
+    const [lastNamePossible, setLastNamePossible] = React.useState(lastName);
+    const [phonePossible, setPhonePossible] = React.useState(phone); 
 
 
-
+  const save = async () =>{
+    try {
+      await AsyncStorage.setItem('firstName', firstNamePossible);
+      await AsyncStorage.setItem('lastName', lastNamePossible);
+      await AsyncStorage.setItem('phone', phonePossible);
+      setFirstName(firstNamePossible);
+      setLastName(lastNamePossible);
+      setPhone(phonePossible);
+    } catch (error) {
+      console.warn(error.message);
+    }
+    navigation.goBack()
+  }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <TextInput
             style={styles.textInput}
-            onChangeText={text => setFirstName(text)}
-            value={firstName}
+            onChangeText={text => setFirstNamePossible(text)}
+            value={firstNamePossible}
+            placeholder="First name"
         />
         <TextInput
             style={styles.textInput}
-            onChangeText={text => setLastName(text)}
-            value={lastName}
+            onChangeText={text => setLastNamePossible(text)}
+            value={lastNamePossible}
+            placeholder="Last name"
         />
         <TextInput
             style={styles.textInput}
-            onChangeText={text => setPhone(text)}
-            value={phone}
+            onChangeText={text => setPhonePossible(text)}
+            value={phonePossible}
+            placeholder="Phone"
         />
         <TouchableOpacity style={[styles.textInput, {display:"flex",justifyContent:"flex-start",alignItems:"center",flexDirection:"row"}]} onPress={()=>navigation.navigate("Location")}>
             <View style={styles.cardIcon}>
-                <Ionicons name={'md-pin'} size={22} color="rgba(212,175,54,0.35)" />
+                <Ionicons name={'md-pin'} size={22} color={Colors.secondaryLight} />
             </View>
-            <AvenirText style={{fontSize:18}} text={"Your address"}/>
+            <AvenirText style={{fontSize:18, marginRight:20}} text={address}/>
         </TouchableOpacity>
         <TextInput
             style={styles.textInputDisabled}
@@ -43,7 +65,7 @@ export default function BasicInfo({navigation}) {
             editable={false}
         />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={save}>
             <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
 
@@ -78,7 +100,7 @@ const styles = StyleSheet.create({
       borderRadius: 30,
       overflow: "hidden",
       alignSelf: 'flex-end',
-      backgroundColor: 'rgba(54,212,173,1)'
+      backgroundColor: Colors.secondary
   },
   buttonText:{
     alignSelf: 'center',

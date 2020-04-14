@@ -2,10 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
 import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import AvenirText from '../components/avenirText';
+import Context from '../context/Context';
+
+import Colors from '../constants/Colors';
 
 export default function CardDetails({navigation}) {
-    const [customerId, setCustomerId] = React.useState(true);
-    const [cardLastFour, setCardLastFour] = React.useState('. . . .  . . . .  . . . .  9769');
+    
+    const {lastFour} = React.useContext(Context);
 
 
 
@@ -18,12 +22,12 @@ export default function CardDetails({navigation}) {
             <View style={styles.cardIcon}>
                 <Ionicons name={'ios-card'} size={22} color="rgba(0,0,0,0.35)" />
             </View>
-            <Text style={styles.buttonTextCard}>{cardLastFour}</Text>
+            <AvenirText style={styles.buttonTextCard} text={'. . . .  . . . .  . . . .  '+lastFour}/>
         </TouchableOpacity>
         
 
         <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("EnterCard")}>
-            <Text style={styles.buttonText}>{customerId ? "Change my card" : "Add card" }</Text>
+            <AvenirText style={styles.buttonText} text={"Add card" }/>
         </TouchableOpacity>
 
     </ScrollView>
@@ -61,16 +65,12 @@ const styles = StyleSheet.create({
       
   },
   button:{
-      position: "absolute",
-      bottom: 0,
-      right:15,
       marginBottom: 40,
       padding:15,
-      width: 200,
       borderRadius: 30,
       overflow: "hidden",
       alignSelf: 'flex-end',
-      backgroundColor: 'rgba(54,212,173,1)'
+      backgroundColor: Colors.secondary
   },
   buttonText:{
     alignSelf: 'center',

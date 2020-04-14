@@ -7,6 +7,7 @@ import { AppLoading } from 'expo';
 import {GetDates, CalenderDay} from '../components/calenderStrip';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
+import LongText from '../components/longText';
 import * as WebBrowser from 'expo-web-browser';
 import Colors from '../constants/Colors';
 import {TutorLoad, TutorReal} from '../components/Tutors';
@@ -48,7 +49,7 @@ export default function HomeScreen({navigation}) {
               source={require('../assets/images/tutorIcon.png')}
             />
             <View style={styles.bannerInner}>                       
-                <AvenirText style={{flex: 1, flexWrap: 'wrap', color:"#fff" }} text={"Delivering professional tutoring to support your learning"}/>
+                <LongText style={{flex: 1, flexWrap: 'wrap', color:"#fff" }} text={"Delivering professional tutoring to support your learning"}/>
                 <TouchableOpacity style={styles.bannerHeader} onPress={() => WebBrowser.openBrowserAsync('https://www.abcnannyservices.com.au/')}>
                   <AvenirText style={{color:"#373737"}} text={"Need a nanny?"}/>
                 </TouchableOpacity>    
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   banner:{
     borderRadius: 10,
     height:100,
-    backgroundColor: Colors.secondaryLight,
+    backgroundColor: Colors.secondary,
     padding:10,
     display:"flex",
     justifyContent:"space-around",
@@ -143,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   headerText:{
-    fontFamily:"IMFellFrenchCanonSC",
     color: Colors.primary,
     fontWeight:"800",
     fontSize:30

@@ -1,12 +1,27 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
-import Colors from '../constants/Colors'
+import Colors from '../constants/Colors';
+import Context from '../context/Context';
 
 export default function LinksScreen({navigation}) {
+  const{setLoggedIn} = React.useContext(Context);
+  const{email} = React.useContext(Context);
+  const{firstName} = React.useContext(Context);
+  const{lastName} = React.useContext(Context);
+
+  const logout = async () =>{       
+    try {        
+      await AsyncStorage.setItem('loggedIn', JSON.stringify(false))
+      setLoggedIn(false);
+    } catch (error) {
+        console.warn(error.message);
+    }
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <View style={styles.headerBanner}>
@@ -19,8 +34,8 @@ export default function LinksScreen({navigation}) {
           </View>
         </View>
         <View style={styles.headerText}>
-          <AvenirText style={{fontSize:40}} text={"Luke D."}/>
-          <AvenirText style={{fontSize:18, color: "#d3d3d3"}} text={"lukesdaniels@gmail.com"}/>
+          <AvenirText style={{fontSize:40}} text={firstName+' '+lastName[0]+'.'}/>
+          <AvenirText style={{fontSize:18, color: "#d3d3d3"}} text={email}/>
         </View>
       </View>
       <OptionButton
@@ -36,10 +51,15 @@ export default function LinksScreen({navigation}) {
       />
 
       <OptionButton
+        icon="ios-key"
+        label="My password"
+        onPress={() => navigation.navigate('Password')}
+      />
+
+      <OptionButton
         icon="ios-log-out"
         label="Logout"
-        onPress={() => alert("this will log you out")}
-        isLastOption
+        onPress={logout}
       />
 
       <OptionButton

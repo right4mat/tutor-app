@@ -4,14 +4,21 @@ import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackg
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
+import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
+import * as Facebook from 'expo-facebook';
+
 export default function Signup({navigation}) {
+
+  const[firstName, setFirstName] = React.useState('');
+  const[lastName, setLastName] = React.useState('');
+  const[email, setEmail] = React.useState('');
 
     async function FBlogIn() {
         try {
-          await Facebook.initializeAsync('<APP_ID>');
+          await Facebook.initializeAsync('671782060067039');
           const {
             type,
             token,
@@ -19,12 +26,15 @@ export default function Signup({navigation}) {
             permissions,
             declinedPermissions,
           } = await Facebook.logInWithReadPermissionsAsync({
-            permissions: ['public_profile'],
+            permissions: ['public_profile', 'email'],
           });
           if (type === 'success') {
             // Get the user's name using Facebook's Graph API
-            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-            Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,gender,first_name,last_name`);
+            const payload = await response.json();
+            const user = {fb:true, firstName:payload.first_name, lastName:payload.last_name, email:payload.email, pass:payload.id};
+            
+            navigation.navigate("SignupFinish", user);
           } else {
             // type === 'cancel'
           }
@@ -32,7 +42,27 @@ export default function Signup({navigation}) {
           alert(`Facebook Login Error: ${message}`);
         }
     }
-    
+
+    const validateEmail = (mail) =>{
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+      {
+          return true;
+      }        
+        return false;
+    }
+
+    const validateSignup = () =>{
+      if(!firstName.length || !lastName.length){
+        alert("You need to fill out all feilds") ;
+        return false;
+      }else if(!validateEmail(email)){
+        alert("You have entered an invalid email address");
+        return false;    
+      }else{
+        navigation.navigate("SignupFinish", {fb:false, firstName:firstName, lastName:lastName, email:email})
+        return true;
+      }
+    }    
 
 
 
@@ -46,7 +76,7 @@ export default function Signup({navigation}) {
             behavior={Platform.Os == "ios" ? "padding" : "height"}
             >
                 <View>
-                    <TouchableOpacity style={[styles.button, styles.buttonFB]} >
+                    <TouchableOpacity style={[styles.button, styles.buttonFB]} onPress={FBlogIn} >
                         <Ionicons style={{marginRight:30}} name={'logo-facebook'} size={30} color="#fff" />
                         <AvenirText style={styles.buttonText} text={"Signup with Facebook" }/>
                     </TouchableOpacity> 
@@ -55,21 +85,24 @@ export default function Signup({navigation}) {
                     <TextInput 
                     style={styles.textInput}
                     placeholder="First name"
+                    onChangeText={text => setFirstName(text)}
                     />
                     <TextInput 
                     style={styles.textInput}
                     placeholder="Last name"
+                    onChangeText={text => setLastName(text)}
                     />
                     <TextInput 
                     style={styles.textInput}
                     placeholder="Email"
+                    onChangeText={text => setEmail(text)}
                     />
-                    <TouchableOpacity style={styles.button} >
-                        <AvenirText style={styles.buttonText} text={"Next" }/>
+                    <TouchableOpacity style={styles.button} onPress={()=>validateSignup()} >
+                        <AvenirText style={styles.buttonText} text={"Next"}/>
                     </TouchableOpacity>      
                 </View>
                 <View>
-                    <AvenirText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
+                    <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
                 </View>
             </KeyboardAvoidingView>
         </ImageBackground>

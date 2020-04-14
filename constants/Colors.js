@@ -12,10 +12,9 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   primary: '#D4AF36',
-  primaryLight: '#D4AF36',
-  secondary: '#ECA42C',
-  secondaryLight: '#36d4af',
-  secondaryVeryLight: '#9fb1ea',
+  primaryLight: '#e0c772',
+  secondary: '#36d4af',
+  secondaryLight: '#72e0c7',
   background: '#f8f9fa',
   tertiary:"#CF6456"
 };

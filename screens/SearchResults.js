@@ -39,9 +39,11 @@ const dummyData = [
     {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
 ]
 
-export default function TutorProfile() {
+export default function SearchResults({route}) {
     
-    const [tutors, setTutors] = React.useState([]) // Initial value for opacity: 0
+    const [tutors, setTutors] = React.useState([])
+
+    console.warn(route.params)
 
     React.useEffect(() => {
       setTimeout(()=>{

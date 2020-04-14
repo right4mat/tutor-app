@@ -1,17 +1,28 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView} from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView, AsyncStorage} from 'react-native';
+
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
+import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
+import Loading from '../components/Loading';
+
+import Context from '../context/Context';
+import * as Facebook from 'expo-facebook';
+
 export default function Login({navigation}) {
 
-    async function FBlogIn() {
+  const[isLoggingIn, setIsLoggingIn] = React.useState(false);
+
+  const{setLoggedIn} = React.useContext(Context);
+
+   async function FBlogIn() {            
         try {
-          await Facebook.initializeAsync('<APP_ID>');
+          await Facebook.initializeAsync('671782060067039');
+          
           const {
             type,
             token,
@@ -24,28 +35,45 @@ export default function Login({navigation}) {
           if (type === 'success') {
             // Get the user's name using Facebook's Graph API
             const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-            Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+            //alert(`Logged in! Hi ${(await response.json()).name}!`);
+            login();
           } else {
             // type === 'cancel'
           }
         } catch ({ message }) {
           alert(`Facebook Login Error: ${message}`);
+          setIsLoggingIn(false)
         }
     }
+
+
+
+    const login = async () =>{
+      setIsLoggingIn(true)
+      try {        
+        await AsyncStorage.setItem('loggedIn', JSON.stringify(true))
+        setLoggedIn(true);
+      } catch (error) {
+          console.warn(error.message);
+          setIsLoggingIn(false)
+      }       
+    }    
+
     
 
 
 
 
   return (
-    <View style={styles.container}>        
+    <View style={styles.container}>
+        {isLoggingIn ? <Loading/> : false}        
         <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
             <KeyboardAvoidingView
             behavior={Platform.Os == "ios" ? "padding" : "height"}
             style={styles.container}
             >
                 <View>
-                    <TouchableOpacity style={[styles.button, styles.buttonFB]} >
+                    <TouchableOpacity style={[styles.button, styles.buttonFB]} onPress={FBlogIn} >
                         <Ionicons style={{marginRight:30}} name={'logo-facebook'} size={30} color="#fff" />
                         <AvenirText style={styles.buttonText} text={"Login with Facebook" }/>
                     </TouchableOpacity> 
@@ -54,17 +82,20 @@ export default function Login({navigation}) {
                     <TextInput 
                     style={styles.textInput}
                     placeholder="Email"
+                    autoCompleteType="email"
                     />
-                    <TextInput 
+                    <TextInput
+                    secureTextEntry={true}
                     style={styles.textInput}
                     placeholder="Password"
+                    password={true}
                     />
-                    <TouchableOpacity style={styles.button} >
+                    <TouchableOpacity style={styles.button} onPress={login} >
                         <AvenirText style={styles.buttonText} text={"Login" }/>
                     </TouchableOpacity>      
                 </View>
                 <View>
-                    <AvenirText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
+                    <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
                 </View>
             </KeyboardAvoidingView>
         </ImageBackground>

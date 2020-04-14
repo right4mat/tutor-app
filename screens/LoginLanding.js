@@ -5,6 +5,7 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
 import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
 
 export default function LoginLanding({navigation}) {
     
@@ -26,7 +27,7 @@ export default function LoginLanding({navigation}) {
         </View>
         <View>
             <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Login")} >
-                <AvenirText style={styles.buttonText} text={"Login" }/>
+                <AvenirText style={styles.buttonText} text={"Login"}/>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {backgroundColor:"#fff"}]} onPress={()=>navigation.navigate("Signup")}>
                 <AvenirText style={styles.buttonTextGold} text={"New student?"}/>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent:"space-around",
     alignItems:"center",
     flexDirection:"column",
-    backgroundColor: Colors.secondaryLight
+    backgroundColor: Colors.secondary
   },
   button:{
     marginBottom: 15,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: 'flex-end',
     backgroundColor: Colors.primary,
-    width: 200
+    width: Layout.window.width*.8
     },
     buttonText:{
         alignSelf: 'center',

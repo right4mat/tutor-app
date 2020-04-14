@@ -7,7 +7,8 @@ import AvenirTextBold from './boldText';
 
 import { useNavigation } from '@react-navigation/native';
 
-import Colors from '../constants/Colors'
+import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
 
 
 
@@ -55,8 +56,8 @@ export const TutorReal = (props) =>{
 
 const styles = StyleSheet.create({
     nannyItem:{
-      width:180,
-      height:250,   
+      width:Layout.window.width*.4,
+      height:Layout.window.width*.6,   
       display:"flex",
       justifyContent:"flex-start",
       alignItems:"center",
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
       top:5,
       right:10,
       borderRadius:15,
-      backgroundColor:Colors.secondaryLight,
+      backgroundColor:Colors.secondary,
       display:"flex",
       justifyContent:"center",
       alignItems:"center",

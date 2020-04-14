@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Image, View,  TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Image, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
 import AvenirText from '../components/avenirText';
@@ -8,37 +8,116 @@ import AvenirTextBold from '../components/boldText';
 import Colors from '../constants/Colors';
 import Icons from '../constants/Icons';
 import MapView from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Context from '../context/Context';
 
-export default function Map() {
+export default function Map({navigation}) {    
     
-    const[address, setAddress] = React.useState('');
-    const[location, setLocation] = React.useState([-33.865143, 151.209900])
+    const{location, setLocation} = React.useContext(Context);
+    const{address, setAddress} = React.useContext(Context);
+    const[possibleLocation, setPossibleLocation] = React.useState(location);
+    const[possibleAddress, setPossibleAddress] = React.useState('');
 
+    const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
+    const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
+    const saveLocation = async () =>{        
+        try {
+            await AsyncStorage.setItem('location', JSON.stringify(possibleLocation));
+            await AsyncStorage.setItem('address', possibleAddress);
+            setLocation(possibleLocation);
+            setAddress(possibleAddress);
+        } catch (error) {
+            console.warn(error.message);
+        }
+        navigation.goBack()
+    }
 
   return (
     <View style={styles.container}>           
         <View style={styles.map}>
-            <TextInput
-                style={styles.textInput}
-                value={address}
-                placeholder={"Your address"}
-            /> 
+            <View style={styles.textInput}>
+                <GooglePlacesAutocomplete
+                    placeholder='Search'
+                    minLength={2} // minimum length of text to search
+                    autoFocus={false}
+                    returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+                    keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
+                    listViewDisplayed='auto'    // true/false/undefined
+                    fetchDetails={true}
+                    renderDescription={row => row.description} // custom description render
+                    onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                        //console.warn(data);
+                        setPossibleLocation(details.geometry.location);
+                        setPossibleAddress(data.description);
+                    }}
+
+                    getDefaultValue={() => ''}
+
+                    query={{
+                        // available options: https://developers.google.com/places/web-service/autocomplete
+                        key: 'AIzaSyBbT6NbPR0uWuVTNjCXqgT2M1hVjz4wY9s',
+                        language: 'en', // language of the results
+                        types: 'geocode' // default: 'geocode'
+                    }}
+
+                    styles={{
+                        textInputContainer: {
+                            width: '100%',
+                            height:50,
+                            borderRadius:5,
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            borderWidth: 1,
+                            borderColor:"#d3d3d3"
+                        },
+                        description: {
+                            fontWeight: 'bold'
+                        },
+                        predefinedPlacesDescription: {
+                            color: '#d3d3d3'
+                        }
+                    }}
+
+                    currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+                    currentLocationLabel="Current location"
+                    nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                    GoogleReverseGeocodingQuery={{
+                        // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                    }}
+                    GooglePlacesSearchQuery={{
+                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                        rankby: 'distance',
+                        type: 'cafe'
+                    }}
+                    
+                    GooglePlacesDetailsQuery={{
+                        // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
+                        fields: 'geometry',
+                    }}
+
+                    filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+                    predefinedPlaces={[]}
+
+                    debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+                    renderLeftButton={()  => false}
+                    renderRightButton={() => false}
+                />
+            </View>
             <MapView style={styles.mapStyle} region={{
-                        latitude: location[0],
-                        longitude: location[1],
-                        longitudeDelta:0.25,
-                        latitudeDelta:0.25
+                        latitude: location.lat,
+                        longitude: location.lng,
+                        longitudeDelta:0.03,
+                        latitudeDelta:0.03
                     }}>
                 <MapView.Marker
                     coordinate={{
-                        latitude: location[0],
-                        longitude: location[1],
+                        latitude: location.lat,
+                        longitude: location.lng,
                     }}
                 />
             </MapView>
         </View>
-        <TouchableOpacity style={styles.button} >
+        <TouchableOpacity style={styles.button} onPress={saveLocation}>
                 <AvenirText style={styles.buttonText} text={"Set"}/>
         </TouchableOpacity>
     </View>
@@ -106,7 +185,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         alignSelf: 'flex-end',
         minWidth: 100,
-        backgroundColor: Colors.secondaryLight
+        backgroundColor: Colors.secondary
     },
     buttonText:{
     alignSelf: 'center',
@@ -117,15 +196,10 @@ const styles = StyleSheet.create({
         position:"absolute",
         top:40,
         left:"5%",
-        padding:10,
-        height: 50,
-        borderColor: '#d3d3d3', 
-        borderWidth: 1,
-        borderRadius: 5,
-        fontSize: 18,
         zIndex:3,
-        backgroundColor:"#fff",
-        width:"90%"
+        width:"90%",
+        borderRadius:5,
+        backgroundColor:"#fff"
     },
 
  });

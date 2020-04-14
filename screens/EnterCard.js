@@ -1,12 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import AvenirTextBold from '../components/boldText';
 import Colors from '../constants/Colors';
 
-export default function EnterCard() {
+import Context from '../context/Context';
+
+export default function EnterCard({navigation}) {
     
     const [name, setName] = React.useState('');
     const [cardNum, setCardNum] = React.useState('');
@@ -14,6 +16,17 @@ export default function EnterCard() {
     const [year, setYear] = React.useState('');
     const [cvv, setCvv] = React.useState('');
 
+    const{setLastFour} = React.useContext(Context);
+
+    const save = async () =>{        
+        try {
+            await AsyncStorage.setItem('lastFour', cardNum.substring(cardNum.length - 4));
+            setLastFour(cardNum.substring(cardNum.length - 4));
+            navigation.goBack();
+        } catch (error) {
+            console.warn(error.message);
+        }
+    }
 
 
     return (
@@ -34,6 +47,7 @@ export default function EnterCard() {
                 style={styles.textInput}
                 onChangeText={text => setCardNum(text)}
                 value={cardNum}
+                keyboardType = 'numeric'
             />
 
             <View style={styles.double}>
@@ -43,6 +57,7 @@ export default function EnterCard() {
                     style={[styles.textInput, {width:"48%"}]}
                     onChangeText={text => setMonth(text)}
                     value={month}
+                    keyboardType = 'numeric'
                 />
                 <TextInput
                     autoCompleteType='cc-exp-year'
@@ -50,6 +65,7 @@ export default function EnterCard() {
                     style={[styles.textInput, {width:"48%"}]}
                     onChangeText={text => setYear(text)}
                     value={year}
+                    keyboardType = 'numeric'
                 />
             </View>
 
@@ -59,10 +75,11 @@ export default function EnterCard() {
                 placeholder="cvv"
                 onChangeText={text => setCvv(text)}
                 value={cvv}
+                keyboardType = 'numeric'
             />
 
             
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button} onPress={save}>
                 <Text style={styles.buttonText}>{"Add card" }</Text>
             </TouchableOpacity>
 
@@ -104,7 +121,7 @@ button:{
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: 'flex-end',
-    backgroundColor: Colors.secondaryLight
+    backgroundColor: Colors.secondary
 },
 buttonText:{
 alignSelf: 'center',

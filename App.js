@@ -4,10 +4,11 @@ import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
-
-import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
-import LoginStack from './navigation/LoginStack';
+
+import Provider from './context/Provider';
+
+import AuthSwitch from './navigation/AuthSwitch';
 
 
 
@@ -49,12 +50,14 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-          {true ? <LoginStack/> : <BottomTabNavigator/>}
-        </NavigationContainer>
-      </View>
+      <Provider>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+            <AuthSwitch/>
+          </NavigationContainer>
+        </View>
+      </Provider>
     );
   }
 }

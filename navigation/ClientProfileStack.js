@@ -9,6 +9,11 @@ import BasicInfo from '../screens/BasicInfo';
 import CardDetails from '../screens/CardDetails';
 import EnterCard from '../screens/EnterCard';
 import Location from '../screens/Location';
+import Password from '../screens/Password';
+
+import Colors from '../constants/Colors';
+import { useFonts } from '@use-expo/font';
+import { AppLoading } from 'expo';
 
 const stackNav = createStackNavigator();
 const INITIAL_ROUTE_NAME = 'Links';
@@ -19,47 +24,96 @@ export default function ClientProfileStack({ navigation, route }) {
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
-  return (
-    <stackNav.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-        <stackNav.Screen
-            options={{
-                header: null,
-                headerMode: 'none',
-                headerShown: false,}}
-            name="Profile"
-            component={Profile}
+  let [fontsLoaded] = useFonts({
+    'Lato-Bold': require('../assets/fonts/Lato-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+
+
+    return (
+        <stackNav.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+            <stackNav.Screen
+                options={{
+                    header: null,
+                    headerMode: 'none',
+                    headerShown: false, 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary, 
+                }}
+                name="Profile"
+                component={Profile}
+                
+            />
+            <stackNav.Screen
+                name="BasicInfo"
+                component={BasicInfo}
+                options={{
+                    title: 'Basic Info', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,            
+                }}
+            />
+            <stackNav.Screen
+                name="CardDetails"
+                component={CardDetails}
+                options={{
+                    title: 'Card Details', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,             
+                }}
+            />
+            <stackNav.Screen
+                name="EnterCard"
+                component={EnterCard}
+                options={{
+                    title: 'Enter Card', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,             
+                }}
+            />
             
-        />
         <stackNav.Screen
-            name="BasicInfo"
-            component={BasicInfo}
-            options={{
-                title: 'Basic Info',           
-            }}
-        />
-        <stackNav.Screen
-            name="CardDetails"
-            component={CardDetails}
-            options={{
-                title: 'Card Details',            
-            }}
-        />
-        <stackNav.Screen
-            name="EnterCard"
-            component={EnterCard}
-            options={{
-                title: 'Enter Card',            
-            }}
-        />
-       <stackNav.Screen
-            name="Location"
-            component={Location}
-            options={{
-                title: 'Location',            
-            }}
-        />
-    </stackNav.Navigator>
-  );
+                name="Location"
+                component={Location}
+                options={{
+                    title: 'Location', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,             
+                }}
+            />
+            <stackNav.Screen
+                name="Password"
+                component={Password}
+                options={{
+                    title: 'Reset Password', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,             
+                }}
+            />
+        </stackNav.Navigator>
+    );
+}
 }
 
 

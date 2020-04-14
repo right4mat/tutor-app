@@ -14,7 +14,7 @@ export default function AvenireText(props) {
     return <AppLoading />;
   } else {
     return (
-      <Text numberOfLines={1} style={[{fontFamily:"lato"}, props.style]}>{props.text}</Text>
+      <Text style={[{fontFamily:"lato"}, props.style]}>{props.text}</Text>
     );
   }
 }

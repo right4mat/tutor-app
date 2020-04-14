@@ -8,33 +8,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"; 
 
 import Context from '../context/Context';
-
 import Colors from '../constants/Colors';
 
-export default function Filters({navigation}) {
+export default function Hire({route, navigation}) {
 
-    const[distance, setDistance] = React.useState(20);
+    const[name, setName] = React.useState(route.params.name);
 
-   const[year1, setYear1] = React.useState(false);
-   const[year2, setYear2] = React.useState(false);
-   const[year3, setYear3] = React.useState(false);
-   const[year4, setYear4] = React.useState(false);
-   const[year5, setYear5] = React.useState(false);
-   const[year6, setYear6] = React.useState(false);
-   const[year7, setYear7] = React.useState(false);
-   const[year8, setYear8] = React.useState(false);
-   const[year9, setYear9] = React.useState(false);
-   const[year10, setYear10] = React.useState(false);
-   const[year11, setYear11] = React.useState(false);
-   const[year12, setYear12] = React.useState(false);
-
-   const[economics, setEconomics] = React.useState(false);
-   const[maths, setMaths] = React.useState(false);
-   const[science, setScience] = React.useState(false);
-   const[humanities, setHumanities] = React.useState(false);
-   const[pdhpe, setPdhpe] = React.useState(false);
-   const[english, setEnglish] = React.useState(false);
-   const[coding, setCoding] = React.useState(false);
 
    const [date, setDate] = React.useState(new Date());
    const [showDate, setShowDate] = React.useState(false);
@@ -44,51 +23,8 @@ export default function Filters({navigation}) {
    const [showFinish, setShowFinish] = React.useState(false);
 
    const{address} = React.useContext(Context);
-   const{location} = React.useContext(Context);
-
-   const payload = () =>{
-       let results = {years:[], date:date, times:{start:start, finish:finish}, 
-       subjects:[], distance:distance, location:location };
-        if(year1)
-            results.years.push(1)
-        if(year2)
-            results.years.push(2)
-        if(year3)
-            results.years.push(3)
-        if(year4)
-            results.years.push(4)
-        if(year5)
-            results.years.push(5)
-        if(year6)
-            results.years.push(6)
-        if(year7)
-            results.years.push(7)
-        if(year8)
-            results.years.push(8)
-        if(year9)
-            results.years.push(9)
-        if(year10)
-            results.years.push(10)
-        if(year11)
-            results.years.push(11)
-        if(year12)
-            results.years.push(12)
-        if(economics)
-            results.subjects.push('economics')
-        if(maths)
-            results.subjects.push('maths')
-        if(science)
-            results.subjects.push('economics')
-        if(humanities)
-            results.subjects.push('humanities')
-        if(pdhpe)
-            results.subjects.push('pdhpe')
-        if(english)
-            results.subjects.push('english')
-        if(coding)
-            results.subjects.push('coding')
-        return results;
-   }
+   const{phone} = React.useContext(Context);
+   const{lastFour} = React.useContext(Context);
 
    
 const onChangeDate = (event, selectedDate) => {
@@ -125,7 +61,7 @@ const getTimeString = (time) => {
     <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <View style={styles.textBox}>
-                <AvenirText  text={"Find your prefect tutor!"}/>
+                <AvenirText  text={name}/>
             </View>       
 
             <TouchableOpacity style={styles.textInput} onPress={()=>setShowDate(true)}>
@@ -150,6 +86,13 @@ const getTimeString = (time) => {
                 </TouchableOpacity>
             </View>
 
+            <TouchableOpacity style={styles.textInput} onPress={()=>navigation.navigate("BasicInfo")}>
+                <View style={styles.cardIcon}>
+                    <Ionicons name={'ios-call'} size={22} color={Colors.secondaryLight} />
+                </View>
+                <AvenirText style={styles.buttonTextCard} text={phone}/>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.textInput} onPress={()=>navigation.navigate("Location")}>
                 <View style={styles.cardIcon}>
                     <Ionicons name={'md-pin'} size={22} color={Colors.secondaryLight} />
@@ -157,70 +100,17 @@ const getTimeString = (time) => {
                 <AvenirText style={styles.buttonTextCard} text={address}/>
             </TouchableOpacity>
 
-            <View style={styles.textBox}>
-                <AvenirText text={"Tutor within "+distance+"km"}/>
-            </View>
-
-            <Slider
-                style = {{width:"100%", paddingVertical: 15,}}
-                maximumValue={100}
-                minimumValue={0}
-                step={1}
-                value={20}
-                thumbTintColor={"#f2f2f2"}
-                maximumTrackTintColor={"rgba(212,175,54,.5)"}
-                minimumTrackTintColor={"rgba(54,212,173,.5)"}
-                onValueChange={(x)=>setDistance(x)}
-                onSlidingComplete={(x)=>setDistance(x)}
-            />
-
-            <View style={styles.textBox}>
-                <AvenirText text={"I need a tutor that can teach primary school..."}/>
-            </View>
-
-            <View style={styles.primary}>
-                <YearCheckBox state={year1} setState={setYear1} title={'year 1'}/>
-                <YearCheckBox state={year2} setState={setYear2} title={'year 2'}/>
-                <YearCheckBox state={year3} setState={setYear3} title={'year 3'}/>
-                <YearCheckBox state={year4} setState={setYear4} title={'year 4'}/>
-                <YearCheckBox state={year5} setState={setYear5} title={'year 5'}/>
-                <YearCheckBox state={year6} setState={setYear6} title={'year 6'}/>
-            </View>
-
-            <View style={styles.textBox}>
-                <AvenirText text={"I need a tutor that can teach high school..."}/>
-            </View>
-
-            <View style={styles.primary}>
-                <YearCheckBox state={year7} setState={setYear7} title={'year 7'}/>
-                <YearCheckBox state={year8} setState={setYear8} title={'year 8'}/>
-                <YearCheckBox state={year9} setState={setYear9} title={'year 9'}/>
-                <YearCheckBox state={year10} setState={setYear10} title={'year 10'}/>
-                <YearCheckBox state={year11} setState={setYear11} title={'year 11'}/>
-                <YearCheckBox state={year12} setState={setYear12} title={'year 12'}/>
-            </View>
-
-            <View style={styles.textBox}>
-                <AvenirText text={"I need a tutor that can teach subjects..."}/>
-            </View>
-
-            <Subject state={maths} setState={setMaths} title={"Maths"} icon={'ios-calculator'}/>
-
-            <Subject state={english} setState={setEnglish} title={"English"} icon={'ios-paper'}/>
-
-            <Subject state={science} setState={setScience} title={"Science"} icon={'md-beaker'}/>
-
-            <Subject state={humanities} setState={setHumanities} title={"Humanities"} icon={'ios-book'}/>
-
-            <Subject state={pdhpe} setState={setPdhpe} title={"PDHPE"} icon={"md-football"}/>
-
-            <Subject state={economics} setState={setEconomics} title={"Economics"} icon={"md-trending-up"}/>
-
-            <Subject state={coding} setState={setCoding} title={"Coding"} icon={"md-code-working"}/>
+            <TouchableOpacity style={styles.textInput} onPress={()=>navigation.navigate("EnterCard")}>
+                <View style={styles.cardIcon}>
+                    <Ionicons name={'ios-card'} size={22} color={Colors.secondaryLight} />
+                </View>
+                <AvenirText style={styles.buttonTextCard} text={'. . . .  . . . .  . . . .  '+lastFour}/>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("SearchResults", payload())}>
-                <Text style={styles.buttonText}>Save</Text>
+                <AvenirText style={styles.buttonText} text={"Hire"}/>
             </TouchableOpacity>
+
         </ScrollView>
         {showDate ? <DateTimePicker
           testID="dateTimePicker"
@@ -253,41 +143,6 @@ const getTimeString = (time) => {
   );
 }
 
-
-
-const YearCheckBox = (props) => {
-
-    return(
-
-        <View style={styles.checkBoxContainer}>
-            <CheckBox
-            checkedColor={Colors.secondaryLight}
-            checked={props.state}
-            title={props.title}
-            style={styles.checkBox}
-            onPress={() => props.setState(!props.state)}
-            />
-        </View>
-    );
-
-}
-
-const Subject = (props) => {
-
-    return(
-
-        <TouchableOpacity style={[styles.subject, props.state?{backgroundColor:Colors.secondaryLight}:false]} onPress={()=>props.setState(!props.state)}>
-            <View style={styles.subjectInner}>
-                <Ionicons name={props.icon} size={22} color={props.state? '#fff' : Colors.primaryLight} />            
-                <AvenirText style={styles.buttonTextCard} text={props.title}/>
-            </View>
-            <View >
-                <Ionicons name={props.state?'ios-checkmark-circle':'ios-add-circle-outline'} size={22} color={props.state?'#fff':Colors.primaryLight} />
-            </View>
-        </TouchableOpacity>
-    );
-
-}
 
 
 
