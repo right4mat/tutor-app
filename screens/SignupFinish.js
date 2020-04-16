@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
@@ -8,82 +8,105 @@ import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 
+import Loading from '../components/Loading';
+
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import Context from '../context/Context';
 
+import {SaveUserData} from '../services/UserData';
+
 export default function SignupFinish({route, navigation}) {
 
-    const{loggedIn, setLoggedIn} = React.useContext(Context);
+    const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress} = React.useContext(Context);
     const[signup] = React.useState(route.params)
-    const[address, setAddress] = React.useState('');
+    const[address, setPossibleAddress] = React.useState('');
     const[password, setPassword] = React.useState('');
-    const[location, setLocation] = React.useState('');
-    const[phone, setPhone] = React.useState('');
+    const[location, setPossibleLocation] = React.useState('');
+    const[phone, setPossiblePhone] = React.useState('');
+    const[isLoggingIn, setIsLoggingIn] = React.useState(false);
 
-    
-    const addUser =  async (payload) =>{
-        if(!validatePassword(password)){
-          alert("Password must be at least 8 charatures, including one number and a mixture of upper and lowercase")
-          return false;
-        }
-        if(!signup.fb)
-          payload['pass'] = password;
-        payload['address'] = address;
-        payload['phone'] = phone;
-        payload['lat'] = location.lat;
-        payload['lng'] = location.lng;
-        const response = await fetch('https://lsdsoftware.net/abctutor/signup.php', {
-          method: 'post',
-          body: JSON.stringify(payload),
-        })
-        const result = await response.text();
-        if(result === "inserted")
-          setLoggedIn(true);
-        else{
-          alert(result);
-          navigation.goBack();
-        }
+    const add = async (payload) =>{
+      if(!validatePassword(password)){
+        alert("Password must be at least 8 charatures, including one number and a mixture of upper and lowercase")
+        return false;
       }
+      payload['pass'] = password;
+      payload['address'] = address;
+      payload['phone'] = phone;
+      payload["location"] = location;
+      payload['lat'] = location.lat;
+      payload['lng'] = location.lng;
+      setIsLoggingIn(true);
+      if(await addUser(payload))
+        setLoggedIn(true)
+      else
+        navigation.goBack();
+
+    }
+
+    const addUser = async (payload) => {
+
+      const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/signup.php', {
+          method: 'post',
+          body: JSON.stringify(payload)
+      })
+      const result = await response.json();
+      if (result.result === "success") {
+          try {
+              await AsyncStorage.setItem('loggedIn', result.token)
+              SaveUserData(payload);
+              setFirstName(payload.firstName|| 'none');
+              setLastName(payload.lastName|| 'none');
+              setPhone(payload.phone|| 'none');
+              setEmail(payload.email|| 'none');
+              setLocation(payload.location || {lat:0,lng:0});
+              setAddress(payload.address || 'none');
+              return true;
+          } catch (error) {
+              alert(error);
+              return false;
+          }
+      } else {
+          alert(result.result);
+          return false;
+      }
+  }
+       
+    
 
     const validatePassword = (pass) =>{
       if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(pass))
         return true;
       else
         return false;
-
     }
-  
-
-
 
 
   return (
-    <View style={styles.container}>        
+    <View style={styles.container}>   
+        {isLoggingIn ? <Loading/> : false}       
         <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
 
             <View 
             style={styles.container}
             >
                 <View style={styles.login}>
-                    {route.params.fb ? false :
-                        <> 
-                        <LongText style={{marginBottom:15,width:Layout.window.width*.8}} text={"(Password must be at least 8 charatures, including one number and a mixture of upper and lowercase)"}/>                       
-                        <TextInput 
-                        style={styles.textInput}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        password={true}
-                        onChangeText={(text)=>setPassword(text)}
-                        value={password}
-                        />
                         
-                        </>
-                    }
+                    <LongText style={{marginBottom:15,width:Layout.window.width*.8}} text={"(Password must be at least 8 charatures, including one number and a mixture of upper and lowercase)"}/>                       
+                    <TextInput 
+                    style={styles.textInput}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    password={true}
+                    onChangeText={(text)=>setPassword(text)}
+                    value={password}
+                    />                      
+                    
                     <TextInput 
                     style={styles.textInput}
                     placeholder="Phone"
-                    onChangeText={(text)=>setPhone(text)}
+                    onChangeText={(text)=>setPossiblePhone(text)}
                     value={phone}
                     />
                     <View style={{width:Layout.window.width*.8, height:Layout.window.height*.45, marginBottom:15}}>
@@ -98,8 +121,8 @@ export default function SignupFinish({route, navigation}) {
                       renderDescription={row => row.description} // custom description render
                       onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                           //console.warn(data);
-                          setLocation(details.geometry.location);
-                          setAddress(data.description);
+                          setPossibleLocation(details.geometry.location);
+                          setPossibleAddress(data.description);
                       }}
 
                       getDefaultValue={() => ''}
@@ -174,7 +197,7 @@ export default function SignupFinish({route, navigation}) {
 
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={()=>addUser(signup)} >
+                <TouchableOpacity style={styles.button} onPress={()=>add(signup)} >
                         <AvenirText style={styles.buttonText} text={"Finish" }/>
                 </TouchableOpacity>      
                 

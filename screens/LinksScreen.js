@@ -15,7 +15,7 @@ export default function LinksScreen({navigation}) {
 
   const logout = async () =>{       
     try {        
-      await AsyncStorage.setItem('loggedIn', JSON.stringify(false))
+      await AsyncStorage.clear();
       setLoggedIn(false);
     } catch (error) {
         console.warn(error.message);

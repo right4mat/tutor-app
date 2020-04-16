@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { Image, StyleSheet,TouchableOpacity, View} from 'react-native';
+import { Image, StyleSheet,TouchableOpacity, View, FlatList} from 'react-native';
 
 import AvenirText from './avenirText';
 import AvenirTextBold from './boldText';
@@ -12,7 +12,7 @@ import Layout from '../constants/Layout';
 
 
 
-export const TutorLoad = () =>{
+const TutorLoad = () =>{
     const nanny = () =>{
       return (
         <View  style={styles.nannyItem}>
@@ -23,35 +23,48 @@ export const TutorLoad = () =>{
     return [nanny(), nanny(), nanny(), nanny(),nanny(), nanny()]
 }
   
-export const TutorReal = (props) =>{
-    const navigation = useNavigation();
+
+
+export const Tutors = (props) =>{
+
+  const navigation = useNavigation();
+    
     const avaliableNow = () =>{
       return (
         <View style={styles.avaliableNow}><AvenirText style={{color:"#fff"}} text={"Avaliable now"}/></View>
       )
     }
-    const nanny = (tutor) =>{
+    const Tutor = (props) =>{
       return (
-        <TouchableOpacity  style={styles.nannyItem}  onPress={() => navigation.navigate('TutorProfile', tutor)}>
+        <TouchableOpacity  style={styles.nannyItem}  onPress={() => navigation.navigate('TutorProfile', props.tutor)}>
           <View style={styles.nannyThumbContainer}>
-            {tutor.avaliable ? avaliableNow() : false}
+            {false ? avaliableNow() : false}
             <Image
               style={styles.nannyThumb}
-              source={require('../assets/images/tutorPic.png')}
+              source={{uri:'https://randomuser.me/api/portraits/'+props.tutor.photo}}
             />
           </View>
           <View style={styles.basicInfoContainer}>
-            <AvenirTextBold style={{fontWeight:'700', fontSize:16}} text={tutor.firstName+' '+tutor.lastName}/>
+            <AvenirTextBold style={{fontWeight:'700', fontSize:16}} text={props.tutor.firstName+' '+props.tutor.lastName}/>
             <View style={styles.basicInfo}>
-              <AvenirText text={"$"+tutor.price+"/h"}/>
+              <AvenirText text={"$"+props.tutor.price+"/h"}/>
               <AvenirText style={{color:"grey"}} text={"|"}/>
-              <AvenirText style={{color:"grey"}} text={tutor.distance+"km"}/>
+              <AvenirText style={{color:"grey"}} text={Math.floor(props.tutor.distance)+"km"}/>
             </View>          
           </View> 
         </TouchableOpacity>
       );
-    }  
-    return props.tutors.map(tutor => nanny(tutor))
+    } 
+
+  let data = Object.keys(props.tutors).map(tutor =>  props.tutors[tutor]);
+  console.warn(data)
+  return(
+  <FlatList
+    numColumns={2}
+    data={data}
+    renderItem={({ item }) => <Tutor tutor={item}/>}
+  />)
+
 }
 
 const styles = StyleSheet.create({
@@ -61,7 +74,7 @@ const styles = StyleSheet.create({
       display:"flex",
       justifyContent:"flex-start",
       alignItems:"center",
-      marginBottom:20,
+      margin: Layout.window.width*.03,
     },
     nannyThumb:{
       width:undefined,

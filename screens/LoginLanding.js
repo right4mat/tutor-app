@@ -30,7 +30,7 @@ export default function LoginLanding({navigation}) {
                 <AvenirText style={styles.buttonText} text={"Login"}/>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {backgroundColor:"#fff"}]} onPress={()=>navigation.navigate("Signup")}>
-                <AvenirText style={styles.buttonTextGold} text={"New student?"}/>
+                <AvenirText style={styles.buttonTextGold} text={"New family?"}/>
             </TouchableOpacity>            
         </View>
 

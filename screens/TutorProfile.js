@@ -16,9 +16,11 @@ export default function TutorProfile({ route, navigation}) {
     const[lastName] = React.useState(route.params.lastName);
     const[distance] = React.useState(route.params.distance);
     const[age] = React.useState(route.params.age);
-    const[skills] = React.useState(route.params.skills);
-    const[location] = React.useState(route.params.location)
-    const[price] = React.useState(route.params.price)
+    const[subjects] = React.useState(route.params.subjects);
+    const[lat] = React.useState(route.params.lat)
+    const[lng] = React.useState(route.params.lng)
+    const[price] = React.useState(route.params.price);
+    const[photo] = React.useState(route.params.photo);
     
 
 
@@ -30,7 +32,7 @@ export default function TutorProfile({ route, navigation}) {
             <View style={styles.picContainer}>
                 <Image
                 style={styles.pic}
-                source={require('../assets/images/tutorPic.jpg')}
+                source={{uri:'https://randomuser.me/api/portraits/'+photo}}
                 />
             </View>
             <View style={styles.brief}>
@@ -41,22 +43,22 @@ export default function TutorProfile({ route, navigation}) {
                 <LongText style={{fontSize:18, lineHeight: 30}} text={"is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}/>
             </View>
             <View style={styles.skills}>
-                {Object.keys(skills).map((skill) => {
-                    return <Skill skills={skills} icon={Icons[skill]} skill={skill}/>
+                {Object.keys(subjects).map((subject) => {
+                    return <Skill details={subjects[subject]} icon={Icons[subject]} subject={subject}/>
                 })}
-                <Distance distance={30}/>
+                <Distance distance={Math.floor(distance)}/>
             </View>
             <View style={styles.map}>
                 <MapView style={styles.mapStyle} region={{
-                            latitude: location[0],
-                            longitude: location[1],
+                            latitude: lat,
+                            longitude: lng,
                             longitudeDelta:0.02,
                             latitudeDelta:0.02
                         }}>
                     <MapView.Marker
                         coordinate={{
-                            latitude: location[0],
-                            longitude: location[1],
+                            latitude: lat,
+                            longitude: lng,
                         }}
                     />
                 </MapView>
@@ -77,14 +79,23 @@ const Skill = (props) =>{
     <View style={styles.skill}>
         <View style={styles.skill}>
             <Ionicons style={{marginRight:15}} name={props.icon} size={25} color={Colors.primaryLight} />
-            <AvenirText style={{fontSize:16}} text={props.skill}/> 
+            <AvenirText style={{fontSize:16}} text={props.subject}/> 
         </View>
         <View style={styles.skill}>
-            <AvenirText style={{marginRight:15}} text={"years: "}/>
-            <AvenirText  text={props.skills[props.skill].join()}/> 
+            <AvenirText style={{marginRight:15}} text={"tutors: "}/>
+            <AvenirText  text={joinDetails(props.details)}/> 
         </View>
     </View>
     );
+}
+
+const joinDetails = (obj) =>{
+    let result = [];
+    Object.keys(obj).forEach((detail)=>{
+        if(obj[detail] === '1')
+            result.push(detail);
+    })
+    return result.join(',  ')
 }
 
 

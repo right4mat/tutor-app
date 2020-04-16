@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
-import BrandText from '../components/brandText';
+import BoldText from '../components/boldText';
 import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
@@ -15,33 +15,6 @@ export default function Signup({navigation}) {
   const[firstName, setFirstName] = React.useState('');
   const[lastName, setLastName] = React.useState('');
   const[email, setEmail] = React.useState('');
-
-    async function FBlogIn() {
-        try {
-          await Facebook.initializeAsync('671782060067039');
-          const {
-            type,
-            token,
-            expires,
-            permissions,
-            declinedPermissions,
-          } = await Facebook.logInWithReadPermissionsAsync({
-            permissions: ['public_profile', 'email'],
-          });
-          if (type === 'success') {
-            // Get the user's name using Facebook's Graph API
-            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,gender,first_name,last_name`);
-            const payload = await response.json();
-            const user = {fb:true, firstName:payload.first_name, lastName:payload.last_name, email:payload.email, pass:payload.id};
-            
-            navigation.navigate("SignupFinish", user);
-          } else {
-            // type === 'cancel'
-          }
-        } catch ({ message }) {
-          alert(`Facebook Login Error: ${message}`);
-        }
-    }
 
     const validateEmail = (mail) =>{
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
@@ -59,7 +32,7 @@ export default function Signup({navigation}) {
         alert("You have entered an invalid email address");
         return false;    
       }else{
-        navigation.navigate("SignupFinish", {fb:false, firstName:firstName, lastName:lastName, email:email})
+        navigation.navigate("SignupFinish", {firstName:firstName, lastName:lastName, email:email})
         return true;
       }
     }    
@@ -75,13 +48,9 @@ export default function Signup({navigation}) {
             style={styles.container}
             behavior={Platform.Os == "ios" ? "padding" : "height"}
             >
-                <View>
-                    <TouchableOpacity style={[styles.button, styles.buttonFB]} onPress={FBlogIn} >
-                        <Ionicons style={{marginRight:30}} name={'logo-facebook'} size={30} color="#fff" />
-                        <AvenirText style={styles.buttonText} text={"Signup with Facebook" }/>
-                    </TouchableOpacity> 
-                </View>
                 <View style={styles.login}>
+                    <BoldText style={{fontSize:25, width: Layout.window.width*.8, marginBottom:15, }} text={"“Anyone who has never made a mistake has never tried anything new„"}/>
+
                     <TextInput 
                     style={styles.textInput}
                     placeholder="First name"

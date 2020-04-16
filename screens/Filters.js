@@ -13,20 +13,15 @@ import Colors from '../constants/Colors';
 
 export default function Filters({navigation}) {
 
-    const[distance, setDistance] = React.useState(20);
+   const[distance, setDistance] = React.useState(20);
 
-   const[year1, setYear1] = React.useState(false);
-   const[year2, setYear2] = React.useState(false);
-   const[year3, setYear3] = React.useState(false);
-   const[year4, setYear4] = React.useState(false);
-   const[year5, setYear5] = React.useState(false);
-   const[year6, setYear6] = React.useState(false);
-   const[year7, setYear7] = React.useState(false);
-   const[year8, setYear8] = React.useState(false);
-   const[year9, setYear9] = React.useState(false);
-   const[year10, setYear10] = React.useState(false);
-   const[year11, setYear11] = React.useState(false);
-   const[year12, setYear12] = React.useState(false);
+   const[yeark2, setYeark2] = React.useState(false);
+   const[year36, setYear36] = React.useState(false);
+   const[year710, setYear710] = React.useState(false);
+   const[year1112, setYear1112] = React.useState(false);
+
+   const[solo, setSolo] = React.useState(false);
+   const[group, setGroup] = React.useState(false);
 
    const[economics, setEconomics] = React.useState(false);
    const[maths, setMaths] = React.useState(false);
@@ -35,6 +30,9 @@ export default function Filters({navigation}) {
    const[pdhpe, setPdhpe] = React.useState(false);
    const[english, setEnglish] = React.useState(false);
    const[coding, setCoding] = React.useState(false);
+   const[dance, setDance] = React.useState(false);
+   const[yoga, setYoga] = React.useState(false);
+   const[geography, setGeography] = React.useState(false);
 
    const [date, setDate] = React.useState(new Date());
    const [showDate, setShowDate] = React.useState(false);
@@ -43,51 +41,86 @@ export default function Filters({navigation}) {
    const [finish, setFinish] = React.useState(moment(start).add(1, 'hour'));
    const [showFinish, setShowFinish] = React.useState(false);
 
+   const[french, setFrench] = React.useState(false);
+   const[spanish, setSpanish] = React.useState(false);
+   const[japanese, setJapanese] = React.useState(false);
+   const[arabic, setArabic] = React.useState(false);
+   const[german, setGerman] = React.useState(false);
+   const[chinese, setChinese] = React.useState(false);
+   const[indonesian, setIndonesian] = React.useState(false);
+   const[hindi, setHindi] = React.useState(false);
+   const[greek, setGreek] = React.useState(false);
+
+   const[guitar, setGuitar] = React.useState(false);
+   const[piano, setPiano] = React.useState(false);
+   const[trumpet, setTrumpet] = React.useState(false);
+   const[trombone, setTrombone] = React.useState(false);
+   const[baritone, setBaritone] = React.useState(false);
+   const[cello, setCello] = React.useState(false);
+   const[clarinet, setClarinet] = React.useState(false);
+   const[doubleBass, setDoubleBass] = React.useState(false);
+   const[flute, setFlute] = React.useState(false);
+   const[violin, setViolin] = React.useState(false);
+   const[viola, setViola] = React.useState(false);
+
    const{address} = React.useContext(Context);
    const{location} = React.useContext(Context);
 
    const payload = () =>{
-       let results = {years:[], date:date, times:{start:start, finish:finish}, 
-       subjects:[], distance:distance, location:location };
-        if(year1)
-            results.years.push(1)
-        if(year2)
-            results.years.push(2)
-        if(year3)
-            results.years.push(3)
-        if(year4)
-            results.years.push(4)
-        if(year5)
-            results.years.push(5)
-        if(year6)
-            results.years.push(6)
-        if(year7)
-            results.years.push(7)
-        if(year8)
-            results.years.push(8)
-        if(year9)
-            results.years.push(9)
-        if(year10)
-            results.years.push(10)
-        if(year11)
-            results.years.push(11)
-        if(year12)
-            results.years.push(12)
-        if(economics)
-            results.subjects.push('economics')
-        if(maths)
-            results.subjects.push('maths')
-        if(science)
-            results.subjects.push('economics')
-        if(humanities)
-            results.subjects.push('humanities')
-        if(pdhpe)
-            results.subjects.push('pdhpe')
-        if(english)
-            results.subjects.push('english')
-        if(coding)
-            results.subjects.push('coding')
-        return results;
+       return {
+
+            opts:{
+                location:location,
+                distance:distance,
+                yeark2:yeark2,
+                year36:year36,
+                year710:year710,
+                year1112:year1112,
+                solo:solo,
+                group:group,
+                start:start,
+                finish:finish,
+                date:date
+            },
+
+
+            subjects:{
+                
+                economics:economics,
+                maths:maths,
+                science:science,
+                humanities:humanities,
+                pdhpe:pdhpe,
+                english:english,
+                dance:dance,
+                yoga:yoga,
+                coding:coding,
+                geography:geography,
+
+                french:french,
+                spanish:spanish,
+                japanese:japanese,
+                arabic:arabic,
+                german:german,
+                chinese:chinese,
+                indonesian:indonesian,
+                hindi:hindi,
+                greek:greek,
+
+                guitar:guitar,
+                piano:piano,
+                trumpet:trumpet,
+                trombone:trombone,
+                baritone:baritone,
+                cello:cello,
+                clarinet:clarinet,
+                doubleBass:doubleBass,
+                guitar:guitar,
+                flute:flute,
+                violin:violin,
+                viola:viola
+            }
+       }
    }
 
    
@@ -175,16 +208,21 @@ const getTimeString = (time) => {
             />
 
             <View style={styles.textBox}>
+                <AvenirText text={"I want to be tutored..."}/>
+            </View>
+
+            <View style={styles.primary}>
+                <YearCheckBox state={solo} setState={setSolo} title={'solo'}/>
+                <YearCheckBox state={group} setState={setGroup} title={'in a group'}/>
+            </View>
+
+            <View style={styles.textBox}>
                 <AvenirText text={"I need a tutor that can teach primary school..."}/>
             </View>
 
             <View style={styles.primary}>
-                <YearCheckBox state={year1} setState={setYear1} title={'year 1'}/>
-                <YearCheckBox state={year2} setState={setYear2} title={'year 2'}/>
-                <YearCheckBox state={year3} setState={setYear3} title={'year 3'}/>
-                <YearCheckBox state={year4} setState={setYear4} title={'year 4'}/>
-                <YearCheckBox state={year5} setState={setYear5} title={'year 5'}/>
-                <YearCheckBox state={year6} setState={setYear6} title={'year 6'}/>
+                <YearCheckBox state={yeark2} setState={setYeark2} title={'years k-2'}/>
+                <YearCheckBox state={year36} setState={setYear36} title={'years 3-6'}/>
             </View>
 
             <View style={styles.textBox}>
@@ -192,12 +230,8 @@ const getTimeString = (time) => {
             </View>
 
             <View style={styles.primary}>
-                <YearCheckBox state={year7} setState={setYear7} title={'year 7'}/>
-                <YearCheckBox state={year8} setState={setYear8} title={'year 8'}/>
-                <YearCheckBox state={year9} setState={setYear9} title={'year 9'}/>
-                <YearCheckBox state={year10} setState={setYear10} title={'year 10'}/>
-                <YearCheckBox state={year11} setState={setYear11} title={'year 11'}/>
-                <YearCheckBox state={year12} setState={setYear12} title={'year 12'}/>
+                <YearCheckBox state={year710} setState={setYear710} title={'years 7-10'}/>
+                <YearCheckBox state={year1112} setState={setYear1112} title={'years 11-12'}/>
             </View>
 
             <View style={styles.textBox}>
@@ -217,6 +251,63 @@ const getTimeString = (time) => {
             <Subject state={economics} setState={setEconomics} title={"Economics"} icon={"md-trending-up"}/>
 
             <Subject state={coding} setState={setCoding} title={"Coding"} icon={"md-code-working"}/>
+
+            <Subject state={yoga} setState={setYoga} title={"Yoga"} icon={"ios-body"}/>
+
+            <Subject state={dance} setState={setDance} title={"Dance"} icon={"md-musical-notes"}/>
+
+            <Subject state={geography} setState={setGeography} title={"Geography"} icon={"md-globe"}/>
+
+            <View style={styles.textBox}>
+                <AvenirText text={"I need a tutor that can teach languages..."}/>
+            </View>
+
+            
+   
+
+            <Subject state={french} setState={setFrench} title={"French"} icon={'ios-quote'}/>
+
+            <Subject state={spanish} setState={setSpanish} title={"Spanish"} icon={"ios-quote"}/>
+
+            <Subject state={japanese} setState={setJapanese} title={"Japanese"} icon={"ios-quote"}/>
+
+            <Subject state={arabic} setState={setArabic} title={"Arabic"} icon={"ios-quote"}/>
+
+            <Subject state={german} setState={setGerman} title={"German"} icon={"ios-quote"}/>
+            
+            <Subject state={chinese} setState={setChinese} title={"Chinese (Mandarin)"} icon={"ios-quote"}/>
+            
+            <Subject state={indonesian} setState={setIndonesian} title={"Indonesian"} icon={"ios-quote"}/>
+
+            <Subject state={hindi} setState={setHindi} title={"Hindi"} icon={"ios-quote"}/>
+
+            <Subject state={greek} setState={setGreek} title={"Modern Greek"} icon={"ios-quote"}/>
+
+            <View style={styles.textBox}>
+                <AvenirText text={"I need a tutor that can teach music..."}/>
+            </View>
+
+            <Subject state={guitar} setState={setGuitar} title={"Guitar"} icon={"ios-musical-note"}/>
+
+            <Subject state={piano} setState={setPiano} title={"Piano"} icon={"ios-musical-note"}/>
+
+            <Subject state={trumpet} setState={setTrumpet} title={"Trumpet"} icon={"ios-musical-note"}/>
+
+            <Subject state={trombone} setState={setTrombone} title={"Trombone"} icon={"ios-musical-note"}/>
+
+            <Subject state={baritone} setState={setBaritone} title={"Baritone"} icon={"ios-musical-note"}/>
+
+            <Subject state={cello} setState={setCello} title={"Cello"} icon={"ios-musical-note"}/>
+
+            <Subject state={clarinet} setState={setClarinet} title={"Clarinet"} icon={"ios-musical-note"}/>
+
+            <Subject state={doubleBass} setState={setDoubleBass} title={"Double bass"} icon={"ios-musical-note"}/>
+
+            <Subject state={flute} setState={setFlute} title={"Flute"} icon={"ios-musical-note"}/>
+
+            <Subject state={violin} setState={setViolin} title={"Violin"} icon={"ios-musical-note"}/>
+
+            <Subject state={viola} setState={setViola} title={"Viola"} icon={"ios-musical-note"}/>
 
             <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("SearchResults", payload())}>
                 <Text style={styles.buttonText}>Save</Text>
@@ -264,7 +355,7 @@ const YearCheckBox = (props) => {
             checkedColor={Colors.secondaryLight}
             checked={props.state}
             title={props.title}
-            style={styles.checkBox}
+            containerStyle={styles.checkBox}
             onPress={() => props.setState(!props.state)}
             />
         </View>
@@ -355,14 +446,14 @@ const styles = StyleSheet.create({
         flexWrap:"wrap"
     },
     checkBox:{
-        width:"15%"
+        flex:1
     },
     checkBoxContainer:{
         display:"flex",
-        justifyContent:"space-between",
+        justifyContent:"space-around",
         alignItems:"center",
         flexDirection:"row",
-        width:"30%"
+        width:"40%"
     },
     textBox:{
         paddingVertical:15
