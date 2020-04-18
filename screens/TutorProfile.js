@@ -10,18 +10,42 @@ import Colors from '../constants/Colors';
 import Icons from '../constants/Icons';
 import MapView from 'react-native-maps';
 
+const getSubjects = async (handler, id) => {
+    const response = await fetch(
+      "https://sydney.wextg.com/lsdsoftware/abctutors/tutorsubjects.php",
+      {
+        method: "post",
+        body: JSON.stringify({id:id}),
+      }
+    );
+  
+    const result = await response.json();
+      
+    if (result.result === "success") {
+      //console.warn(result.data);
+      handler(result.data);
+    } else {
+      alert(result.result);
+      return false;
+    }
+};
+    
+
 export default function TutorProfile({ route, navigation}) {
 
-    const[firstName] = React.useState(route.params.firstName);
-    const[lastName] = React.useState(route.params.lastName);
-    const[distance] = React.useState(route.params.distance);
+    const[firstName] = React.useState(route.params.tutor.firstName);
+    const[lastName] = React.useState(route.params.tutor.lastName);
+    const[distance] = React.useState(route.params.tutor.distance);
     const[age] = React.useState(route.params.age);
-    const[subjects] = React.useState(route.params.subjects);
-    const[lat] = React.useState(route.params.lat)
-    const[lng] = React.useState(route.params.lng)
-    const[price] = React.useState(route.params.price);
-    const[photo] = React.useState(route.params.photo);
+    const[subjects, setSubjects] = React.useState(route.params.tutor.subjects);
+    const[lat] = React.useState(route.params.tutor.lat)
+    const[lng] = React.useState(route.params.tutor.lng)
+    const[price] = React.useState(route.params.tutor.price);
+    const[photo] = React.useState(route.params.tutor.photo);
+
+    React.useEffect(()=>{getSubjects(setSubjects, route.params.tutor.id)},[]);
     
+    console.warn(route.params.filters)
 
 
 
@@ -67,7 +91,7 @@ export default function TutorProfile({ route, navigation}) {
 
 
         </ScrollView>
-        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Hire', {name: firstName+' '+lastName})} >
+        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Hire', route.params)} >
                 <AvenirText style={styles.buttonText} text={"Hire"}/>
         </TouchableOpacity>
     </View>

@@ -12,22 +12,13 @@ import Layout from '../constants/Layout';
 
 
 
-const TutorLoad = () =>{
-    const nanny = () =>{
-      return (
-        <View  style={styles.nannyItem}>
-          <Ionicons name={'md-person'} size={190} color="#f2f2f2" />
-        </View>
-      );
-    }  
-    return [nanny(), nanny(), nanny(), nanny(),nanny(), nanny()]
-}
-  
 
 
 export const Tutors = (props) =>{
 
   const navigation = useNavigation();
+
+  //console.warn(props.filters)
     
     const avaliableNow = () =>{
       return (
@@ -36,7 +27,7 @@ export const Tutors = (props) =>{
     }
     const Tutor = (props) =>{
       return (
-        <TouchableOpacity  style={styles.nannyItem}  onPress={() => navigation.navigate('TutorProfile', props.tutor)}>
+        <TouchableOpacity  style={styles.nannyItem}  onPress={() => navigation.navigate('TutorProfile', props)}>
           <View style={styles.nannyThumbContainer}>
             {false ? avaliableNow() : false}
             <Image
@@ -62,7 +53,7 @@ export const Tutors = (props) =>{
   <FlatList
     numColumns={2}
     data={data}
-    renderItem={({ item }) => <Tutor tutor={item}/>}
+    renderItem={({ item }) => <Tutor tutor={item} filters={props.filters}/>}
   />)
 
 }

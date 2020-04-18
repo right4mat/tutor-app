@@ -78,9 +78,9 @@ export default function Filters({navigation}) {
                 year1112:year1112,
                 solo:solo,
                 group:group,
-                start:start,
-                finish:finish,
-                date:date
+                start:moment(start).format("YYYY-MM-DD HH:mm:ss"),
+                finish:moment(finish).format("YYYY-MM-DD HH:mm:ss"),
+                date:moment(date).format("YYYY-MM-DD HH:mm:ss")
             },
 
 

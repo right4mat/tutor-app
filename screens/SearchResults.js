@@ -4,40 +4,7 @@ import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-nativ
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Tutors } from '../components/Tutors';
 
-const dummyData = [
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Jane", lastName:"Smith", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Gabi", lastName:"Melocco", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:1},
-    {firstName:"Michelle", lastName:"Withers", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-    {firstName:"Ange", lastName:"Taylor", age:23, skills:{maths:[1,2,3,4], english:[1,2,3,4], science:[1,2,3,4]}, distance:30, location:[-33.865143, 151.209900], price:30, avaliable:0},
-];
+import Loading from '../components/Loading';
 
 const fetchFiltered = async (handler, filters) => {
   const response = await fetch(
@@ -49,6 +16,8 @@ const fetchFiltered = async (handler, filters) => {
   );
 
   const result = await response.json();
+
+    //console.warn(result)
 
   if (result.result === "success") {
     //console.warn(result.data);
@@ -81,7 +50,7 @@ export default function SearchResults({route}) {
   return (
     <View style={styles.container} >
 
-        {Object.keys(tutors).length ? <Tutors tutors={tutors}/> : false}
+        {Object.keys(tutors).length ? <Tutors tutors={tutors} filters={route.params}/> : <Loading/>}
 
 
     </View>

@@ -12,14 +12,14 @@ import Colors from '../constants/Colors';
 
 export default function Hire({route, navigation}) {
 
-    const[name, setName] = React.useState(route.params.name);
-
-
-   const [date, setDate] = React.useState(new Date());
+    const[name, setName] = React.useState(route.params.tutor.firstName +' '+ route.params.tutor.lastName);
+    
+    //console.warn(props.filters)
+   const [date, setDate] = React.useState(moment(route.params.filters.opts.date));
    const [showDate, setShowDate] = React.useState(false);
-   const [start, setStart] = React.useState(moment().startOf('hour'));
+   const [start, setStart] = React.useState(moment(route.params.filters.opts.start));
    const [showStart, setShowStart] = React.useState(false);
-   const [finish, setFinish] = React.useState(moment(start).add(1, 'hour'));
+   const [finish, setFinish] = React.useState(moment(route.params.filters.opts.finish));
    const [showFinish, setShowFinish] = React.useState(false);
 
    const{address} = React.useContext(Context);
