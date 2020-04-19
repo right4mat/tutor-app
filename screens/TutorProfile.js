@@ -38,14 +38,21 @@ export default function TutorProfile({ route, navigation}) {
     const[distance] = React.useState(route.params.tutor.distance);
     const[age] = React.useState(route.params.age);
     const[subjects, setSubjects] = React.useState(route.params.tutor.subjects);
-    const[lat] = React.useState(route.params.tutor.lat)
-    const[lng] = React.useState(route.params.tutor.lng)
+    const[lat] = React.useState(parseFloat(route.params.tutor.lat))
+    const[lng] = React.useState(parseFloat(route.params.tutor.lng))
     const[price] = React.useState(route.params.tutor.price);
     const[photo] = React.useState(route.params.tutor.photo);
 
-    React.useEffect(()=>{getSubjects(setSubjects, route.params.tutor.id)},[]);
+    React.useEffect(()=>{
+        let isCancelled = false;
+        if(!isCancelled)
+            getSubjects(setSubjects, route.params.tutor.id)
+        return () => {
+            isCancelled = true;
+        };
+    },[]);
     
-    console.warn(route.params.filters)
+    //console.warn(route.params.filters)
 
 
 

@@ -48,7 +48,7 @@ export const Tutors = (props) =>{
     } 
 
   let data = Object.keys(props.tutors).map(tutor =>  props.tutors[tutor]);
-  console.warn(data)
+  //console.warn(data)
   return(
   <FlatList
     numColumns={2}

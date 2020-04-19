@@ -7,7 +7,7 @@ import Colors from '../constants/Colors'
 export const CalenderDay = (props) =>{
     const navigation = useNavigation();
     return(
-      <TouchableOpacity  style={styles.calenderItem} onPress={() => navigation.navigate('SearchResults')}>
+      <TouchableOpacity  style={styles.calenderItem} onPress={() => navigation.navigate('SearchResults', props.payload)}>
         <View style={styles.calenderDay}>
           <AvenirText style={{color:"#fff"}}  text={props.day}/>
         </View>
@@ -24,7 +24,7 @@ export const GetDates = (startDate, daysToAdd) =>{
     for (var i = 0; i <= daysToAdd; i++) {
         var currentDate = new Date();
         currentDate.setDate(startDate.getDate() + i);
-        aryDates.push([DayAsString(currentDate.getDay()), currentDate.getDate() , MonthAsString(currentDate.getMonth()), currentDate.getFullYear()]);
+        aryDates.push([DayAsString(currentDate.getDay()), currentDate.getDate() , MonthAsString(currentDate.getMonth()), currentDate.getFullYear(),currentDate]);
     }
 
     return aryDates;

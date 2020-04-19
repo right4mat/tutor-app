@@ -43,7 +43,9 @@
     "react-native-slider": "^0.11.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.7",
-    "expo-av": "~8.1.0"
+    "expo-av": "~8.1.0",
+    "expo-image-picker": "~8.1.0",
+    "expo-image-manipulator": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

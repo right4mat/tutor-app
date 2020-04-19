@@ -1,37 +1,80 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { StyleSheet, Text, View, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, TouchableOpacity, Image} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import Colors from '../constants/Colors';
 import Context from '../context/Context';
+
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from "expo-image-manipulator";
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+
+import {SendPhoto} from '../services/UserData';
 
 export default function LinksScreen({navigation}) {
   const{setLoggedIn} = React.useContext(Context);
   const{email} = React.useContext(Context);
   const{firstName} = React.useContext(Context);
   const{lastName} = React.useContext(Context);
+  const{photo, setPhoto} = React.useContext(Context);
 
   const logout = async () =>{       
     try {        
       await AsyncStorage.clear();
       setLoggedIn(false);
     } catch (error) {
-        console.warn(error.message);
+      console.warn(error.message);
     }
   }
+
+  const getPermission = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+
+  const pickImage = async () => {
+    await getPermission();
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        //console.log({ image: result});
+      }
+      const resizedPhoto = await ImageManipulator.manipulateAsync(
+        result.uri,
+        [{ resize: { width: 100 } }], // resize to width of 300 and preserve aspect ratio 
+        { compress: 0.7, format: 'jpeg',  base64: true},
+       );     
+      AsyncStorage.setItem('photo', resizedPhoto.base64);
+      await SendPhoto(resizedPhoto.base64);
+      setPhoto(resizedPhoto.base64);
+      console.log(resizedPhoto);
+    } catch (E) {
+      console.log(E);
+    }
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <View style={styles.headerBanner}>
-        <View>
+        <View onPress={pickImage}>
           <View style={styles.profilePic}>
-            <Ionicons name={'md-person'} size={50} color="rgba(212,175,54,0.7)" />
+            {photo ? <Image source={{ uri: `data:image/jpg;base64,${photo}` }} style={{width: 80, height: 80, resizeMode:"cover"}} /> : <Ionicons name={'md-person'} size={50} color="rgba(212,175,54,0.7)" />}
           </View>
-          <View style={styles.editIcon}>
+          <TouchableOpacity onPress={pickImage} style={styles.editIcon}>
             <Ionicons name={'ios-create'} size={16} color="rgba(212,175,54,0.7)" />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.headerText}>
           <AvenirText style={{fontSize:40}} text={firstName+' '+lastName[0]+'.'}/>
@@ -144,6 +187,7 @@ const styles = StyleSheet.create({
     display:"flex",
     justifyContent:"center",
     alignItems:"center",
+    overflow:"hidden"
   },
   editIcon:{
     position:"absolute",

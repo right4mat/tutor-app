@@ -26,12 +26,15 @@ export default function LoginLanding({navigation}) {
             />
         </View>
         <View>
-            <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Login")} >
+            <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Login",{isStudent:true})} >
                 <AvenirText style={styles.buttonText} text={"Login"}/>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {backgroundColor:"#fff"}]} onPress={()=>navigation.navigate("Signup")}>
                 <AvenirText style={styles.buttonTextGold} text={"New family?"}/>
-            </TouchableOpacity>            
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("Login", {isStudent:false})}>
+                <AvenirText style={styles.buttonText} text={"Tutor? Login here!"}/>
+            </TouchableOpacity>             
         </View>
 
     </View>

@@ -13,20 +13,24 @@ import Loading from '../components/Loading';
 import Context from '../context/Context';
 
 import {login} from '../services/Login';
+import { BaseRouter } from '@react-navigation/native';
 
-export default function Login({navigation}) {
+export default function Login({route, navigation}) {
 
   const[isLoggingIn, setIsLoggingIn] = React.useState(false);
   const[password, setPassword] = React.useState('');
   const[email, setPossibleEmail] = React.useState('');
 
-  const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress} = React.useContext(Context);
+  const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress,setIsStudent} = React.useContext(Context);
 
   const attemptLogin = async (payload) =>{
+    payload['isStudent'] = route.params.isStudent;
     setIsLoggingIn(true);
     const result = await login(payload)
     if(result){     
       SetAppState(result);
+      setIsStudent(route.params.isStudent);
+      await AsyncStorage.setItem('isStudent', JSON.stringify(route.params.isStudent));
       setLoggedIn(true);
     }else
       setIsLoggingIn(false);
@@ -55,7 +59,8 @@ export default function Login({navigation}) {
             >
 
                 <View style={styles.login}>
-                  <BoldText style={{fontSize:25, width: Layout.window.width*.8, marginBottom:15, }} text={"“The only person who is educated is the one who has learned how to learn„"}/>
+                  {route.params.isStudent? <BoldText style={{fontSize:25, width: Layout.window.width*.8, marginBottom:15, }} text={"“The only person who is educated is the one who has learned how to learn„"}/>:
+                  <BoldText style={{fontSize:25, width: Layout.window.width*.8, marginBottom:15, }} text={"“The good teacher explains. The superior teacher demonstrates. The great teacher inspires„"}/>}
                     <TextInput 
                     style={styles.textInput}
                     placeholder="Email"
