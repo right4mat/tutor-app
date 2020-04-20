@@ -47,7 +47,7 @@ export default function TutorProfile({ route, navigation}) {
         let isCancelled = false;
         if(!isCancelled)
             getSubjects(setSubjects, route.params.tutor.id)
-        return () => {
+        return () =>{
             isCancelled = true;
         };
     },[]);

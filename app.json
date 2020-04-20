@@ -12,9 +12,9 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/images/abcLoginGoldSplash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "center",
-      "backgroundColor": "#36d4af"
+      "backgroundColor": "#fff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

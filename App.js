@@ -10,10 +10,13 @@ import Provider from './context/Provider';
 
 import AuthSwitch from './navigation/AuthSwitch';
 
+import Loading from './components/Loading';
+
 
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [isRendering, setIsRendering] = React.useState(true);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
@@ -38,6 +41,7 @@ export default function App(props) {
       } finally {
         setLoadingComplete(true);
         SplashScreen.hide();
+        setTimeout(()=>setIsRendering(false), 500)
       }
     }
 
@@ -50,10 +54,11 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <Provider>
+      <Provider>        
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+            {isRendering ? <Loading/> : false}
             <AuthSwitch/>
           </NavigationContainer>
         </View>
