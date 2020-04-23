@@ -32,7 +32,7 @@ export const Tutors = (props) =>{
             {false ? avaliableNow() : false}
             <Image
               style={styles.nannyThumb}
-              source={{uri:'https://randomuser.me/api/portraits/'+props.tutor.photo}}
+              source={{uri:'https://sydney.wextg.com/lsdsoftware/abctutors/tutorPhotos/small/'+props.tutor.id+'.jpg'}}
             />
           </View>
           <View style={styles.basicInfoContainer}>

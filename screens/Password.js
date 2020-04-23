@@ -1,15 +1,58 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import AvenirTextBold from '../components/boldText';
+import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 
-export default function EnterCard() {
+import Context from '../context/Context';
+
+const validatePassword = (pass) =>{
+    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(pass))
+      return true;
+    else
+      return false;
+  }
+
+export default function EnterCard({navigation}) {
     
     const [passwordOne, setPasswordOne] = React.useState('');
     const [passwordTwo, setPasswordTwo] = React.useState('');
+
+    const{isStudent} = React.useContext(Context);
+
+    const changePassword = async () => {
+
+        if(passwordOne !== passwordTwo){
+            alert("Sorry, passwords dont match.")
+            return false;
+        }else if(!validatePassword(passwordOne)){
+            alert("Password must be at least 8 charatures, including one number and a mixture of upper and lowercase")
+            return false;
+        }
+
+        console.log(isStudent)
+
+        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/changepassword.php', {
+            method: 'post',
+            body: JSON.stringify({password1:passwordOne,password2:passwordTwo, isStudent: isStudent, sessionID: await AsyncStorage.getItem('loggedIn')})
+        })
+        const result = await response.json();
+        console.log(result)
+        if (result.result === "success") {
+            setPasswordOne('')
+            setPasswordTwo('')
+            alert(result.result);
+            navigation.goBack();
+            
+        } else {
+            alert(result.result);
+            return false;
+        }
+    }
+
 
 
 
@@ -17,7 +60,7 @@ export default function EnterCard() {
         <View style={styles.container}>
 
             
-            <AvenirText style={{marginBottom:15}} text={"My password (at least 6 characters)"}/>
+            <LongText style={{marginBottom:15}} text={"Password must be at least 8 charatures, including one number and a mixture of upper and lowercase"}/>
             <TextInput
                 secureTextEntry={true}
                 password={true}
@@ -36,7 +79,7 @@ export default function EnterCard() {
                 value={passwordTwo}
             />           
 
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button} onPress={changePassword} >
                 <Text style={styles.buttonText}>{"Update" }</Text>
             </TouchableOpacity> 
 

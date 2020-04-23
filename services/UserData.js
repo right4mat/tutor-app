@@ -1,0 +1,72 @@
+import * as React from 'react';
+import {AsyncStorage} from 'react-native';
+
+export const SaveUserData = (data) => {
+
+    try {
+        AsyncStorage.setItem('firstName', data.firstName || 'none')
+        AsyncStorage.setItem('lastName', data.lastName || 'none')
+        AsyncStorage.setItem('phone', data.phone || 'none')
+        AsyncStorage.setItem('email', data.email || 'none')
+        AsyncStorage.setItem('location', JSON.stringify(data.location) || JSON.stringify({lat: 0, lng: 0}))
+        AsyncStorage.setItem('address', data.address || 'none')
+
+    } catch (error) {
+        alert(error)
+    }
+}
+
+export const UpdateFamily = async () => {
+
+    const payload = {}
+
+    try {
+
+        payload['firstName'] = await AsyncStorage.getItem('firstName');
+        payload['lastName'] = await AsyncStorage.getItem('lastName');
+        payload['phone'] = await AsyncStorage.getItem('phone');
+        payload['location'] = JSON.parse(await AsyncStorage.getItem('location'));
+        payload['address'] = await AsyncStorage.getItem('address');
+        payload['token'] = await AsyncStorage.getItem('loggedIn');
+
+
+        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/updatefamily.php', {
+            method: 'post',
+            body: JSON.stringify(payload)
+        })
+
+        const result = await response.json();
+
+        if (result.result === 'success') 
+            return true;
+        else 
+            alert(result.result);
+        
+
+    } catch (error) {
+        alert(error)
+    }
+}
+
+export const SendPhoto = async (uri) =>{
+
+    try {
+
+        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/uploadphoto.php', {
+            method: 'post',
+            body: JSON.stringify({uri:uri, sessionID: await AsyncStorage.getItem('loggedIn')})
+        })
+
+        const result = await response.json();
+
+        if (result.result === 'success') 
+            return true;
+        else 
+            alert(result.result);
+        
+
+    } catch (error) {
+        alert(error)
+    }
+
+}

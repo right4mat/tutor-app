@@ -18,7 +18,7 @@ import {SaveUserData} from '../services/UserData';
 
 export default function SignupFinish({route, navigation}) {
 
-    const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress} = React.useContext(Context);
+    const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress, setIsStudent} = React.useContext(Context);
     const[signup] = React.useState(route.params)
     const[address, setPossibleAddress] = React.useState('');
     const[password, setPassword] = React.useState('');
@@ -55,6 +55,8 @@ export default function SignupFinish({route, navigation}) {
       if (result.result === "success") {
           try {
               await AsyncStorage.setItem('loggedIn', result.token)
+              await AsyncStorage.setItem('isStudent', JSON.stringify(true))
+              setIsStudent(true);
               SaveUserData(payload);
               setFirstName(payload.firstName|| 'none');
               setLastName(payload.lastName|| 'none');

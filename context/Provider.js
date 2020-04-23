@@ -13,7 +13,7 @@ export default function Provider (props){
    const [phone, setPhone] = React.useState('');    
    const [email, setEmail] = React.useState('');
    const [lastFour, setLastFour] = React.useState('');
-   const [isStudnet, setIsStudent] = React.useState(true);
+   const [isStudent, setIsStudent] = React.useState(true);
    const [photo, setPhoto] = React.useState(false);
 
    useEffect(()=>{
@@ -26,7 +26,7 @@ export default function Provider (props){
             setLocation(JSON.parse(await AsyncStorage.getItem('location')) || JSON.stringify({lat:0,lng:0}));
             setAddress(await AsyncStorage.getItem('address') || 'none');
             setLastFour(await AsyncStorage.getItem('lastFour')|| 'none');
-            setIsStudent(await AsyncStorage.getItem('isStudnet')|| 'none');  
+            setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));  
         }
 
         SetAppState();
@@ -48,7 +48,7 @@ export default function Provider (props){
                 phone, setPhone,
                 email, setEmail,
                 lastFour, setLastFour,
-                isStudnet, setIsStudent,
+                isStudent, setIsStudent,
                 photo, setPhoto
             }}
         >

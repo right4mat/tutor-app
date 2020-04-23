@@ -25,23 +25,12 @@ export default function AuthStack(props) {
     } = React.useContext(Context);
     
 
-    const SetAppState = async (payload) =>{     
-        
-        setPhoto(await AsyncStorage.getItem('photo')|| false);
-        setFirstName(await AsyncStorage.getItem('firstName') || '');
-        setLastName(await AsyncStorage.getItem('lastName') || '');
-        setPhone(await AsyncStorage.getItem('phone') || '');
-        setLocation(JSON.parse(await AsyncStorage.getItem('location')) || {lat: 0, lng: 0});
-        setAddress(await AsyncStorage.getItem('address') || '');
-        setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')) || true);
-        setEmail(await AsyncStorage.getItem('email') || '');
 
-    }
 
+    
     const authSwitch = async () =>{
 
         if(await checkLogin()){
-            await SetAppState();
             setLoggedIn(true)
         }
         setIsLoading(false)

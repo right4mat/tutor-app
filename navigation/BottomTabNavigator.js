@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
-import ProfileStackStudent from './ProfileStackStudent';
+import ProfileStack from './ProfileStack';
 import MainStackStudent from './MainStackStudent';
 import MainStackTutor from './MainStackTutor';
 
@@ -58,7 +58,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileStackStudent}
+        component={ProfileStack}
         navigationOptions={{header:null}}
         options={{
           header: null,
@@ -87,7 +87,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileStackStudent}
+        component={ProfileStack}
         navigationOptions={{header:null}}
         options={{
           header: null,

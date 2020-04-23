@@ -19,7 +19,7 @@ export default function LinksScreen({navigation}) {
   const{email} = React.useContext(Context);
   const{firstName} = React.useContext(Context);
   const{lastName} = React.useContext(Context);
-  const{photo, setPhoto} = React.useContext(Context);
+  const{photo, setPhoto, isStudent} = React.useContext(Context);
 
   const logout = async () =>{       
     try {        
@@ -98,6 +98,27 @@ export default function LinksScreen({navigation}) {
         label="My password"
         onPress={() => navigation.navigate('Password')}
       />
+
+      
+    {isStudent ?false: <OptionButton
+        icon="ios-cash"
+        label="My pay period"
+        onPress={() => navigation.navigate('PayPeriod')}
+      />}
+            
+      {isStudent ? <OptionButton
+        icon="ios-people"
+        label="My tutors"
+        onPress={() => navigation.navigate('Password')}
+      />
+        :
+      <OptionButton
+        icon="ios-people"
+        label="My students"
+        onPress={() => navigation.navigate('Password')}
+      />}
+
+      
 
       <OptionButton
         icon="ios-log-out"

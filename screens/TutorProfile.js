@@ -41,7 +41,7 @@ export default function TutorProfile({ route, navigation}) {
     const[lat] = React.useState(parseFloat(route.params.tutor.lat))
     const[lng] = React.useState(parseFloat(route.params.tutor.lng))
     const[price] = React.useState(route.params.tutor.price);
-    const[photo] = React.useState(route.params.tutor.photo);
+    const[photo] = React.useState(route.params.tutor.id);
 
     React.useEffect(()=>{
         let isCancelled = false;
@@ -63,7 +63,7 @@ export default function TutorProfile({ route, navigation}) {
             <View style={styles.picContainer}>
                 <Image
                 style={styles.pic}
-                source={{uri:'https://randomuser.me/api/portraits/'+photo}}
+                source={{uri:'https://sydney.wextg.com/lsdsoftware/abctutors/tutorPhotos/large/'+photo+'.jpg'}}
                 />
             </View>
             <View style={styles.brief}>
