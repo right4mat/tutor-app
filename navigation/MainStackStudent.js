@@ -9,6 +9,7 @@ import Location from '../screens/Location';
 import Hire from '../screens/Hire';
 import EnterCard from '../screens/EnterCard';
 import BasicInfo from '../screens/BasicInfo';
+import HireTwo from '../screens/HireTwo';
 
 import Colors from '../constants/Colors';
 import { useFonts } from '@use-expo/font';
@@ -77,7 +78,7 @@ export default function MainStack({ navigation, route }) {
                 name="Hire"
                 component={Hire}
                 options={{
-                    title: 'Hire', 
+                    title: 'Details', 
                     headerTitleStyle: {
                         color: Colors.primary,
                         fontFamily: 'Lato-Bold'
@@ -126,6 +127,18 @@ export default function MainStack({ navigation, route }) {
                 component={Location}
                 options={{
                     title: 'Location', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,            
+                }}
+            />
+            <stackNav.Screen
+                name="HireTwo"
+                component={HireTwo}
+                options={{
+                    title: 'Hire', 
                     headerTitleStyle: {
                         color: Colors.primary,
                         fontFamily: 'Lato-Bold'

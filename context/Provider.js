@@ -15,6 +15,8 @@ export default function Provider (props){
    const [lastFour, setLastFour] = React.useState('');
    const [isStudent, setIsStudent] = React.useState(true);
    const [photo, setPhoto] = React.useState(false);
+   const [jobsConfirm, setJobsConfirm] = React.useState([]);
+   const [jobsUpComing, setJobsUpComing] = React.useState([]);
 
    useEffect(()=>{
         const SetAppState = async () =>{         
@@ -49,7 +51,9 @@ export default function Provider (props){
                 email, setEmail,
                 lastFour, setLastFour,
                 isStudent, setIsStudent,
-                photo, setPhoto
+                photo, setPhoto,
+                jobsConfirm, setJobsConfirm,
+                jobsUpComing, setJobsUpComing
             }}
         >
             {props.children}

@@ -30,14 +30,8 @@ import Context from "../context/Context";
 
 export default function HomeScreen({ navigation }) {
 
-  React.useEffect(() => {
-    /*let isCancelled = false;
-    if(!isCancelled)
-      getClose(setTutors, location);
-    return () => {
-        isCancelled = true;
-    };*/
-  }, []);
+  const{firstName} = React.useContext(Context);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -59,8 +53,8 @@ export default function HomeScreen({ navigation }) {
           />
           <View style={styles.bannerInner}>
             <LongText
-              style={{ flex: 1, flexWrap: "wrap", color: "#fff" }}
-              text={"Delivering professional tutoring to support your learning"}
+              style={{ flex: 1, fontSize: 20, flexWrap: "wrap", color: "#fff", textAlign:"center"}}
+              text={"Welcome "+firstName+' !'}
             />
             <TouchableOpacity
               style={styles.bannerHeader}

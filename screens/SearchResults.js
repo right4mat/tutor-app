@@ -18,10 +18,10 @@ const fetchFiltered = async (handlerA, handlerB, filters) => {
 
   const result = await response.json();
 
-    //console.warn(result)
+  console.log(result.data);
 
   if (result.result === "success") {
-    //console.warn(result.data);
+    console.log(result.data);
     handlerA(result.data);
     handlerB(false);
   } else {

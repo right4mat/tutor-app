@@ -98,7 +98,7 @@ export default function TutorProfile({ route, navigation}) {
 
 
         </ScrollView>
-        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Hire', route.params)} >
+        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Hire', {opts: route.params, subjects: subjects})} >
                 <AvenirText style={styles.buttonText} text={"Hire"}/>
         </TouchableOpacity>
     </View>
