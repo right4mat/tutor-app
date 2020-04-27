@@ -12,7 +12,7 @@ import MapView from 'react-native-maps';
 
 const getSubjects = async (handler, id) => {
     const response = await fetch(
-      "https://sydney.wextg.com/lsdsoftware/abctutors/tutorsubjects.php",
+      "https://lsdsoftware.io/abctutors/tutorsubjects.php",
       {
         method: "post",
         body: JSON.stringify({id:id}),
@@ -63,7 +63,7 @@ export default function TutorProfile({ route, navigation}) {
             <View style={styles.picContainer}>
                 <Image
                 style={styles.pic}
-                source={{uri:'https://sydney.wextg.com/lsdsoftware/abctutors/tutorPhotos/large/'+photo+'.jpg'}}
+                source={{uri:'https://lsdsoftware.io/abctutors/tutorPhotos/large/'+photo+'.jpg'}}
                 />
             </View>
             <View style={styles.brief}>

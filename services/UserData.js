@@ -16,7 +16,7 @@ export const SaveUserData = (data) => {
     }
 }
 
-export const UpdateFamily = async () => {
+export const UpdateUser = async () => {
 
     const payload = {}
 
@@ -30,7 +30,7 @@ export const UpdateFamily = async () => {
         payload['token'] = await AsyncStorage.getItem('loggedIn');
 
 
-        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/updatefamily.php', {
+        const response = await fetch('https://lsdsoftware.io/abctutors/updateuser.php', {
             method: 'post',
             body: JSON.stringify(payload)
         })
@@ -52,7 +52,7 @@ export const SendPhoto = async (uri) =>{
 
     try {
 
-        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/uploadphoto.php', {
+        const response = await fetch('https://lsdsoftware.io/abctutors/uploadphoto.php', {
             method: 'post',
             body: JSON.stringify({uri:uri, sessionID: await AsyncStorage.getItem('loggedIn')})
         })

@@ -9,16 +9,18 @@ import NoResults from '../components/NoResults';
 
 const fetchFiltered = async (handlerA, handlerB, filters) => {
   const response = await fetch(
-    "https://sydney.wextg.com/lsdsoftware/abctutors/filter.php",
+    "https://lsdsoftware.io/abctutors/filter.php",
     {
       method: "post",
       body: JSON.stringify(filters),
     }
   );
 
+ // console.log( await response.text());
+
   const result = await response.json();
 
-  console.log(result.data);
+  
 
   if (result.result === "success") {
     console.log(result.data);
@@ -51,22 +53,26 @@ export default function SearchResults({route}) {
 
 
   return (
-    <View style={styles.container} >
-
+    
+        <View style={styles.container}>
         {
         loading ? <Loading/> :
-        Object.keys(tutors).length ? <Tutors tutors={tutors} filters={route.params}/> : <NoResults/>
+        Object.keys(tutors).length ? <View style={styles.containerInner} ><Tutors tutors={tutors} filters={route.params}/></View> : <NoResults/>
         }
+        </View>
 
 
-    </View>
+    
   );
 }
 
 
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex:1
+  },
+  containerInner: {
     paddingHorizontal:15,
     flex: 1,
     backgroundColor: '#fff',

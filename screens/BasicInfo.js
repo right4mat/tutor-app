@@ -36,7 +36,7 @@ export default function BasicInfo({navigation}) {
             setFirstName(firstNamePossible);
             setLastName(lastNamePossible);
             setPhone(phonePossible);
-            UpdateFamily();
+            UpdateUser();
         } catch (error) {
             console.warn(error.message);
         }

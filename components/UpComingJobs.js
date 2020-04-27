@@ -10,7 +10,7 @@ import moment from 'moment';
 
 const getConfirmedJobs = async (handler) => {
   const response = await fetch(
-    "https://sydney.wextg.com/lsdsoftware/abctutors/confirmedjobs.php",
+    "https://lsdsoftware.io/abctutors/confirmedjobs.php",
     {
       method: "post",
       body: JSON.stringify({sessionID: await AsyncStorage.getItem('loggedIn')}),

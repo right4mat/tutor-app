@@ -35,7 +35,7 @@ export default function EnterCard({navigation}) {
 
         console.log(isStudent)
 
-        const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/changepassword.php', {
+        const response = await fetch('https://lsdsoftware.io/abctutors/changepassword.php', {
             method: 'post',
             body: JSON.stringify({password1:passwordOne,password2:passwordTwo, isStudent: isStudent, sessionID: await AsyncStorage.getItem('loggedIn')})
         })

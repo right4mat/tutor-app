@@ -8,6 +8,8 @@ export default function Provider (props){
    const[location, setLocation] = React.useState();
    const[address, setAddress] = React.useState();
 
+   const [userID, setUserID] = React.useState('');
+
    const [firstName, setFirstName] = React.useState('');
    const [lastName, setLastName] = React.useState('');
    const [phone, setPhone] = React.useState('');    
@@ -28,7 +30,8 @@ export default function Provider (props){
             setLocation(JSON.parse(await AsyncStorage.getItem('location')) || JSON.stringify({lat:0,lng:0}));
             setAddress(await AsyncStorage.getItem('address') || 'none');
             setLastFour(await AsyncStorage.getItem('lastFour')|| 'none');
-            setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));  
+            setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));
+            setPhoto(await AsyncStorage.getItem('photo')); 
         }
 
         SetAppState();
@@ -53,7 +56,8 @@ export default function Provider (props){
                 isStudent, setIsStudent,
                 photo, setPhoto,
                 jobsConfirm, setJobsConfirm,
-                jobsUpComing, setJobsUpComing
+                jobsUpComing, setJobsUpComing,
+                userID, setUserID
             }}
         >
             {props.children}

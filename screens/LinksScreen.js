@@ -19,7 +19,7 @@ export default function LinksScreen({navigation}) {
   const{email} = React.useContext(Context);
   const{firstName} = React.useContext(Context);
   const{lastName} = React.useContext(Context);
-  const{photo, setPhoto, isStudent} = React.useContext(Context);
+  const{photo, setPhoto, isStudent, userID} = React.useContext(Context);
 
   const logout = async () =>{       
     try {        
@@ -53,12 +53,12 @@ export default function LinksScreen({navigation}) {
       }
       const resizedPhoto = await ImageManipulator.manipulateAsync(
         result.uri,
-        [{ resize: { width: 100 } }], // resize to width of 300 and preserve aspect ratio 
+        [{ resize: { width: 500 } }], // resize to width of 300 and preserve aspect ratio 
         { compress: 0.7, format: 'jpeg',  base64: true},
        );     
-      AsyncStorage.setItem('photo', resizedPhoto.base64);
+      AsyncStorage.setItem('photo', userID+'.jpg');
       await SendPhoto(resizedPhoto.base64);
-      setPhoto(resizedPhoto.base64);
+      setPhoto(userID+'.jpg?'+Math.random());
       console.log(resizedPhoto);
     } catch (E) {
       console.log(E);
@@ -70,11 +70,11 @@ export default function LinksScreen({navigation}) {
       <View style={styles.headerBanner}>
         <View onPress={pickImage}>
           <View style={styles.profilePic}>
-            {photo ? <Image source={{ uri: `data:image/jpg;base64,${photo}` }} style={{width: 80, height: 80, resizeMode:"cover"}} /> : <Ionicons name={'md-person'} size={50} color="rgba(212,175,54,0.7)" />}
+            {photo ? <Image source={{ uri: (isStudent ? 'https://lsdsoftware.io/abctutors/studentPhotos/small/'+photo : 'https://lsdsoftware.io/abctutors/tutorPhotos/small/'+photo) }} style={{width: 80, height: 80, resizeMode:"cover"}} /> : <Ionicons name={'md-person'} size={50} color="rgba(212,175,54,0.7)" />}
           </View>
-          <TouchableOpacity onPress={pickImage} style={styles.editIcon}>
+          {isStudent ? <TouchableOpacity onPress={pickImage} style={styles.editIcon}>
             <Ionicons name={'ios-create'} size={16} color="rgba(212,175,54,0.7)" />
-          </TouchableOpacity>
+          </TouchableOpacity> : false }
         </View>
         <View style={styles.headerText}>
           <AvenirText style={{fontSize:40}} text={firstName+' '+lastName[0]+'.'}/>

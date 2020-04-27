@@ -18,13 +18,12 @@ export default function Map({navigation}) {
     const[possibleLocation, setPossibleLocation] = React.useState(location);
     const[possibleAddress, setPossibleAddress] = React.useState('');
 
-    const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
-    const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
+   
 
     const saveLocation = async () =>{        
         try {
-            await AsyncStorage.setItem('location', JSON.stringify(possibleLocation));
-            await AsyncStorage.setItem('address', possibleAddress);
+            AsyncStorage.setItem('location', JSON.stringify(possibleLocation));
+            AsyncStorage.setItem('address', possibleAddress);
             setLocation(possibleLocation);
             setAddress(possibleAddress);
         } catch (error) {
@@ -43,7 +42,7 @@ export default function Map({navigation}) {
                     autoFocus={false}
                     returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
                     keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
-                    listViewDisplayed='auto'    // true/false/undefined
+                    listViewDisplayed={false}   // true/false/undefined
                     fetchDetails={true}
                     renderDescription={row => row.description} // custom description render
                     onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
@@ -63,18 +62,36 @@ export default function Map({navigation}) {
 
                     styles={{
                         textInputContainer: {
+                            alignSelf:"center",
                             width: '100%',
                             height:50,
                             borderRadius:5,
-                            backgroundColor: 'rgba(0,0,0,0)',
+                            backgroundColor: '#fff',
                             borderWidth: 1,
-                            borderColor:"#d3d3d3"
+                            borderColor:"#d3d3d3",
+                            fontSize:18
+                        },
+                        textInput: {
+                          marginLeft: 0,
+                          marginRight: 0,
+                          height: 38,
+                          color: '#000',
+                          fontSize: 18
                         },
                         description: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize:18,
+                            backgroundColor:"#fff"
                         },
                         predefinedPlacesDescription: {
-                            color: '#d3d3d3'
+                            color: '#d3d3d3',
+                            fontSize:18
+                        },
+                        listView:{
+                          backgroundColor:"#fff",
+                          borderRadius:5,
+                          borderWidth: 1,
+                          borderColor:"#d3d3d3",
                         }
                     }}
 
@@ -104,15 +121,15 @@ export default function Map({navigation}) {
                 />
             </View>
             <MapView style={styles.mapStyle} region={{
-                        latitude: location.lat,
-                        longitude: location.lng,
+                        latitude: parseFloat(possibleLocation.lat),
+                        longitude: parseFloat(possibleLocation.lng),
                         longitudeDelta:0.03,
                         latitudeDelta:0.03
                     }}>
                 <MapView.Marker
                     coordinate={{
-                        latitude: location.lat,
-                        longitude: location.lng,
+                        latitude: parseFloat(possibleLocation.lat),
+                        longitude: parseFloat(possibleLocation.lng),
                     }}
                 />
             </MapView>

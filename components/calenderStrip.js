@@ -7,7 +7,7 @@ import Colors from '../constants/Colors'
 export const CalenderDay = (props) =>{
     const navigation = useNavigation();
     return(
-      <TouchableOpacity  style={styles.calenderItem} onPress={() => navigation.navigate('SearchResults', props.payload)}>
+      <TouchableOpacity  style={styles.calenderItem} onPress={() => navigation.navigate('Filters', props.payload)}>
         <View style={styles.calenderDay}>
           <AvenirText style={{color:"#fff"}}  text={props.day}/>
         </View>

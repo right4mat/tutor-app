@@ -47,7 +47,7 @@ export default function SignupFinish({route, navigation}) {
 
     const addUser = async (payload) => {
 
-      const response = await fetch('https://sydney.wextg.com/lsdsoftware/abctutors/signup.php', {
+      const response = await fetch('https://lsdsoftware.io/abctutors/signup.php', {
           method: 'post',
           body: JSON.stringify(payload)
       })
@@ -113,12 +113,12 @@ export default function SignupFinish({route, navigation}) {
                     />
                     <View style={{width:Layout.window.width*.8, height:Layout.window.height*.45, marginBottom:15}}>
                       <GooglePlacesAutocomplete
-                      placeholder='Search'
+                      placeholder='Address'
                       minLength={2} // minimum length of text to search
-                      autoFocus={false}
+                      autoFocus={true}
                       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
                       keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
-                      listViewDisplayed='auto'    // true/false/undefined
+                      listViewDisplayed={false}    // true/false/undefined
                       fetchDetails={true}
                       renderDescription={row => row.description} // custom description render
                       onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true

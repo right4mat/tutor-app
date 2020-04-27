@@ -38,9 +38,6 @@ export default function HomeScreen({ navigation }) {
         <View>
           <BrandText style={styles.headerText} text={"ABC Tutor Services"} />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Filters")}>
-          <Ionicons name={"ios-search"} size={30} color="#373737" />
-        </TouchableOpacity>
       </View>
       <ScrollView
         contentContainerStyle={styles.contentContainer}

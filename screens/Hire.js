@@ -27,27 +27,80 @@ export default function Hire({ route, navigation }) {
 
   const[firstNameTutor] = React.useState(route.params.opts.tutor.firstName)
 
-  //console.warn(props.filters)
   const [date, setDate] = React.useState(
-    moment(route.params.opts.filters.opts.date)
+    moment(route.params.opts.filters.date)
   );
   const [showDate, setShowDate] = React.useState(false);
   const [start, setStart] = React.useState(
-    moment(route.params.opts.filters.opts.start)
+    moment(route.params.opts.filters.start)
   );
   const [showStart, setShowStart] = React.useState(false);
   const [finish, setFinish] = React.useState(
-    moment(route.params.opts.filters.opts.finish)
+    moment(route.params.opts.filters.finish)
   );
   const [showFinish, setShowFinish] = React.useState(false);
 
-  const [subject, setSubject] = React.useState(false);
+  const [subjects] = React.useState(route.params.subjects);
 
   const [tutorID] = React.useState(route.params.opts.tutor.id);
 
   const { address } = React.useContext(Context);
   const { phone } = React.useContext(Context);
   const { lastFour } = React.useContext(Context);
+
+  const checkTimeStart = (time) =>{
+    console.log(time)
+    const min = moment(time).minutes()
+    const hour = moment(time).hour()
+    const unix = moment(time).unix()
+    const diff = moment(finish).diff(moment(time), 'minutes', true)
+    console.log(diff)
+    if(min % 5 != 0){
+      alert("Session must fall on a 5 min interval")
+      return false;
+    }else if(hour < 6){
+      alert("Session must start after 6am")
+      return false;
+    }else if(hour > 21){
+      alert("Session must finish before 9pm")
+      return false;
+    }else if(unix > moment(finish).unix()){
+      alert("Start cannot be earlier then finish")
+      return false;
+    }else if(diff < 45){
+      alert("Session must be at least 45mins")
+      return false;
+    }
+    return true;
+      
+  }
+
+  const checkTimeFinish = (time) =>{
+    console.log(time)
+    const min = moment(time).minutes()
+    const hour = moment(time).hour()
+    const unix = moment(time).unix()
+    const diff = moment(time).diff(moment(start), 'minutes', true)
+    console.log(diff)
+    if(min % 5 != 0){
+      alert("Session must fall on a 5 min interval")
+      return false;
+    }else if(hour < 6){
+      alert("Session must start after 6am")
+      return false;
+    }else if(hour > 21){
+      alert("Session must finish before 9pm")
+      return false;
+    }else if(unix < moment(start).unix()){
+      alert("Start cannot be later then finish")
+      return false;
+    }else if(diff < 45){
+      alert("Session must be at least 45mins")
+      return false;
+    }
+    return true;
+      
+  }
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -57,15 +110,19 @@ export default function Hire({ route, navigation }) {
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-    setShowStart(false);
-    setStart(moment(currentTime));
+    if(checkTimeStart(currentTime)){
+      setShowStart(false);
+      setStart(moment(currentTime));
+    }
   };
 
   const onChangeFinish = (event, selectedTime) => {
     console.log(selectedTime);
     const currentTime = selectedTime;
-    setShowFinish(false);
-    setFinish(moment(currentTime));
+    if(checkTimeFinish(currentTime)){
+      setShowFinish(false);
+      setFinish(moment(currentTime));
+    }
   };
 
   const getDateString = (date) => {
@@ -77,40 +134,6 @@ export default function Hire({ route, navigation }) {
     let st = time.toString().split(" ");
     st = st[4].split(":");
     return [st[0], st[1]].join(":");
-  };
-
-  const Subject = (props) => {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.subject,
-          props.state === props.id
-            ? { backgroundColor: Colors.secondaryLight }
-            : false,
-        ]}
-        onPress={() => props.setState(props.id)}
-      >
-        <View style={styles.subjectInner}>
-          <Ionicons
-            name={props.icon}
-            size={22}
-            color={props.state === props.id ? "#fff" : Colors.primaryLight}
-          />
-          <AvenirText style={styles.buttonTextCard} text={props.title} />
-        </View>
-        <View>
-          <Ionicons
-            name={
-              props.state === props.id
-                ? "ios-checkmark-circle"
-                : "ios-radio-button-off"
-            }
-            size={22}
-            color={props.state === props.id ? "#fff" : Colors.primaryLight}
-          />
-        </View>
-      </TouchableOpacity>
-    );
   };
 
   return (
@@ -222,22 +245,7 @@ export default function Hire({ route, navigation }) {
           />
         </TouchableOpacity>
 
-        <AvenirText
-        style={{marginBottom:15}}
-            text={"Which subject?"}
-          />
-
-        {Object.keys(route.params.subjects).map((x) => (
-          <Subject
-            state={subject}
-            setState={setSubject}
-            title={x}
-            icon={Icons[x]}
-            id={route.params.subjects[x].id}
-          />
-        ))}
-
-        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('HireTwo', {name:firstNameTutor, start:start, finish:finish, tutorID:tutorID, subject:subject})}>
+        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('HireTwo', {name:firstNameTutor, start:start, finish:finish, tutorID:tutorID, date:date, subjects:subjects})}>
           <AvenirText style={styles.buttonText} text={"Next"} />
         </TouchableOpacity>
       </ScrollView>
@@ -245,7 +253,7 @@ export default function Hire({ route, navigation }) {
         <DateTimePicker
           testID="dateTimePicker"
           timeZoneOffsetInMinutes={0}
-          value={date}
+          value={date.toDate()}
           mode={"date"}
           is24Hour={true}
           display="default"
@@ -261,7 +269,7 @@ export default function Hire({ route, navigation }) {
           mode={"time"}
           is24Hour={false}
           display="default"
-          minuteInterval={30}
+          minuteInterval={5}
           onChange={onChangeStart}
         />
       ) : (
@@ -274,7 +282,7 @@ export default function Hire({ route, navigation }) {
           mode={"time"}
           is24Hour={false}
           display="default"
-          minuteInterval={30}
+          minuteInterval={5}
           onChange={onChangeFinish}
         />
       ) : (
@@ -324,11 +332,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "flex-end",
     backgroundColor: "#d4af36",
-  },
-  buttonText: {
-    alignSelf: "center",
-    fontSize: 18,
-    color: "#fff",
   },
   buttonTextCard: {
     //alignSelf: 'center',

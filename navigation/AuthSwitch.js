@@ -23,7 +23,23 @@ export default function AuthStack(props) {
         setIsStudent,
         setPhoto
     } = React.useContext(Context);
+
+
+    const SetAppState = async () =>{         
     
+        setFirstName(await AsyncStorage.getItem('firstName') || 'none');
+        setLastName(await AsyncStorage.getItem('lastName') || 'none');
+        setPhone(await AsyncStorage.getItem('phone') || 'none');
+        setEmail(await AsyncStorage.getItem('email') || 'none');
+        setLocation(JSON.parse(await AsyncStorage.getItem('location')) || JSON.stringify({lat:0,lng:0}));
+        setAddress(await AsyncStorage.getItem('address') || 'none');
+        //setLastFour(await AsyncStorage.getItem('lastFour')|| 'none');
+        setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));
+        setPhoto(await AsyncStorage.getItem('photo')); 
+    }
+
+        
+
 
 
 
@@ -31,6 +47,7 @@ export default function AuthStack(props) {
     const authSwitch = async () =>{
 
         if(await checkLogin()){
+            await SetAppState();
             setLoggedIn(true)
         }
         setIsLoading(false)
@@ -38,8 +55,6 @@ export default function AuthStack(props) {
 
 
     React.useEffect(()=>{
-      
-    
         authSwitch();
     },[])
 
