@@ -42,6 +42,8 @@ export default function TutorProfile({ route, navigation}) {
     const[lng] = React.useState(parseFloat(route.params.tutor.lng))
     const[price] = React.useState(route.params.tutor.price);
     const[photo] = React.useState(route.params.tutor.id);
+    const[phone] = React.useState(route.params.tutor.phone);
+    const[email] = React.useState(route.params.tutor.email);
 
     React.useEffect(()=>{
         let isCancelled = false;
@@ -74,10 +76,17 @@ export default function TutorProfile({ route, navigation}) {
                 <LongText style={{fontSize:18, lineHeight: 30}} text={"is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}/>
             </View>
             <View style={styles.skills}>
+
+                
+
                 {Object.keys(subjects).map((subject) => {
                     return <Skill details={subjects[subject]} icon={Icons[subject]} subject={subject}/>
                 })}
-                <Distance distance={Math.floor(distance)}/>
+                <View style={{marginTop:50}}>
+                    <Contact distance={phone} icon={'ios-call'}/>
+                    <Contact distance={email} icon={'ios-mail'}/>
+                    <Distance distance={Math.floor(distance)}/>
+                </View>
             </View>
             <View style={styles.map}>
                 <MapView style={styles.mapStyle} region={{
@@ -86,11 +95,15 @@ export default function TutorProfile({ route, navigation}) {
                             longitudeDelta:0.02,
                             latitudeDelta:0.02
                         }}>
-                    <MapView.Marker
-                        coordinate={{
+                    <MapView.Circle
+                        center={{
                             latitude: lat,
                             longitude: lng,
                         }}
+                        strokeColor='#36d4af'
+                        fillColor={"rgba(54, 212, 175, 0.5)"}
+
+                        radius={400}
                     />
                 </MapView>
             </View>
@@ -134,9 +147,18 @@ const joinDetails = (obj) =>{
 
 const Distance = (props) =>{
     return (
-    <View style={[styles.skill, {marginTop:50}]}>
+    <View style={[styles.skill,]}>
         <Ionicons style={{marginRight:15}} name={"md-pin"} size={25} color={Colors.secondaryLight} />
         <AvenirText style={{fontSize:20}} text={props.distance+"kms"}/> 
+    </View>
+    );
+}
+
+const Contact = (props) =>{
+    return (
+    <View style={[styles.skill, {marginBottom:15}]}>
+        <Ionicons style={{marginRight:15}} name={props.icon} size={25} color={Colors.secondaryLight} />
+        <AvenirText style={{fontSize:16}} text={props.distance}/> 
     </View>
     );
 }

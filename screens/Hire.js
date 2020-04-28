@@ -25,7 +25,7 @@ export default function Hire({ route, navigation }) {
     route.params.opts.tutor.firstName + " " + route.params.opts.tutor.lastName
   );
 
-  const[firstNameTutor] = React.useState(route.params.opts.tutor.firstName)
+  const [firstNameTutor] = React.useState(route.params.opts.tutor.firstName);
 
   const [date, setDate] = React.useState(
     moment(route.params.opts.filters.date)
@@ -44,63 +44,63 @@ export default function Hire({ route, navigation }) {
 
   const [tutorID] = React.useState(route.params.opts.tutor.id);
 
+  const [group, setGroup] = React.useState(route.params.opts.filters.group || false);
+
   const { address } = React.useContext(Context);
   const { phone } = React.useContext(Context);
   const { lastFour } = React.useContext(Context);
 
-  const checkTimeStart = (time) =>{
-    console.log(time)
-    const min = moment(time).minutes()
-    const hour = moment(time).hour()
-    const unix = moment(time).unix()
-    const diff = moment(finish).diff(moment(time), 'minutes', true)
-    console.log(diff)
-    if(min % 5 != 0){
-      alert("Session must fall on a 5 min interval")
+  const checkTimeStart = (time) => {
+    console.log(time);
+    const min = moment(time).minutes();
+    const hour = moment(time).hour();
+    const unix = moment(time).unix();
+    const diff = moment(finish).diff(moment(time), "minutes", true);
+    console.log(diff);
+    if (min % 5 != 0) {
+      alert("Session must fall on a 5 min interval");
       return false;
-    }else if(hour < 6){
-      alert("Session must start after 6am")
+    } else if (hour < 6) {
+      alert("Session must start after 6am");
       return false;
-    }else if(hour > 21){
-      alert("Session must finish before 9pm")
+    } else if (hour > 21) {
+      alert("Session must finish before 9pm");
       return false;
-    }else if(unix > moment(finish).unix()){
-      alert("Start cannot be earlier then finish")
+    } else if (unix > moment(finish).unix()) {
+      alert("Start cannot be earlier then finish");
       return false;
-    }else if(diff < 45){
-      alert("Session must be at least 45mins")
+    } else if (diff < 45) {
+      alert("Session must be at least 45mins");
       return false;
     }
     return true;
-      
-  }
+  };
 
-  const checkTimeFinish = (time) =>{
-    console.log(time)
-    const min = moment(time).minutes()
-    const hour = moment(time).hour()
-    const unix = moment(time).unix()
-    const diff = moment(time).diff(moment(start), 'minutes', true)
-    console.log(diff)
-    if(min % 5 != 0){
-      alert("Session must fall on a 5 min interval")
+  const checkTimeFinish = (time) => {
+    console.log(time);
+    const min = moment(time).minutes();
+    const hour = moment(time).hour();
+    const unix = moment(time).unix();
+    const diff = moment(time).diff(moment(start), "minutes", true);
+    console.log(diff);
+    if (min % 5 != 0) {
+      alert("Session must fall on a 5 min interval");
       return false;
-    }else if(hour < 6){
-      alert("Session must start after 6am")
+    } else if (hour < 6) {
+      alert("Session must start after 6am");
       return false;
-    }else if(hour > 21){
-      alert("Session must finish before 9pm")
+    } else if (hour > 21) {
+      alert("Session must finish before 9pm");
       return false;
-    }else if(unix < moment(start).unix()){
-      alert("Start cannot be later then finish")
+    } else if (unix < moment(start).unix()) {
+      alert("Start cannot be later then finish");
       return false;
-    }else if(diff < 45){
-      alert("Session must be at least 45mins")
+    } else if (diff < 45) {
+      alert("Session must be at least 45mins");
       return false;
     }
     return true;
-      
-  }
+  };
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -110,7 +110,7 @@ export default function Hire({ route, navigation }) {
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-    if(checkTimeStart(currentTime)){
+    if (checkTimeStart(currentTime)) {
       setShowStart(false);
       setStart(moment(currentTime));
     }
@@ -119,7 +119,7 @@ export default function Hire({ route, navigation }) {
   const onChangeFinish = (event, selectedTime) => {
     console.log(selectedTime);
     const currentTime = selectedTime;
-    if(checkTimeFinish(currentTime)){
+    if (checkTimeFinish(currentTime)) {
       setShowFinish(false);
       setFinish(moment(currentTime));
     }
@@ -245,7 +245,36 @@ export default function Hire({ route, navigation }) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('HireTwo', {name:firstNameTutor, start:start, finish:finish, tutorID:tutorID, date:date, subjects:subjects})}>
+        <View style={styles.group}>
+          <CheckBox
+            checkedColor={Colors.secondaryLight}
+            checked={group === true}
+            title={'group'}
+            containerStyle={styles.checkBox}
+            onPress={() => setGroup(true)}
+          />
+          <CheckBox
+            checkedColor={Colors.secondaryLight}
+            checked={group === false}
+            title={'solo'}
+            containerStyle={styles.checkBox}
+            onPress={() => setGroup(false)}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate("HireTwo", {
+              name: firstNameTutor,
+              start: start.format("YYYY-MM-DD HH:mm:ss"),
+              finish: finish.format("YYYY-MM-DD HH:mm:ss"),
+              tutorID: tutorID,
+              date: date.format("YYYY-MM-DD HH:mm:ss"),
+              subjects: subjects,
+            })
+          }
+        >
           <AvenirText style={styles.buttonText} text={"Next"} />
         </TouchableOpacity>
       </ScrollView>
@@ -306,6 +335,14 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingTop: 15,
   },
+  group:{
+    display:'flex',
+    justifyContent:"space-between",
+    alignItems:"center",
+    flexDirection:'row',
+    flex:1
+
+  },
   textInput: {
     padding: 10,
     height: 50,
@@ -354,7 +391,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   checkBox: {
-    width: "15%",
+    width: "40%",
   },
   checkBoxContainer: {
     display: "flex",

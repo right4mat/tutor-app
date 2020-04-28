@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nanny-app",
-    "slug": "nanny-app",
+    "name": "tutor-app",
+    "slug": "tutor-app",
     "platforms": [
       "ios",
       "android",

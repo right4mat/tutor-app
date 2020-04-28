@@ -31,6 +31,7 @@ export const login = async (payload) => {
     if (result.result === "success") {
         await AsyncStorage.setItem('loggedIn', result.token);
         await SaveUserData(result.user);
+        registerForPushNotificationsAsync()
         return result.user;
     } else {
         alert(result.result);
@@ -68,9 +69,7 @@ export const registerForPushNotificationsAsync = async () => {
         alert('Failed to get push token for push notification!');
         return;
       }
-      const token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
-      addExpoToken(token);
+      addExpoToken(await Notifications.getExpoPushTokenAsync());
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -85,7 +84,7 @@ export const registerForPushNotificationsAsync = async () => {
     }
   };
 
-  const addExpoToken = async (token, isStudent) => {
+  const addExpoToken = async (token) => {
     const response = await fetch(
     "https://lsdsoftware.io/abctutors/addpushtoken.php",
     {

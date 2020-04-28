@@ -7,9 +7,10 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Animated,
+  SafeAreaView,
   Dimensions,
   AsyncStorage,
+  RefreshControl
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFonts } from "@use-expo/font";
@@ -18,19 +19,37 @@ import { GetDates, CalenderDay } from "../components/calenderStrip";
 import AvenirText from "../components/avenirText";
 import BrandText from "../components/brandText";
 import LongText from "../components/longText";
+import Loading from "../components/Loading";
 import * as WebBrowser from "expo-web-browser";
 import Colors from "../constants/Colors";
 import Jobs from "../components/Jobs";
 
 import Context from "../context/Context";
 
+import Constants from 'expo-constants';
 
+function wait(timeout) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
 
 
 
 export default function HomeScreen({ navigation }) {
 
   const{firstName} = React.useContext(Context);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+
+  const onRefresh = () =>{
+    setRefreshing(true);
+    console.log("chicken")
+    wait(2000).then(() =>setRefreshing(false));
+  }
+
+  
 
   return (
     <View style={styles.container}>
@@ -42,6 +61,9 @@ export default function HomeScreen({ navigation }) {
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View style={styles.banner}>
           <Image
@@ -65,8 +87,8 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
-            <Jobs navigation={navigation}/>
+        <View style={{flex:1}}>
+            { refreshing ? <Loading/> : <Jobs navigation={navigation}/> }
         </View>
       </ScrollView>
     </View>

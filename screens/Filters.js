@@ -51,87 +51,98 @@ export default function Filters({ route, navigation }) {
       subject: subject,
       type: type,
       group: group,
+      local: local,
       start: moment(start).format("YYYY-MM-DD HH:mm:ss"),
       finish: moment(finish).format("YYYY-MM-DD HH:mm:ss"),
       date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
     };
   };
 
-  const checkTimeStart = (time) =>{
-    console.log(time)
-    const min = moment(time).minutes()
-    const hour = moment(time).hour()
-    const unix = moment(time).unix()
-    const diff = moment(finish).diff(moment(time), 'minutes', true)
-    console.log(diff)
-    if(min % 5 != 0){
-      alert("Session must fall on a 5 min interval")
+  const validateSend = () => {
+    if (!checkTimeStart(start)) {
       return false;
-    }else if(hour < 6){
-      alert("Session must start after 6am")
+    } else if (!checkTimeFinish(finish)) {
       return false;
-    }else if(hour > 21){
-      alert("Session must finish before 9pm")
+    } else if (!year) {
+      alert("You must select year group");
       return false;
-    }else if(unix > moment(finish).unix()){
-      alert("Start cannot be earlier then finish")
-      return false;
-    }else if(diff < 45){
-      alert("Session must be at least 45mins")
+    } else if (!subject) {
+      alert("You must select a subject");
       return false;
     }
-    return true;
-      
-  }
 
-  const checkTimeFinish = (time) =>{
-    console.log(time)
-    const min = moment(time).minutes()
-    const hour = moment(time).hour()
-    const unix = moment(time).unix()
-    const diff = moment(time).diff(moment(start), 'minutes', true)
-    console.log(diff)
-    if(min % 5 != 0){
-      alert("Session must fall on a 5 min interval")
+    navigation.navigate("SearchResults", payload());
+  };
+
+  const checkTimeStart = (time) => {
+    console.log(time);
+    const min = moment(time).minutes();
+    const hour = moment(time).hour();
+    const unix = moment(time).unix();
+    const diff = moment(finish).diff(moment(time), "minutes", true);
+    console.log(diff);
+    if (min % 5 != 0) {
+      alert("Session must fall on a 5 min interval");
       return false;
-    }else if(hour < 6){
-      alert("Session must start after 6am")
+    } else if (hour < 6) {
+      alert("Session must start after 6am");
       return false;
-    }else if(hour > 21){
-      alert("Session must finish before 9pm")
+    } else if (hour > 21) {
+      alert("Session must finish before 9pm");
       return false;
-    }else if(unix < moment(start).unix()){
-      alert("Start cannot be later then finish")
+    } else if (unix > moment(finish).unix()) {
+      alert("finish cannot be earlier then start");
       return false;
-    }else if(diff < 45){
-      alert("Session must be at least 45mins")
+    } else if (diff < 45) {
+      alert("Session must be at least 45mins");
       return false;
     }
     return true;
-      
-  }
+  };
+
+  const checkTimeFinish = (time) => {
+    console.log(time);
+    const min = moment(time).minutes();
+    const hour = moment(time).hour();
+    const unix = moment(time).unix();
+    const diff = moment(time).diff(moment(start), "minutes", true);
+    console.log(diff);
+    if (min % 5 != 0) {
+      alert("Session must fall on a 5 min interval");
+      return false;
+    } else if (hour < 6) {
+      alert("Session must start after 6am");
+      return false;
+    } else if (hour > 21) {
+      alert("Session must finish before 9pm");
+      return false;
+    } else if (unix < moment(start).unix()) {
+      alert("Start cannot be later then finish");
+      return false;
+    } else if (diff < 45) {
+      alert("Session must be at least 45mins");
+      return false;
+    }
+    return true;
+  };
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDate(false);
-    setDate(currentDate);
+    setDate(moment(currentDate));
   };
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-    if(checkTimeStart(currentTime)){
-      setShowStart(false);
-      setStart(moment(currentTime));
-    }
+    setShowStart(false);
+    setStart(moment(currentTime));
   };
 
   const onChangeFinish = (event, selectedTime) => {
     console.log(selectedTime);
     const currentTime = selectedTime;
-    if(checkTimeFinish(currentTime)){
-      setShowFinish(false);
-      setFinish(moment(currentTime));
-    }
+    setShowFinish(false);
+    setFinish(moment(currentTime));
   };
 
   const getDateString = (date) => {
@@ -291,13 +302,13 @@ export default function Filters({ route, navigation }) {
           <YearCheckBox
             state={group}
             setState={setGroup}
-            id={"solo"}
+            id={false}
             title={"solo"}
           />
           <YearCheckBox
             state={group}
             setState={setGroup}
-            id={"group"}
+            id={true}
             title={"group"}
           />
         </View>
@@ -585,14 +596,11 @@ export default function Filters({ route, navigation }) {
           icon={"ios-musical-note"}
           id={30}
         />
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("SearchResults", payload())}
-        >
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
       </ScrollView>
+
+      <TouchableOpacity style={styles.button} onPress={() => validateSend()}>
+        <Text style={styles.buttonText}>Find</Text>
+      </TouchableOpacity>
       {showDate ? (
         <DateTimePicker
           testID="dateTimePicker"
@@ -686,7 +694,7 @@ const Subject = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: "#fff",
   },
 
@@ -707,24 +715,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     overflow: "hidden",
-  },
-
-  button: {
-    position: "absolute",
-    bottom: 0,
-    right: 15,
-    marginBottom: 40,
-    padding: 15,
-    width: 200,
-    borderRadius: 30,
-    overflow: "hidden",
-    alignSelf: "flex-end",
-    backgroundColor: "#d4af36",
-  },
-  buttonText: {
-    alignSelf: "center",
-    fontSize: 18,
-    color: "#fff",
   },
   buttonTextCard: {
     //alignSelf: 'center',
@@ -780,12 +770,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    marginTop: 40,
+    position:"absolute",
+    right:15,
+    bottom:30,
     padding: 15,
-    width: 100,
+    minWidth: 100,
     borderRadius: 30,
     overflow: "hidden",
-    alignSelf: "flex-end",
     backgroundColor: "rgba(54,212,173,1)",
   },
   buttonText: {

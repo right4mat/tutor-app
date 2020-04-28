@@ -27,7 +27,8 @@ export const UpdateUser = async () => {
         payload['phone'] = await AsyncStorage.getItem('phone');
         payload['location'] = JSON.parse(await AsyncStorage.getItem('location'));
         payload['address'] = await AsyncStorage.getItem('address');
-        payload['token'] = await AsyncStorage.getItem('loggedIn');
+        payload['sessionID'] = await AsyncStorage.getItem('loggedIn');
+        payload['isStudent'] = JSON.parse(await AsyncStorage.getItem('isStudent'));
 
 
         const response = await fetch('https://lsdsoftware.io/abctutors/updateuser.php', {
@@ -37,7 +38,9 @@ export const UpdateUser = async () => {
 
         const result = await response.json();
 
-        if (result.result === 'success') 
+        console.log(result)
+
+       if (result.result === 'success') 
             return true;
         else 
             alert(result.result);

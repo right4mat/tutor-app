@@ -16,7 +16,7 @@ const fetchFiltered = async (handlerA, handlerB, filters) => {
     }
   );
 
- // console.log( await response.text());
+ //console.log( await response.text());
 
   const result = await response.json();
 

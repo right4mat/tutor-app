@@ -110,6 +110,7 @@ export default function SignupFinish({route, navigation}) {
                     placeholder="Phone"
                     onChangeText={(text)=>setPossiblePhone(text)}
                     value={phone}
+                    keyboardType = 'numeric'
                     />
                     <View style={{width:Layout.window.width*.8, height:Layout.window.height*.45, marginBottom:15}}>
                       <GooglePlacesAutocomplete

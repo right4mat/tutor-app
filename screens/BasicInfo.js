@@ -14,7 +14,7 @@ import AvenirText from '../components/avenirText';
 import Context from '../context/Context';
 import Colors from '../constants/Colors';
 
-import {UpdateFamily} from '../services/UserData';
+import {UpdateUser} from '../services/UserData';
 
 export default function BasicInfo({navigation}) {
     const {firstName, setFirstName} = React.useContext(Context);
@@ -37,10 +37,11 @@ export default function BasicInfo({navigation}) {
             setLastName(lastNamePossible);
             setPhone(phonePossible);
             UpdateUser();
+            navigation.goBack()
         } catch (error) {
             console.warn(error.message);
         }
-        navigation.goBack()
+        
     }
 
     return (<ScrollView style={
@@ -72,7 +73,8 @@ export default function BasicInfo({navigation}) {
                 text => setPhonePossible(text)
             }
             value={phonePossible}
-            placeholder="Phone"/>
+            placeholder="Phone"
+            keyboardType="numeric"/>
         <TouchableOpacity style={
                 [
                     styles.textInput, {

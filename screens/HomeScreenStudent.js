@@ -10,6 +10,7 @@ import {
   Animated,
   Dimensions,
   AsyncStorage,
+  RefreshControl
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFonts } from "@use-expo/font";
@@ -27,7 +28,7 @@ import Context from "../context/Context";
 
 
 
-
+import Constants from 'expo-constants';
 
 
 export default function HomeScreen({ navigation }) {
@@ -36,6 +37,9 @@ export default function HomeScreen({ navigation }) {
   const [date] = React.useState(new Date());
   const [start] = React.useState(moment().startOf('hour'));
   const [finish] = React.useState(moment(moment().startOf('hour')).add(1, 'hour'));
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
 
   const [tutors, setTutors] = React.useState({});
   const { location , setLocation} = React.useContext(Context);
@@ -50,7 +54,7 @@ export default function HomeScreen({ navigation }) {
     );
   
     const result = await response.json();
-  
+    console.log(result)
     if (result.result === "success") {
       //console.warn(result.data);
       setTutors(result.data);
@@ -59,6 +63,14 @@ export default function HomeScreen({ navigation }) {
       return false;
     }
   };
+
+  
+
+  const onRefresh = () =>{
+    setRefreshing(true);
+    console.log("chicken")
+    getClose().then(() =>setRefreshing(false));
+  }
 
   const payload = () => {
     return {
@@ -91,6 +103,9 @@ export default function HomeScreen({ navigation }) {
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View style={styles.banner}>
           <Image

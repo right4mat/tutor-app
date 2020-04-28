@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View , AsyncStorage} from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import useLinking from './navigation/useLinking';
+
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
 
 import Provider from './context/Provider';
 
@@ -21,8 +25,11 @@ export default function App(props) {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
+
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
+    //Notifications.addListener((notification)=>console.log("triggered"));
+
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
