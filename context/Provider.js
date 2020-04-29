@@ -22,22 +22,7 @@ export default function Provider (props){
 
    const [reLoad, setReload] = React.useState(false);
 
-   useEffect(()=>{
-        const SetAppState = async () =>{         
-        
-            setFirstName(await AsyncStorage.getItem('firstName') || 'none');
-            setLastName(await AsyncStorage.getItem('lastName') || 'none');
-            setPhone(await AsyncStorage.getItem('phone') || 'none');
-            setEmail(await AsyncStorage.getItem('email') || 'none');
-            setLocation(JSON.parse(await AsyncStorage.getItem('location')) || JSON.stringify({lat:0,lng:0}));
-            setAddress(await AsyncStorage.getItem('address') || 'none');
-            setLastFour(await AsyncStorage.getItem('lastFour')|| 'none');
-            setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));
-            setPhoto(await AsyncStorage.getItem('photo')); 
-        }
 
-        SetAppState();
-   },[])
 
 
     
@@ -56,11 +41,11 @@ export default function Provider (props){
                 email, setEmail,
                 lastFour, setLastFour,
                 isStudent, setIsStudent,
-                photo, setPhoto,
                 jobsConfirm, setJobsConfirm,
                 jobsUpComing, setJobsUpComing,
                 userID, setUserID,
-                reLoad, setReload
+                reLoad, setReload,
+                photo, setPhoto
             }}
         >
             {props.children}

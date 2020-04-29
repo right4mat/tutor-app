@@ -28,7 +28,7 @@ export default function Hire({ route, navigation }) {
   const [firstNameTutor] = React.useState(route.params.opts.tutor.firstName);
 
   const [date, setDate] = React.useState(
-    moment(route.params.opts.filters.date)
+    moment(route.params.opts.filters.date) 
   );
   const [showDate, setShowDate] = React.useState(false);
   const [start, setStart] = React.useState(
@@ -267,11 +267,12 @@ export default function Hire({ route, navigation }) {
           onPress={() =>
             navigation.navigate("HireTwo", {
               name: firstNameTutor,
-              start: start.format("YYYY-MM-DD HH:mm:ss"),
-              finish: finish.format("YYYY-MM-DD HH:mm:ss"),
+              start: start,
+              finish: finish,
               tutorID: tutorID,
-              date: date.format("YYYY-MM-DD HH:mm:ss"),
+              date: date,
               subjects: subjects,
+              group:group
             })
           }
         >

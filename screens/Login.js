@@ -70,7 +70,6 @@ export default function Login({ route, navigation }) {
     setAddress(payload.address || "none");
     setUserID(payload.id || "none");
     setPhoto(payload.id + ".jpg" || "none");
-    AsyncStorage.setItem("photo", payload.id + ".jpg");
   };
 
   return (

@@ -4,6 +4,7 @@ import {AsyncStorage} from 'react-native';
 export const SaveUserData = (data) => {
 
     try {
+        AsyncStorage.setItem('userID', data.id || 'none')
         AsyncStorage.setItem('firstName', data.firstName || 'none')
         AsyncStorage.setItem('lastName', data.lastName || 'none')
         AsyncStorage.setItem('phone', data.phone || 'none')
