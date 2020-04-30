@@ -25,6 +25,8 @@ export default function EnterCard({navigation}) {
 
     const changePassword = async () => {
 
+        try{
+
         if(passwordOne !== passwordTwo){
             alert("Sorry, passwords dont match.")
             return false;
@@ -51,6 +53,11 @@ export default function EnterCard({navigation}) {
             alert(result.result);
             return false;
         }
+
+    }catch(e){
+        alert(e);
+        return false;
+      }
     }
 
 

@@ -10,7 +10,7 @@ import {
   Animated,
   Dimensions,
   AsyncStorage,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFonts } from "@use-expo/font";
@@ -21,60 +21,62 @@ import BrandText from "../components/brandText";
 import LongText from "../components/longText";
 import * as WebBrowser from "expo-web-browser";
 import Colors from "../constants/Colors";
-import {Tutors } from "../components/Tutors";
-import moment from "moment"; 
+import { Tutors } from "../components/Tutors";
+import moment from "moment";
 
 import Context from "../context/Context";
 
-
-
-import Constants from 'expo-constants';
-
+import Constants from "expo-constants";
 
 export default function HomeScreen({ navigation }) {
   const [slide, setSlide] = React.useState(new Animated.Value(0));
   const [days, setDays] = React.useState(GetDates(new Date(), 7));
   const [date] = React.useState(new Date());
-  const [start] = React.useState(moment().startOf('hour'));
-  const [finish] = React.useState(moment(moment().startOf('hour')).add(1, 'hour'));
+  const [start] = React.useState(moment().startOf("hour"));
+  const [finish] = React.useState(
+    moment(moment().startOf("hour")).add(1, "hour")
+  );
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-
   const [tutors, setTutors] = React.useState({});
-  const { location , setLocation} = React.useContext(Context);
+  const { location, setLocation } = React.useContext(Context);
 
   const getClose = async () => {
-    const response = await fetch(
-      "https://lsdsoftware.io/abctutors/getclose.php",
-      {
-        method: "post",
-        body: JSON.stringify(payload()),
+    try {
+      const response = await fetch(
+        "https://lsdsoftware.io/abctutors/getclose.php",
+        {
+          method: "post",
+          body: JSON.stringify(await payload()),
+        }
+      );
+
+      const result = await response.json();
+      console.log(result);
+      if (result.result === "success") {
+        //console.warn(result.data);
+        setTutors(result.data);
+      } else {
+        alert(result.result);
+        return false;
       }
-    );
-  
-    const result = await response.json();
-    console.log(result)
-    if (result.result === "success") {
-      //console.warn(result.data);
-      setTutors(result.data);
-    } else {
-      alert(result.result);
+    } catch (e) {
+      alert(e);
       return false;
     }
   };
 
-  
-
-  const onRefresh = () =>{
+  const onRefresh = () => {
     setRefreshing(true);
-    console.log("chicken")
-    getClose().then(() =>setRefreshing(false));
-  }
+    console.log("chicken");
+    getClose().then(() => setRefreshing(false));
+  };
 
-  const payload = () => {
+  const payload = async () => {
     return {
       location: location,
+      sessionID: await AsyncStorage.getItem('loggedIn'),
       start: moment(start).format("YYYY-MM-DD HH:mm:ss"),
       finish: moment(finish).format("YYYY-MM-DD HH:mm:ss"),
       date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
@@ -82,12 +84,10 @@ export default function HomeScreen({ navigation }) {
   };
 
   React.useEffect(() => {
-    
     let isCancelled = false;
-    if(!isCancelled)
-      getClose();
+    if (!isCancelled) getClose();
     return () => {
-        isCancelled = true;
+      isCancelled = true;
     };
   }, []);
   return (
@@ -96,7 +96,13 @@ export default function HomeScreen({ navigation }) {
         <View>
           <BrandText style={styles.headerText} text={"ABC Tutor Services"} />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Filters", {date:moment(date).format("YYYY-MM-DD HH:mm:ss")})}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Filters", {
+              date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
+            })
+          }
+        >
           <Ionicons name={"ios-search"} size={30} color="#373737" />
         </TouchableOpacity>
       </View>
@@ -142,11 +148,23 @@ export default function HomeScreen({ navigation }) {
             style={styles.calender}
           >
             {days.map((x) => {
-              return <CalenderDay date={x[1]} day={x[0]} payload={{date:moment(x[x.length-1]).format("YYYY-MM-DD HH:mm:ss")}} />;
+              return (
+                <CalenderDay
+                  date={x[1]}
+                  day={x[0]}
+                  payload={{
+                    date: moment(x[x.length - 1]).format("YYYY-MM-DD HH:mm:ss"),
+                  }}
+                />
+              );
             })}
             <TouchableOpacity
               style={styles.calenderItem}
-              onPress={() => navigation.navigate("Filters", {date:moment(date).format("YYYY-MM-DD HH:mm:ss")})}
+              onPress={() =>
+                navigation.navigate("Filters", {
+                  date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
+                })
+              }
             >
               <Ionicons name={"ios-add"} size={50} color="#d3d3d3" />
             </TouchableOpacity>
@@ -157,7 +175,11 @@ export default function HomeScreen({ navigation }) {
             <AvenirText style={styles.textBoxText} text={"Tutors near by"} />
           </View>
           <View style={styles.tutors}>
-            {Object.keys(tutors).length ? <Tutors tutors={tutors} filters={payload()} /> : false}
+            {Object.keys(tutors).length ? (
+              <Tutors tutors={tutors} filters={payload()} />
+            ) : (
+              false
+            )}
           </View>
         </View>
       </ScrollView>

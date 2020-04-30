@@ -58,7 +58,7 @@ export default function Login({ route, navigation }) {
       );
       registerForPushNotificationsAsync();
       setLoggedIn(true);
-    } else setIsLoggingIn(false);
+    } else {setIsLoggingIn(false); navigation.goBack()};
   };
 
   const SetAppState = (payload) => {

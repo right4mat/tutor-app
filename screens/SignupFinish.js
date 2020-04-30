@@ -47,6 +47,8 @@ export default function SignupFinish({route, navigation}) {
 
     const addUser = async (payload) => {
 
+      try{
+
       const response = await fetch('https://lsdsoftware.io/abctutors/signup.php', {
           method: 'post',
           body: JSON.stringify(payload)
@@ -73,6 +75,12 @@ export default function SignupFinish({route, navigation}) {
           alert(result.result);
           return false;
       }
+
+    } catch (e) {
+      alert(e);
+      navigation.goBack();
+      return false;
+    }
   }
        
     

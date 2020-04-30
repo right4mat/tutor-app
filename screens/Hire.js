@@ -102,27 +102,47 @@ export default function Hire({ route, navigation }) {
     return true;
   };
 
+  const validate = () =>{
+
+    if(!checkTimeFinish(finish)){
+      return false;
+    }else if(!checkTimeStart(start)){
+      return false;
+    }else if(date.diff(moment()) < 0 ){
+      alert("Date has already passed");
+      return false;
+    }
+    navigation.navigate("HireTwo", {
+      name: firstNameTutor,
+      start: start,
+      finish: finish,
+      tutorID: tutorID,
+      date: date,
+      subjects: subjects,
+      group:group
+    })
+
+  }
+
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDate(false);
-    setDate(currentDate);
+    setDate(moment(currentDate));
   };
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-    if (checkTimeStart(currentTime)) {
       setShowStart(false);
       setStart(moment(currentTime));
-    }
+    
   };
 
   const onChangeFinish = (event, selectedTime) => {
     console.log(selectedTime);
     const currentTime = selectedTime;
-    if (checkTimeFinish(currentTime)) {
       setShowFinish(false);
       setFinish(moment(currentTime));
-    }
+   
   };
 
   const getDateString = (date) => {
@@ -265,15 +285,7 @@ export default function Hire({ route, navigation }) {
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
-            navigation.navigate("HireTwo", {
-              name: firstNameTutor,
-              start: start,
-              finish: finish,
-              tutorID: tutorID,
-              date: date,
-              subjects: subjects,
-              group:group
-            })
+            validate()
           }
         >
           <AvenirText style={styles.buttonText} text={"Next"} />

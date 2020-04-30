@@ -64,9 +64,9 @@ export default function LinksScreen({ navigation }) {
         { compress: 0.7, format: "jpeg", base64: true }
       );
       await SendPhoto(resizedPhoto.base64);
-      const photoName = userID + ".jpg?date="+Date.now();
+      const photoName = userID + ".jpg?date=" + Date.now();
       setPhoto(photoName);
-      await AsyncStorage.setItem('photo', photoName)
+      await AsyncStorage.setItem("photo", photoName);
       console.log(userID);
     } catch (E) {
       console.log(E);
@@ -138,8 +138,18 @@ export default function LinksScreen({ navigation }) {
         onPress={() => navigation.navigate("Password")}
       />
 
+      <OptionButton
+        icon="md-calendar"
+        label="My sessions"
+        onPress={() => navigation.navigate("JobList")}
+      />
+
       {isStudent ? (
-        false
+        <OptionButton
+        icon="ios-cash"
+        label="My billing period"
+        onPress={() => navigation.navigate("BillingPeriod")}
+      />
       ) : (
         <OptionButton
           icon="ios-cash"
@@ -161,7 +171,8 @@ export default function LinksScreen({ navigation }) {
           onPress={() => navigation.navigate("MyStudents")}
         />
       )}
-
+      
+      <OptionButton icon="md-help" label="Help" onPress={() => navigation.navigate("Help")} />
       <OptionButton icon="ios-log-out" label="Logout" onPress={logout} />
 
       <OptionButton

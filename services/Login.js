@@ -17,13 +17,13 @@ import { Notifications } from 'expo';
 
 
 export const login = async (payload) => {
+
+  try{
   
     const response = await fetch('https://lsdsoftware.io/abctutors/login.php', {
         method: 'post',
         body: JSON.stringify(payload)
-    })
-
-    
+    })    
     const result = await response.json();
 
     console.log(result)
@@ -37,9 +37,14 @@ export const login = async (payload) => {
         alert(result.result);
         return false;
     }
+  }catch(e){
+    alert(e);
+    return false;
+  }
 }
 
 export const checkLogin = async () => {
+  try{
     const token =  await AsyncStorage.getItem('loggedIn') || false;
     if (token) {
             const response = await fetch('https://lsdsoftware.io/abctutors/sessions.php', {
@@ -53,7 +58,12 @@ export const checkLogin = async () => {
                 return false;
     }else{
         return false;
-    }     
+    }
+    
+  }catch(e){
+    alert(e);
+    return false;
+  }
     
 }
 

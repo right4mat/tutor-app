@@ -19,7 +19,7 @@ export default function Provider (props){
    const [photo, setPhoto] = React.useState(false);
    const [jobsConfirm, setJobsConfirm] = React.useState([]);
    const [jobsUpComing, setJobsUpComing] = React.useState([]);
-
+   const [jobsPast, setJobsPast] = React.useState([]);
    const [reLoad, setReload] = React.useState(false);
 
 
@@ -45,7 +45,8 @@ export default function Provider (props){
                 jobsUpComing, setJobsUpComing,
                 userID, setUserID,
                 reLoad, setReload,
-                photo, setPhoto
+                photo, setPhoto,
+                jobsPast, setJobsPast
             }}
         >
             {props.children}

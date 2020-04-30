@@ -27,6 +27,7 @@ import Jobs from "../components/Jobs";
 import Context from "../context/Context";
 
 import Constants from 'expo-constants';
+import Layout from "../constants/Layout";
 
 function wait(timeout) {
   return new Promise(resolve => {
@@ -87,7 +88,7 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flex:1}}>
+        <View style={{flex:1, minHeight:Layout.window.height*.4}}>
             { refreshing ? <Loading/> : <Jobs navigation={navigation}/> }
         </View>
       </ScrollView>
