@@ -52,9 +52,9 @@ export default function Filters({ route, navigation }) {
       type: type,
       group: group,
       local: local,
-      start: moment(start).format("YYYY-MM-DD HH:mm:ss"),
-      finish: moment(finish).format("YYYY-MM-DD HH:mm:ss"),
-      date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
+      start: moment(start).format("YYYY-MM-DD HH:mm"),
+      finish: moment(finish).format("YYYY-MM-DD HH:mm"),
+      date: moment(date).format("YYYY-MM-DD HH:mm"),
     };
   };
 

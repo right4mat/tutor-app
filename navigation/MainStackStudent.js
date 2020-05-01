@@ -10,6 +10,7 @@ import Hire from '../screens/Hire';
 import EnterCard from '../screens/EnterCard';
 import BasicInfo from '../screens/BasicInfo';
 import HireTwo from '../screens/HireTwo';
+import Timetable from '../screens/Timetable';
 
 import Colors from '../constants/Colors';
 import { useFonts } from '@use-expo/font';
@@ -115,6 +116,18 @@ export default function MainStack({ navigation, route }) {
                 component={TutorProfile}
                 options={{
                     title: 'Profile', 
+                    headerTitleStyle: {
+                        color: Colors.primary,
+                        fontFamily: 'Lato-Bold'
+                    },
+                    headerTintColor: Colors.primary,        
+                }}
+            />
+            <stackNav.Screen
+                name="Timetable"
+                component={Timetable}
+                options={{
+                    title: 'Timetable', 
                     headerTitleStyle: {
                         color: Colors.primary,
                         fontFamily: 'Lato-Bold'

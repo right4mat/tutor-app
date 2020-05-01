@@ -94,6 +94,7 @@ export default function TutorProfile({ route, navigation }) {
             }
           />
         </View>
+        
         <View style={styles.skills}>
           {Object.keys(subjects).map((subject) => {
             return (
@@ -104,6 +105,15 @@ export default function TutorProfile({ route, navigation }) {
               />
             );
           })}
+          <TouchableOpacity style={styles.timetable} onPress={()=>navigation.navigate('Timetable', route.params.tutor)}>
+            <AvenirText style={{ fontSize: 16 }} text={"View group times"} />
+            <Ionicons
+              style={{ marginLeft: 15 }}
+              name={"ios-arrow-round-forward"}
+              size={30}
+              color={Colors.secondaryLight}
+            />
+          </TouchableOpacity>
           <View style={{ marginTop: 50 }}>
           <Contact value={phone} icon={"ios-call"} url={"tel:"+phone} />
             <Contact value={email} icon={"ios-mail"} url={"mailto:"+email} />
@@ -195,6 +205,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  timetable:{
+    paddingTop:30,
+    display:"flex",
+    justifyContent:"flex-start",
+    alignContent:"center",
+    flexDirection:"row"
   },
   picContainer: {
     height: Layout.window.height / 2,

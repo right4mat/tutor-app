@@ -77,7 +77,7 @@ export default function Hire({ route, navigation }) {
   };
 
   const checkTimeFinish = (time) => {
-    console.log(time);
+    //console.log(time);
     const min = moment(time).minutes();
     const hour = moment(time).hour();
     const unix = moment(time).unix();
@@ -108,16 +108,24 @@ export default function Hire({ route, navigation }) {
       return false;
     }else if(!checkTimeStart(start)){
       return false;
-    }else if(date.diff(moment()) < 0 ){
+    }else if(!date.isAfter(moment(), "day") && !date.isSame(moment(), "day")){
       alert("Date has already passed");
       return false;
+    }else if(date.isSame(moment(), "day")){
+      if(start.isBefore()){
+        alert("start time has aleady passed");
+        return false;
+      }else if(finish.isBefore()){
+        alert("finish time has aleady passed");
+        return false;
+      }
     }
     navigation.navigate("HireTwo", {
       name: firstNameTutor,
-      start: start,
-      finish: finish,
+      start: start.format("YYYY-MM-DD HH:mm"),
+      finish: finish.format("YYYY-MM-DD HH:mm"),
       tutorID: tutorID,
-      date: date,
+      date: date.format("YYYY-MM-DD HH:mm"),
       subjects: subjects,
       group:group
     })
