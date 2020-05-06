@@ -113,12 +113,15 @@ export default function Hire({ route, navigation }) {
       return false;
     }else if(date.isSame(moment(), "day")){
       if(start.isBefore()){
-        alert("start time has aleady passed");
+        alert("Start time has aleady passed.");
         return false;
       }else if(finish.isBefore()){
-        alert("finish time has aleady passed");
+        alert("Finish time has aleady passed.");
         return false;
       }
+    }else if(lastFour === ". . . ."){
+        alert("You need to add a card first.");
+        return false;
     }
     navigation.navigate("HireTwo", {
       name: firstNameTutor,

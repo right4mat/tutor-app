@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent:"space-around",
     alignItems:"center",
     flexDirection:"column",
-    backgroundColor: "rgba(255,255,255,.7)",
+    backgroundColor: "rgba(255,255,255,.9)",
     padding:0,
     margin:0
   },

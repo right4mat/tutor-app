@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   banner: {
     borderRadius: 10,
     height: 100,
-    backgroundColor: Colors.secondary,
+    backgroundColor: "rgb(35,31,32)",
     padding: 10,
     display: "flex",
     justifyContent: "space-around",

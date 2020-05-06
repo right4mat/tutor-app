@@ -13,8 +13,11 @@ export default {
   noticeText: '#fff',
   primary: '#D4AF36',
   primaryLight: '#e0c772',
-  secondary: '#36d4af',
-  secondaryLight: '#72e0c7',
+  secondary: '#e0c772',
+  secondaryLight: '#e0c772',
   background: '#f8f9fa',
   tertiary:"#CF6456"
 };
+
+//secondary: '#36d4af',
+//secondaryLight: '#72e0c7',

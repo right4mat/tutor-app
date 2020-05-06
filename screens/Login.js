@@ -43,6 +43,7 @@ export default function Login({ route, navigation }) {
     setAddress,
     setIsStudent,
     setUserID,
+    setLastFour
   } = React.useContext(Context);
 
   const attemptLogin = async (payload) => {
@@ -70,6 +71,7 @@ export default function Login({ route, navigation }) {
     setAddress(payload.address || "none");
     setUserID(payload.id || "none");
     setPhoto(payload.id + ".jpg" || "none");
+    setLastFour(payload.lastFour || ". . . .");
   };
 
   return (
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "column",
-    backgroundColor: "rgba(255,255,255,.7)",
+    backgroundColor: "rgba(255,255,255,.9)",
     padding: 0,
     margin: 0,
   },

@@ -14,7 +14,7 @@ export default function Provider (props){
    const [lastName, setLastName] = React.useState('');
    const [phone, setPhone] = React.useState('');    
    const [email, setEmail] = React.useState('');
-   const [lastFour, setLastFour] = React.useState('');
+   const [lastFour, setLastFour] = React.useState('. . . .');
    const [isStudent, setIsStudent] = React.useState(true);
    const [photo, setPhoto] = React.useState(false);
    const [jobsConfirm, setJobsConfirm] = React.useState([]);

@@ -11,6 +11,7 @@ export const SaveUserData = (data) => {
         AsyncStorage.setItem('email', data.email || 'none')
         AsyncStorage.setItem('location', JSON.stringify(data.location) || JSON.stringify({lat: 0, lng: 0}))
         AsyncStorage.setItem('address', data.address || 'none')
+        AsyncStorage.setItem('lastFour', data.lastFour || '. . . .')
 
     } catch (error) {
         alert(error)

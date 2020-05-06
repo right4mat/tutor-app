@@ -22,7 +22,8 @@ export default function AuthStack(props) {
         setAddress,
         setIsStudent,
         setUserID,
-        setPhoto
+        setPhoto,
+        setLastFour
     } = React.useContext(Context);
 
 
@@ -34,7 +35,7 @@ export default function AuthStack(props) {
         setEmail(await AsyncStorage.getItem('email') || 'none');
         setLocation(JSON.parse(await AsyncStorage.getItem('location')) || JSON.stringify({lat:0,lng:0}));
         setAddress(await AsyncStorage.getItem('address') || 'none');
-        //setLastFour(await AsyncStorage.getItem('lastFour')|| 'none');
+        setLastFour(await AsyncStorage.getItem('lastFour')|| '. . . .');
         setIsStudent(JSON.parse(await AsyncStorage.getItem('isStudent')));        
         setUserID(await AsyncStorage.getItem('userID'));
         setPhoto(await AsyncStorage.getItem('photo')); 

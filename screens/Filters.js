@@ -9,6 +9,7 @@ import {
   Slider,
   Platform,
   DatePickerIOS,
+  AsyncStorage,
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -43,8 +44,9 @@ export default function Filters({ route, navigation }) {
   const { address } = React.useContext(Context);
   const { location } = React.useContext(Context);
 
-  const payload = () => {
+  const payload = async () => {
     return {
+      sessionID: await AsyncStorage.getItem('loggedIn'),
       location: location,
       distance: distance,
       year: year,
@@ -58,7 +60,7 @@ export default function Filters({ route, navigation }) {
     };
   };
 
-  const validateSend = () => {
+  const validateSend =  async () => {
     if (!checkTimeStart(start)) {
       return false;
     } else if (!checkTimeFinish(finish)) {
@@ -71,7 +73,7 @@ export default function Filters({ route, navigation }) {
       return false;
     }
 
-    navigation.navigate("SearchResults", payload());
+    navigation.navigate("SearchResults", await payload());
   };
 
   const checkTimeStart = (time) => {

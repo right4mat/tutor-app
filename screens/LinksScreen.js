@@ -125,12 +125,12 @@ export default function LinksScreen({ navigation }) {
         label="My basic Info"
         onPress={() => navigation.navigate("BasicInfo")}
       />
-
-      <OptionButton
-        icon="ios-card"
-        label="My card"
-        onPress={() => navigation.navigate("CardDetails")}
-      />
+      {isStudent ? (
+        <OptionButton
+          icon="ios-card"
+          label="My card"
+          onPress={() => navigation.navigate("CardDetails")}
+        /> ) : (false) }
 
       <OptionButton
         icon="ios-key"

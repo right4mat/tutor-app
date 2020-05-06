@@ -8,6 +8,8 @@ import Colors from '../constants/Colors';
 
 import Context from '../context/Context';
 
+var stripe = require('stripe-client')('pk_test_tQCN6i6dnFcICRPfnL0RQhBu00UPRTLEep');
+
 export default function EnterCard({navigation}) {
     
     const [name, setName] = React.useState('');
@@ -16,22 +18,68 @@ export default function EnterCard({navigation}) {
     const [year, setYear] = React.useState('');
     const [cvv, setCvv] = React.useState('');
 
-    const{setLastFour} = React.useContext(Context);
+    const{setLastFour, isStudent} = React.useContext(Context);
 
-    const save = async () =>{        
+
+    const infomation  = () =>{
+
+        return {
+            card: {
+              number: cardNum,
+              exp_month: month,
+              exp_year: year,
+              cvc: cvv,
+              name: name
+            }
+        }
+
+    }
+
+    const sendCustomerID = async (payload) =>{
         try {
-            await AsyncStorage.setItem('lastFour', cardNum.substring(cardNum.length - 4));
-            setLastFour(cardNum.substring(cardNum.length - 4));
-            navigation.goBack();
+    
+            const response = await fetch('https://lsdsoftware.io/abctutors/stripe.php', {
+                method: 'post',
+                body: JSON.stringify(payload)
+            })
+    
+            const result = await response.text();
+    
+            console.log(result)
+    
+           /*if (result.result === 'success') 
+                return true;
+            else 
+                alert(result.result);*/
+            
+    
         } catch (error) {
-            console.warn(error.message);
+            alert(error)
+        }
+    }
+
+    const save = async () =>{  
+        try{    
+            var card = await stripe.createToken(infomation());
+            console.log(card)
+            if(card.error)
+                alert(card.error.message);            
+            else{
+                const l4 = cardNum.substr(cardNum.length - 4)
+                AsyncStorage.setItem('lastFour', l4);
+                setLastFour(l4);
+                //console.log(card);
+                await sendCustomerID({sessionID: await AsyncStorage.getItem('loggedIn'), payload:card, lastFour:l4, isStudent:isStudent});
+
+            }
+        }catch(e){
+            alert(e)
         }
     }
 
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.header}>My card</Text>
 
             <TextInput
                 autoCompleteType='name'

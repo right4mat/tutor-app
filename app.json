@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tutor-app",
-    "slug": "tutor-app",
+    "name": "tutor-app-v2",
+    "slug": "tutor-app-v2",
     "platforms": [
       "ios",
       "android",

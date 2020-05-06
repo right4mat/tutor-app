@@ -18,7 +18,7 @@ import {SaveUserData} from '../services/UserData';
 
 export default function SignupFinish({route, navigation}) {
 
-    const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress, setIsStudent} = React.useContext(Context);
+    const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress, setIsStudent, setUserID, setLastFour} = React.useContext(Context);
     const[signup] = React.useState(route.params)
     const[address, setPossibleAddress] = React.useState('');
     const[password, setPassword] = React.useState('');
@@ -60,12 +60,7 @@ export default function SignupFinish({route, navigation}) {
               await AsyncStorage.setItem('isStudent', JSON.stringify(true))
               setIsStudent(true);
               SaveUserData(payload);
-              setFirstName(payload.firstName|| 'none');
-              setLastName(payload.lastName|| 'none');
-              setPhone(payload.phone|| 'none');
-              setEmail(payload.email|| 'none');
-              setLocation(payload.location || {lat:0,lng:0});
-              setAddress(payload.address || 'none');
+              SetAppState(payload);
               return true;
           } catch (error) {
               alert(error);
@@ -82,6 +77,17 @@ export default function SignupFinish({route, navigation}) {
       return false;
     }
   }
+
+  const SetAppState = (payload) => {
+    setFirstName(payload.firstName || "none");
+    setLastName(payload.lastName || "none");
+    setPhone(payload.phone || "none");
+    setEmail(payload.email || "none");
+    setLocation(payload.location || { lat: 0, lng: 0 });
+    setAddress(payload.address || "none");
+    setUserID(payload.id || "none");
+    setLastFour(payload.lastFour || ". . . .");
+  };
        
     
 
@@ -230,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     alignItems:"center",
     flexDirection:"column",
-    backgroundColor: "rgba(255,255,255,.7)",
+    backgroundColor: "rgba(255,255,255,.9)",
     padding:0,
     margin:0
   },
