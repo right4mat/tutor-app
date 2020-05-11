@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, AsyncStorage, SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import AvenirTextBold from '../components/boldText';
@@ -79,6 +79,7 @@ export default function EnterCard({navigation}) {
 
 
     return (
+        <SafeAreaView style={{flex:1}}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
             <TextInput
@@ -134,6 +135,7 @@ export default function EnterCard({navigation}) {
 
 
         </ScrollView>
+        </SafeAreaView>
     );
 }
 

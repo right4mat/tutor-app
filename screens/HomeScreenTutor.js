@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Dimensions,
   AsyncStorage,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFonts } from "@use-expo/font";
@@ -53,10 +53,11 @@ export default function HomeScreen({ navigation }) {
   
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <BrandText style={styles.headerText} text={"ABC Tutor Services"} />
+          <BrandText style={styles.headerText} text={"ABC NANNY SERVICES (Tutoring)"} />
         </View>
       </View>
       <ScrollView
@@ -84,7 +85,7 @@ export default function HomeScreen({ navigation }) {
                 )
               }
             >
-              <AvenirText style={{ color: "#373737" }} text={"Want to be a nanny?"} />
+              <AvenirText style={{ color: "#373737" }} text={"WANT TO BE A NANNY?"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -93,6 +94,7 @@ export default function HomeScreen({ navigation }) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     paddingHorizontal: 15,
-    paddingTop: 30,
+    paddingTop: 5,
   },
   contentContainer: {
     paddingTop: 10,
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
   banner: {
     borderRadius: 10,
     height: 100,
-    backgroundColor: "rgb(35,31,32)",
+    backgroundColor: "#231f20",
     padding: 10,
     display: "flex",
     justifyContent: "space-around",
@@ -147,11 +149,11 @@ const styles = StyleSheet.create({
   headerText: {
     color: Colors.primary,
     fontWeight: "800",
-    fontSize: 30,
+    fontSize: 20,
   },
   bannerHeader: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.primary,
     borderRadius: 15,
     display: "flex",
     justifyContent: "center",

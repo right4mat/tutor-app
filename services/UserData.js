@@ -1,17 +1,18 @@
 import * as React from 'react';
 import {AsyncStorage} from 'react-native';
 
-export const SaveUserData = (data) => {
+export const SaveUserData = async (data) => {
 
     try {
-        AsyncStorage.setItem('userID', data.id || 'none')
-        AsyncStorage.setItem('firstName', data.firstName || 'none')
-        AsyncStorage.setItem('lastName', data.lastName || 'none')
-        AsyncStorage.setItem('phone', data.phone || 'none')
-        AsyncStorage.setItem('email', data.email || 'none')
-        AsyncStorage.setItem('location', JSON.stringify(data.location) || JSON.stringify({lat: 0, lng: 0}))
-        AsyncStorage.setItem('address', data.address || 'none')
-        AsyncStorage.setItem('lastFour', data.lastFour || '. . . .')
+        await AsyncStorage.setItem('userID', data.id || 'none')
+        await AsyncStorage.setItem('firstName', data.firstName || 'none')
+        await AsyncStorage.setItem('lastName', data.lastName || 'none')
+        await AsyncStorage.setItem('phone', data.phone || 'none')
+        await AsyncStorage.setItem('email', data.email || 'none')
+        await AsyncStorage.setItem('location', JSON.stringify(data.location) || JSON.stringify({lat: 0, lng: 0}))
+        await AsyncStorage.setItem('address', data.address || 'none')
+        await AsyncStorage.setItem('lastFour', data.lastFour || '. . . .')
+        await AsyncStorage.setItem('about', data.about || ' ')
 
     } catch (error) {
         alert(error)
@@ -31,6 +32,7 @@ export const UpdateUser = async () => {
         payload['address'] = await AsyncStorage.getItem('address');
         payload['sessionID'] = await AsyncStorage.getItem('loggedIn');
         payload['isStudent'] = JSON.parse(await AsyncStorage.getItem('isStudent'));
+        payload['about'] = await AsyncStorage.getItem('about');
 
 
         const response = await fetch('https://lsdsoftware.io/abctutors/updateuser.php', {
@@ -59,7 +61,7 @@ export const SendPhoto = async (uri) =>{
 
         const response = await fetch('https://lsdsoftware.io/abctutors/uploadphoto.php', {
             method: 'post',
-            body: JSON.stringify({uri:uri, sessionID: await AsyncStorage.getItem('loggedIn')})
+            body: JSON.stringify({uri:uri, sessionID: await AsyncStorage.getItem('loggedIn'),  isStudent: JSON.parse(await AsyncStorage.getItem('isStudent'))})
         })
 
         const result = await response.json();

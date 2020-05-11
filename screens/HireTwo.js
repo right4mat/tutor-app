@@ -8,6 +8,7 @@ import {
   AsyncStorage,
   Platform,
   KeyboardAvoidingView,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -26,6 +27,15 @@ export default function Hire({ route, navigation }) {
   const { firstName } = React.useContext(Context);
 
   const hire = async () => {
+    if(subject ==''){
+      alert("You need to pick a subject")
+      return false;
+    }
+    if(about ==''){
+      alert("Please explain to "+tutorName+" a bit about your session.")
+      return false;
+    }
+
     try {
       const response = await fetch(
         "https://lsdsoftware.io/abctutors/hire.php",
@@ -69,6 +79,7 @@ export default function Hire({ route, navigation }) {
 
   const Subject = (props) => {
     return (
+      
       <TouchableOpacity
         style={[
           styles.subject,
@@ -102,6 +113,7 @@ export default function Hire({ route, navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -141,6 +153,7 @@ export default function Hire({ route, navigation }) {
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -194,7 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "flex-end",
-    backgroundColor: "rgba(54,212,173,1)",
+    backgroundColor: Colors.primaryLight,
   },
   buttonText: {
     alignSelf: "center",

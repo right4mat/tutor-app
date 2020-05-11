@@ -53,6 +53,7 @@ export default function JobList({ navigation }) {
   
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
@@ -66,6 +67,7 @@ export default function JobList({ navigation }) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   Image,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import AvenirText from "../components/avenirText";
@@ -64,7 +65,7 @@ export default function LinksScreen({ navigation }) {
         { compress: 0.7, format: "jpeg", base64: true }
       );
       await SendPhoto(resizedPhoto.base64);
-      const photoName = userID + ".jpg?date=" + Date.now();
+      const photoName = userID + ".jpg";
       setPhoto(photoName);
       await AsyncStorage.setItem("photo", photoName);
       console.log(userID);
@@ -74,6 +75,7 @@ export default function LinksScreen({ navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
@@ -86,9 +88,9 @@ export default function LinksScreen({ navigation }) {
                 source={{
                   uri: isStudent
                     ? "https://lsdsoftware.io/abctutors/studentPhotos/small/" +
-                      photo
+                      photo + "?date=" + Date.now()
                     : "https://lsdsoftware.io/abctutors/tutorPhotos/small/" +
-                      photo,
+                      photo + "?date=" + Date.now(),
                 }}
                 style={{ width: 80, height: 80, resizeMode: "cover" }}
               />
@@ -100,7 +102,6 @@ export default function LinksScreen({ navigation }) {
               />
             )}
           </View>
-          {isStudent ? (
             <TouchableOpacity onPress={pickImage} style={styles.editIcon}>
               <Ionicons
                 name={"ios-create"}
@@ -108,9 +109,6 @@ export default function LinksScreen({ navigation }) {
                 color="rgba(212,175,54,0.7)"
               />
             </TouchableOpacity>
-          ) : (
-            false
-          )}
         </View>
         <View style={styles.headerText}>
           <AvenirText
@@ -182,6 +180,7 @@ export default function LinksScreen({ navigation }) {
         isLastOption
       />
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

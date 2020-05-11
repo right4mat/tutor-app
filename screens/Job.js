@@ -6,7 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  AsyncStorage,
+  AsyncStorage, SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import AvenirText from "../components/avenirText";
@@ -108,6 +108,7 @@ export default function job({ route, navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={styles.container}>
       <View style={styles.inner}>
         <View style={styles.basicDetails}>
@@ -233,6 +234,7 @@ export default function job({ route, navigation }) {
         )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Layout from "../constants/Layout";
@@ -33,6 +34,7 @@ export default function TutorProfile({ route, navigation }) {
   //console.warn(route.params.filters)
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.picContainer}>
@@ -84,6 +86,7 @@ export default function TutorProfile({ route, navigation }) {
       </ScrollView>
       
     </View>
+    </SafeAreaView>
   );
 }
 

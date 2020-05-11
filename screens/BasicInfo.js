@@ -6,8 +6,11 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    AsyncStorage
+    AsyncStorage,
+    KeyboardAvoidingView,
+    SafeAreaView
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import {RectButton, ScrollView} from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 
@@ -22,10 +25,12 @@ export default function BasicInfo({navigation}) {
     const {phone, setPhone} = React.useContext(Context);
     const {email} = React.useContext(Context);
     const {address} = React.useContext(Context);
+    const {about, setAbout} = React.useContext(Context);
 
     const [firstNamePossible, setFirstNamePossible] = React.useState(firstName);
     const [lastNamePossible, setLastNamePossible] = React.useState(lastName);
     const [phonePossible, setPhonePossible] = React.useState(phone);
+    const [aboutPossible, setAboutPossible] = React.useState(about);
 
 
     const save = async () => {
@@ -33,9 +38,11 @@ export default function BasicInfo({navigation}) {
             await AsyncStorage.setItem('firstName', firstNamePossible);
             await AsyncStorage.setItem('lastName', lastNamePossible);
             await AsyncStorage.setItem('phone', phonePossible);
+            await AsyncStorage.setItem('about', aboutPossible);
             setFirstName(firstNamePossible);
             setLastName(lastNamePossible);
             setPhone(phonePossible);
+            setAbout(aboutPossible);
             UpdateUser();
             navigation.goBack()
         } catch (error) {
@@ -44,12 +51,11 @@ export default function BasicInfo({navigation}) {
         
     }
 
-    return (<ScrollView style={
-            styles.container
-        }
-        contentContainerStyle={
-            styles.contentContainer
-    }>
+    return (
+        <SafeAreaView style={{flex:1}}>
+        <KeyboardAwareScrollView
+      style={styles.container}
+    >
         <TextInput style={
                 styles.textInput
             }
@@ -111,6 +117,18 @@ export default function BasicInfo({navigation}) {
             value={email}
             editable={false}/>
 
+        <TextInput
+        style={
+            [styles.textInput,{minHeight:100}]
+        }
+            multiline={true}
+            numberOfLines={10}
+            onChangeText={text => setAboutPossible(text)}
+            maxLength={300}
+            value={aboutPossible}
+            placeholder="A bit about yourself..."
+            />
+
         <TouchableOpacity style={
                 styles.button
             }
@@ -119,23 +137,21 @@ export default function BasicInfo({navigation}) {
                 styles.buttonText
             }>Save</Text>
         </TouchableOpacity>
-
-    </ScrollView>);
+    </KeyboardAwareScrollView>
+        </SafeAreaView>
+        );
 }
 
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
-    },
-    contentContainer: {
+        backgroundColor: '#fff',
         padding: 15,
-        paddingTop: 15
     },
     textInput: {
-        padding: 10,
-        height: 50,
+        padding: 15,
+        minHeight: 40,
         borderColor: '#d3d3d3',
         borderWidth: 1,
         borderRadius: 5,
@@ -149,16 +165,18 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         overflow: "hidden",
         alignSelf: 'flex-end',
-        backgroundColor: Colors.secondary
+        backgroundColor: Colors.secondary,
+
+        marginBottom:200
     },
     buttonText: {
         alignSelf: 'center',
         fontSize: 18,
-        color: "#fff"
+        color: "#fff",
     },
     textInputDisabled: {
-        padding: 10,
-        height: 50,
+        padding: 15,
+        minHeight: 40,
         borderColor: '#d3d3d3',
         borderWidth: 1,
         borderRadius: 5,

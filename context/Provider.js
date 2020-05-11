@@ -14,6 +14,7 @@ export default function Provider (props){
    const [lastName, setLastName] = React.useState('');
    const [phone, setPhone] = React.useState('');    
    const [email, setEmail] = React.useState('');
+   const [about, setAbout] = React.useState('');  
    const [lastFour, setLastFour] = React.useState('. . . .');
    const [isStudent, setIsStudent] = React.useState(true);
    const [photo, setPhoto] = React.useState(false);
@@ -46,7 +47,8 @@ export default function Provider (props){
                 userID, setUserID,
                 reLoad, setReload,
                 photo, setPhoto,
-                jobsPast, setJobsPast
+                jobsPast, setJobsPast,
+                about, setAbout
             }}
         >
             {props.children}

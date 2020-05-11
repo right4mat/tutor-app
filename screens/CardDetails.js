@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity,SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import Context from '../context/Context';
@@ -15,6 +15,7 @@ export default function CardDetails({navigation}) {
 
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.header}>My card</Text>
 
@@ -31,6 +32,7 @@ export default function CardDetails({navigation}) {
         </TouchableOpacity>
 
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Image, View,  TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
+import { StyleSheet, Image, View,  TextInput, TouchableOpacity, AsyncStorage, SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
 import AvenirText from '../components/avenirText';
@@ -10,6 +10,8 @@ import Icons from '../constants/Icons';
 import MapView from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Context from '../context/Context';
+
+import {UpdateUser} from '../services/UserData';
 
 export default function Map({navigation}) {    
     
@@ -26,6 +28,7 @@ export default function Map({navigation}) {
             AsyncStorage.setItem('address', possibleAddress);
             setLocation(possibleLocation);
             setAddress(possibleAddress);
+            UpdateUser();
         } catch (error) {
             console.warn(error.message);
         }
@@ -33,6 +36,7 @@ export default function Map({navigation}) {
     }
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>           
         <View style={styles.map}>
             <View style={styles.textInput}>
@@ -138,6 +142,7 @@ export default function Map({navigation}) {
                 <AvenirText style={styles.buttonText} text={"Set"}/>
         </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 }
 

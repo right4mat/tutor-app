@@ -10,6 +10,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import AvenirText from "../components/avenirText";
@@ -139,6 +140,7 @@ export default function StudentsTutors({ navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       {!isStudent ? (
         <FlatList
@@ -162,6 +164,7 @@ export default function StudentsTutors({ navigation }) {
         />
       )}
     </View>
+    </SafeAreaView>
   );
 }
 

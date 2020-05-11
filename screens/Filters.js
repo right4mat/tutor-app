@@ -10,6 +10,7 @@ import {
   Platform,
   DatePickerIOS,
   AsyncStorage,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -159,6 +160,7 @@ export default function Filters({ route, navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
@@ -643,6 +645,7 @@ export default function Filters({ route, navigation }) {
         false
       )}
     </View>
+    </SafeAreaView>
   );
 }
 

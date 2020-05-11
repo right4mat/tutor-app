@@ -9,6 +9,7 @@ import {
   Slider,
   Platform,
   DatePickerIOS,
+  SafeAreaView,
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -168,6 +169,7 @@ export default function Hire({ route, navigation }) {
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
@@ -342,6 +344,7 @@ export default function Hire({ route, navigation }) {
         false
       )}
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -382,18 +385,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  button: {
-    position: "absolute",
-    bottom: 0,
-    right: 15,
-    marginBottom: 40,
-    padding: 15,
-    width: 200,
-    borderRadius: 30,
-    overflow: "hidden",
-    alignSelf: "flex-end",
-    backgroundColor: "#d4af36",
-  },
   buttonTextCard: {
     //alignSelf: 'center',
     marginHorizontal: 15,
@@ -454,7 +445,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "flex-end",
-    backgroundColor: "rgba(54,212,173,1)",
+    backgroundColor: Colors.primaryLight,
   },
   buttonText: {
     alignSelf: "center",

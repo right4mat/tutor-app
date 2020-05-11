@@ -11,6 +11,7 @@ import {
   Dimensions,
   AsyncStorage,
   RefreshControl,
+  SafeAreaView
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFonts } from "@use-expo/font";
@@ -21,15 +22,16 @@ import BrandText from "../components/brandText";
 import LongText from "../components/longText";
 import * as WebBrowser from "expo-web-browser";
 import Colors from "../constants/Colors";
+import Layout from "../constants/Layout";
 import { Tutors } from "../components/Tutors";
 import moment from "moment";
 
 import Context from "../context/Context";
 
 import Constants from "expo-constants";
+//import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen({ navigation }) {
-  const [slide, setSlide] = React.useState(new Animated.Value(0));
   const [days, setDays] = React.useState(GetDates(new Date(), 7));
   const [date] = React.useState(new Date());
   const [start] = React.useState(moment().startOf("hour"));
@@ -91,10 +93,11 @@ export default function HomeScreen({ navigation }) {
     };
   }, []);
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <BrandText style={styles.headerText} text={"ABC Tutor Services"} />
+          <BrandText style={styles.headerText} text={"ABC NANNY SERVICES (Tutoring)"} />
         </View>
         <TouchableOpacity
           onPress={() =>
@@ -107,7 +110,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <ScrollView
-        contentContainerStyle={styles.contentContainer}
+      style={{flex:1}}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -131,7 +134,7 @@ export default function HomeScreen({ navigation }) {
                 )
               }
             >
-              <AvenirText style={{ color: "#373737" }} text={"Need a nanny?"} />
+              <AvenirText style={{ color: "#fff" }} text={"NEED A NANNY?"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -184,6 +187,7 @@ export default function HomeScreen({ navigation }) {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -192,10 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     paddingHorizontal: 15,
-    paddingTop: 30,
-  },
-  contentContainer: {
-    paddingTop: 10,
+    paddingTop:5
   },
   logo: {
     width: 70,
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   banner: {
     borderRadius: 10,
     height: 100,
-    backgroundColor: Colors.secondary,
+    backgroundColor: "#231f20",
     padding: 10,
     display: "flex",
     justifyContent: "space-around",
@@ -222,6 +223,7 @@ const styles = StyleSheet.create({
   bannerInner: {
     width: "60%",
     height: "100%",
+    
   },
   bannerLogo: {
     resizeMode: "contain",
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: Colors.primary,
     fontWeight: "800",
-    fontSize: 30,
+    fontSize: 20,
   },
   calenderItem: {
     width: 65,
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
   },
   bannerHeader: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.primary,
     borderRadius: 15,
     display: "flex",
     justifyContent: "center",

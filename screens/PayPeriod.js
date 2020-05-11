@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   AsyncStorage,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import AvenirText from "../components/avenirText";
@@ -60,6 +61,7 @@ export default function PayPeriod({ navigation }) {
   // const finish = moment(job.finish).format("hh:mm");
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
 
       <TouchableOpacity style={styles.pay}>
@@ -117,6 +119,7 @@ export default function PayPeriod({ navigation }) {
         </View>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 }
 

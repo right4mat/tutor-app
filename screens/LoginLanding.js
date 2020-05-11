@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground,SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
@@ -14,6 +14,7 @@ export default function LoginLanding({navigation}) {
 
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
         <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
         <View style={styles.innerContainer}>
@@ -42,6 +43,7 @@ export default function LoginLanding({navigation}) {
         </View>
         </ImageBackground>
     </View>
+    </SafeAreaView>
   );
 }
 

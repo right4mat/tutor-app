@@ -9,7 +9,8 @@ import {
   Slider,
   Platform,
   ImageBackground,
-  Linking
+  Linking,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -26,6 +27,7 @@ import Icons from "../constants/Icons";
 
 export default function Help({ route, navigation }) {
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ImageBackground
         source={require("../assets/images/background.png")}
@@ -54,6 +56,7 @@ export default function Help({ route, navigation }) {
         </View>
       </ImageBackground>
     </View>
+    </SafeAreaView>
   );
 }
 

@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Layout from "../constants/Layout";
@@ -54,6 +55,7 @@ export default function TutorProfile({ route, navigation }) {
   const [photo] = React.useState(route.params.tutor.id);
   const [phone] = React.useState(route.params.tutor.phone);
   const [email] = React.useState(route.params.tutor.email);
+  const [about] = React.useState(route.params.tutor.about);
 
   React.useEffect(() => {
     let isCancelled = false;
@@ -66,6 +68,7 @@ export default function TutorProfile({ route, navigation }) {
   //console.warn(route.params.filters)
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.picContainer}>
@@ -90,7 +93,7 @@ export default function TutorProfile({ route, navigation }) {
           <LongText
             style={{ fontSize: 18, lineHeight: 30 }}
             text={
-              "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+              about
             }
           />
         </View>
@@ -154,6 +157,7 @@ export default function TutorProfile({ route, navigation }) {
         <AvenirText style={styles.buttonText} text={"Hire"} />
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 }
 

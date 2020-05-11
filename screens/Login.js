@@ -11,6 +11,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   AsyncStorage,
+  SafeAreaView
 } from "react-native";
 
 import AvenirText from "../components/avenirText";
@@ -43,7 +44,8 @@ export default function Login({ route, navigation }) {
     setAddress,
     setIsStudent,
     setUserID,
-    setLastFour
+    setLastFour,
+    setAbout
   } = React.useContext(Context);
 
   const attemptLogin = async (payload) => {
@@ -72,9 +74,11 @@ export default function Login({ route, navigation }) {
     setUserID(payload.id || "none");
     setPhoto(payload.id + ".jpg" || "none");
     setLastFour(payload.lastFour || ". . . .");
+    setAbout(payload.about || false);
   };
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       {isLoggingIn ? <Loading /> : false}
       <ImageBackground
@@ -142,6 +146,7 @@ export default function Login({ route, navigation }) {
         </KeyboardAvoidingView>
       </ImageBackground>
     </View>
+    </SafeAreaView>
   );
 }
 

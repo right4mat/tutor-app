@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, AsyncStorage, SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BrandText from '../components/brandText';
@@ -100,6 +100,7 @@ export default function SignupFinish({route, navigation}) {
 
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>   
         {isLoggingIn ? <Loading/> : false}       
         <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
@@ -224,6 +225,7 @@ export default function SignupFinish({route, navigation}) {
             </View>
         </ImageBackground>
     </View>
+    </SafeAreaView>
   );
 }
 

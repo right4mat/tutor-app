@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { Tutors } from "../components/Tutors";
@@ -55,6 +56,7 @@ export default function SearchResults({ route }) {
   }, []);
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       {loading ? (
         <Loading />
@@ -66,6 +68,7 @@ export default function SearchResults({ route }) {
         <NoResults />
       )}
     </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
-import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View,  TextInput, TouchableOpacity, Image, ImageBackground, Platform, KeyboardAvoidingView, SafeAreaView} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import AvenirText from '../components/avenirText';
 import BoldText from '../components/boldText';
@@ -41,6 +41,7 @@ export default function Signup({navigation}) {
 
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>        
         <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
 
@@ -76,6 +77,7 @@ export default function Signup({navigation}) {
             </KeyboardAvoidingView>
         </ImageBackground>
     </View>
+    </SafeAreaView>
   );
 }
 
