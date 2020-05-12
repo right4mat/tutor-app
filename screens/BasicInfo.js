@@ -56,7 +56,9 @@ export default function BasicInfo({navigation}) {
         <KeyboardAwareScrollView
       style={styles.container}
     >
-        <TextInput style={
+        <TextInput 
+        returnKeyType='done'
+        style={
                 styles.textInput
             }
             onChangeText={
@@ -64,7 +66,7 @@ export default function BasicInfo({navigation}) {
             }
             value={firstNamePossible}
             placeholder="First name"/>
-        <TextInput style={
+        <TextInput returnKeyType='done' style={
                 styles.textInput
             }
             onChangeText={
@@ -72,7 +74,7 @@ export default function BasicInfo({navigation}) {
             }
             value={lastNamePossible}
             placeholder="Last name"/>
-        <TextInput style={
+        <TextInput returnKeyType='done' style={
                 styles.textInput
             }
             onChangeText={
@@ -111,13 +113,13 @@ export default function BasicInfo({navigation}) {
                 }
                 text={address}/>
         </TouchableOpacity>
-        <TextInput style={
+        <TextInput returnKeyType='done' style={
                 styles.textInputDisabled
             }
             value={email}
             editable={false}/>
 
-        <TextInput
+        <TextInput returnKeyType='done'
         style={
             [styles.textInput,{minHeight:100}]
         }

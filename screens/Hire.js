@@ -29,7 +29,7 @@ export default function Hire({ route, navigation }) {
   const [firstNameTutor] = React.useState(route.params.opts.tutor.firstName);
 
   const [date, setDate] = React.useState(
-    moment(route.params.opts.filters.date) 
+    moment(route.params.opts.filters.date)
   );
   const [showDate, setShowDate] = React.useState(false);
   const [start, setStart] = React.useState(
@@ -45,7 +45,9 @@ export default function Hire({ route, navigation }) {
 
   const [tutorID] = React.useState(route.params.opts.tutor.id);
 
-  const [group, setGroup] = React.useState(route.params.opts.filters.group || false);
+  const [group, setGroup] = React.useState(
+    route.params.opts.filters.group || false
+  );
 
   const { address } = React.useContext(Context);
   const { phone } = React.useContext(Context);
@@ -103,26 +105,28 @@ export default function Hire({ route, navigation }) {
     return true;
   };
 
-  const validate = () =>{
-
-    if(!checkTimeFinish(finish)){
+  const validate = () => {
+    if (!checkTimeFinish(finish)) {
       return false;
-    }else if(!checkTimeStart(start)){
+    } else if (!checkTimeStart(start)) {
       return false;
-    }else if(!date.isAfter(moment(), "day") && !date.isSame(moment(), "day")){
+    } else if (
+      !date.isAfter(moment(), "day") &&
+      !date.isSame(moment(), "day")
+    ) {
       alert("Date has already passed");
       return false;
-    }else if(date.isSame(moment(), "day")){
-      if(start.isBefore()){
+    } else if (date.isSame(moment(), "day")) {
+      if (start.isBefore()) {
         alert("Start time has aleady passed.");
         return false;
-      }else if(finish.isBefore()){
+      } else if (finish.isBefore()) {
         alert("Finish time has aleady passed.");
         return false;
       }
-    }else if(lastFour === ". . . ."){
-        alert("You need to add a card first.");
-        return false;
+    } else if (lastFour === ". . . .") {
+      alert("You need to add a card first.");
+      return false;
     }
     navigation.navigate("HireTwo", {
       name: firstNameTutor,
@@ -131,30 +135,23 @@ export default function Hire({ route, navigation }) {
       tutorID: tutorID,
       date: date.format("YYYY-MM-DD HH:mm"),
       subjects: subjects,
-      group:group
-    })
-
-  }
+      group: group,
+    });
+  };
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDate(false);
     setDate(moment(currentDate));
   };
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-      setShowStart(false);
-      setStart(moment(currentTime));
-    
+    setStart(moment(currentTime));
   };
 
   const onChangeFinish = (event, selectedTime) => {
-    console.log(selectedTime);
     const currentTime = selectedTime;
-      setShowFinish(false);
-      setFinish(moment(currentTime));
-   
+    setFinish(moment(currentTime));
   };
 
   const getDateString = (date) => {
@@ -169,181 +166,213 @@ export default function Hire({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.textBox}>
-          <AvenirText text={name} />
-        </View>
-
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => setShowDate(true)}
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.cardIcon}>
-            <Ionicons
-              name={"md-calendar"}
-              size={22}
-              color={Colors.secondaryLight}
-            />
+          <View style={styles.textBox}>
+            <AvenirText text={name} />
           </View>
-          <AvenirText
-            style={styles.buttonTextCard}
-            text={getDateString(date)}
-          />
-        </TouchableOpacity>
 
-        <View style={styles.double}>
           <TouchableOpacity
-            style={[styles.textInput, { width: "48%" }]}
+            style={styles.textInput}
             onPress={() => {
-              setShowStart(true);
+              setShowDate(true);
+              setShowStart(false);
               setShowFinish(false);
             }}
           >
             <View style={styles.cardIcon}>
               <Ionicons
-                name={"md-clock"}
+                name={"md-calendar"}
                 size={22}
                 color={Colors.secondaryLight}
               />
             </View>
             <AvenirText
               style={styles.buttonTextCard}
-              text={getTimeString(start)}
+              text={getDateString(date)}
             />
           </TouchableOpacity>
+
+          <View style={styles.double}>
+            <TouchableOpacity
+              style={[styles.textInput, { width: "48%" }]}
+              onPress={() => {
+                setShowStart(true);
+                setShowFinish(false);
+                setShowDate(false);
+              }}
+            >
+              <View style={styles.cardIcon}>
+                <Ionicons
+                  name={"md-clock"}
+                  size={22}
+                  color={Colors.secondaryLight}
+                />
+              </View>
+              <AvenirText
+                style={styles.buttonTextCard}
+                text={getTimeString(start)}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.textInput, { width: "48%" }]}
+              onPress={() => {
+                setShowFinish(true);
+                setShowStart(false);
+                setShowDate(false);
+              }}
+            >
+              <View style={styles.cardIcon}>
+                <Ionicons
+                  name={"md-clock"}
+                  size={22}
+                  color={Colors.secondaryLight}
+                />
+              </View>
+              <AvenirText
+                style={styles.buttonTextCard}
+                text={getTimeString(finish)}
+              />
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity
-            style={[styles.textInput, { width: "48%" }]}
-            onPress={() => {
-              setShowFinish(true);
-              setShowStart(false);
-            }}
+            style={styles.textInput}
+            onPress={() => navigation.navigate("BasicInfo")}
           >
             <View style={styles.cardIcon}>
               <Ionicons
-                name={"md-clock"}
+                name={"ios-call"}
+                size={22}
+                color={Colors.secondaryLight}
+              />
+            </View>
+            <AvenirText style={styles.buttonTextCard} text={phone} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.textInput}
+            onPress={() => navigation.navigate("Location")}
+          >
+            <View style={styles.cardIcon}>
+              <Ionicons
+                name={"md-pin"}
+                size={22}
+                color={Colors.secondaryLight}
+              />
+            </View>
+            <AvenirText style={styles.buttonTextCard} text={address} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.textInput}
+            onPress={() => navigation.navigate("EnterCard")}
+          >
+            <View style={styles.cardIcon}>
+              <Ionicons
+                name={"ios-card"}
                 size={22}
                 color={Colors.secondaryLight}
               />
             </View>
             <AvenirText
               style={styles.buttonTextCard}
-              text={getTimeString(finish)}
+              text={". . . .  . . . .  . . . .  " + lastFour}
             />
           </TouchableOpacity>
-        </View>
 
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => navigation.navigate("BasicInfo")}
-        >
-          <View style={styles.cardIcon}>
-            <Ionicons
-              name={"ios-call"}
-              size={22}
-              color={Colors.secondaryLight}
+          <View style={styles.group}>
+            <CheckBox
+              checkedColor={Colors.secondaryLight}
+              checked={group === true}
+              title={"group"}
+              containerStyle={styles.checkBox}
+              onPress={() => setGroup(true)}
+            />
+            <CheckBox
+              checkedColor={Colors.secondaryLight}
+              checked={group === false}
+              title={"solo"}
+              containerStyle={styles.checkBox}
+              onPress={() => setGroup(false)}
             />
           </View>
-          <AvenirText style={styles.buttonTextCard} text={phone} />
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => navigation.navigate("Location")}
-        >
-          <View style={styles.cardIcon}>
-            <Ionicons name={"md-pin"} size={22} color={Colors.secondaryLight} />
-          </View>
-          <AvenirText style={styles.buttonTextCard} text={address} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => navigation.navigate("EnterCard")}
-        >
-          <View style={styles.cardIcon}>
-            <Ionicons
-              name={"ios-card"}
-              size={22}
-              color={Colors.secondaryLight}
+          <TouchableOpacity style={styles.button} onPress={() => validate()}>
+            <AvenirText style={styles.buttonText} text={"Next"} />
+          </TouchableOpacity>
+        </ScrollView>
+        {showDate ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowDate(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              timeZoneOffsetInMinutes={0}
+              value={date.toDate()}
+              mode={"date"}
+              is24Hour={true}
+              display="default"
+              onChange={onChangeDate}
             />
           </View>
-          <AvenirText
-            style={styles.buttonTextCard}
-            text={". . . .  . . . .  . . . .  " + lastFour}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.group}>
-          <CheckBox
-            checkedColor={Colors.secondaryLight}
-            checked={group === true}
-            title={'group'}
-            containerStyle={styles.checkBox}
-            onPress={() => setGroup(true)}
-          />
-          <CheckBox
-            checkedColor={Colors.secondaryLight}
-            checked={group === false}
-            title={'solo'}
-            containerStyle={styles.checkBox}
-            onPress={() => setGroup(false)}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            validate()
-          }
-        >
-          <AvenirText style={styles.buttonText} text={"Next"} />
-        </TouchableOpacity>
-      </ScrollView>
-      {showDate ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={date.toDate()}
-          mode={"date"}
-          is24Hour={true}
-          display="default"
-          onChange={onChangeDate}
-        />
-      ) : (
-        false
-      )}
-      {showStart ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={start.toDate()}
-          mode={"time"}
-          is24Hour={false}
-          display="default"
-          minuteInterval={5}
-          onChange={onChangeStart}
-        />
-      ) : (
-        false
-      )}
-      {showFinish ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={finish.toDate()}
-          mode={"time"}
-          is24Hour={false}
-          display="default"
-          minuteInterval={5}
-          onChange={onChangeFinish}
-        />
-      ) : (
-        false
-      )}
-    </View>
+        ) : (
+          false
+        )}
+        {showStart ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowStart(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={start.toDate()}
+              mode={"time"}
+              is24Hour={false}
+              display="default"
+              minuteInterval={5}
+              onChange={onChangeStart}
+            />
+          </View>
+        ) : (
+          false
+        )}
+        {showFinish ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowFinish(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={finish.toDate()}
+              mode={"time"}
+              is24Hour={false}
+              display="default"
+              minuteInterval={5}
+              onChange={onChangeFinish}
+            />
+          </View>
+        ) : (
+          false
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -362,13 +391,12 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingTop: 15,
   },
-  group:{
-    display:'flex',
-    justifyContent:"space-between",
-    alignItems:"center",
-    flexDirection:'row',
-    flex:1
-
+  group: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    flex: 1,
   },
   textInput: {
     padding: 10,
@@ -451,5 +479,25 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 18,
     color: "#fff",
+  },
+  dateHeader: {
+    width: "100%",
+    padding: 16,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: "#d3d3d3",
+    backgroundColor: "#f2f2f2",
+  },
+  date: {
+    shadowColor: "#000",
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 3,
+    zIndex: 1000,
+    backgroundColor: "#fff",
   },
 });

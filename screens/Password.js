@@ -70,6 +70,7 @@ export default function EnterCard({navigation}) {
             
             <LongText style={{marginBottom:15}} text={"Password must be at least 8 charatures, including one number and a mixture of upper and lowercase"}/>
             <TextInput
+            returnKeyType='done'
                 secureTextEntry={true}
                 password={true}
                 placeholder="Password"
@@ -79,6 +80,7 @@ export default function EnterCard({navigation}) {
             />
             <AvenirText style={{marginBottom:15}}  text={"Write your password again"}/>
             <TextInput
+            returnKeyType='done'
                 secureTextEntry={true}
                 password={true}
                 placeholder="Password"

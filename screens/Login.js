@@ -22,7 +22,8 @@ import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import Loading from "../components/Loading";
 
-import Context from "../context/Context";
+import Context from "../context/Context"; 
+import * as WebBrowser from "expo-web-browser";
 
 import { login, registerForPushNotificationsAsync } from "../services/Login";
 import { BaseRouter } from "@react-navigation/native";
@@ -114,6 +115,7 @@ export default function Login({ route, navigation }) {
               />
             )}
             <TextInput
+            returnKeyType='done'
               style={styles.textInput}
               placeholder="Email"
               autoCompleteType="email"
@@ -121,6 +123,7 @@ export default function Login({ route, navigation }) {
               onChangeText={(text) => setPossibleEmail(text)}
             />
             <TextInput
+            returnKeyType='done'
               secureTextEntry={true}
               style={styles.textInput}
               placeholder="Password"
@@ -135,14 +138,16 @@ export default function Login({ route, navigation }) {
               <AvenirText style={styles.buttonText} text={"Login"} />
             </TouchableOpacity>
           </View>
-          <View>
+          <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+                  "https://abc-nanny-services.flycricket.io/privacy.html"
+                )}>
             <LongText
               style={{ color: "grey" }}
               text={
                 "If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"
               }
             />
-          </View>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </ImageBackground>
     </View>

@@ -116,28 +116,7 @@ export default function HomeScreen({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={styles.banner}>
-          <Image
-            style={styles.nannyThumb}
-            source={require("../assets/images/tutorIcon.png")}
-          />
-          <View style={styles.bannerInner}>
-            <LongText
-              style={{ flex: 1, flexWrap: "wrap", color: "#fff" }}
-              text={"Delivering professional tutoring to support your learning"}
-            />
-            <TouchableOpacity
-              style={styles.bannerHeader}
-              onPress={() =>
-                WebBrowser.openBrowserAsync(
-                  "https://www.abcnannyservices.com.au/"
-                )
-              }
-            >
-              <AvenirText style={{ color: "#fff" }} text={"NEED A NANNY?"} />
-            </TouchableOpacity>
-          </View>
-        </View>
+
         <View>
           <View style={styles.textBox}>
             <AvenirText
@@ -282,3 +261,29 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
+
+
+/*
+
+        <View style={styles.banner}>
+          <Image
+            style={styles.nannyThumb}
+            source={require("../assets/images/tutorIcon.png")}
+          />
+          <View style={styles.bannerInner}>
+            <LongText
+              style={{ flex: 1, flexWrap: "wrap", color: "#fff" }}
+              text={"Delivering professional tutoring to support your learning"}
+            />
+            <TouchableOpacity
+              style={styles.bannerHeader}
+              onPress={() =>
+                WebBrowser.openBrowserAsync(
+                  "https://www.abcnannyservices.com.au/"
+                )
+              }
+            >
+              <AvenirText style={{ color: "#fff" }} text={"NEED A NANNY?"} />
+            </TouchableOpacity>
+          </View>
+        </View>*/

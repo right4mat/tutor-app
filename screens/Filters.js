@@ -10,7 +10,8 @@ import {
   Platform,
   DatePickerIOS,
   AsyncStorage,
-  SafeAreaView
+  SafeAreaView,
+  Container,
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -47,7 +48,7 @@ export default function Filters({ route, navigation }) {
 
   const payload = async () => {
     return {
-      sessionID: await AsyncStorage.getItem('loggedIn'),
+      sessionID: await AsyncStorage.getItem("loggedIn"),
       location: location,
       distance: distance,
       year: year,
@@ -61,7 +62,7 @@ export default function Filters({ route, navigation }) {
     };
   };
 
-  const validateSend =  async () => {
+  const validateSend = async () => {
     if (!checkTimeStart(start)) {
       return false;
     } else if (!checkTimeFinish(finish)) {
@@ -131,20 +132,17 @@ export default function Filters({ route, navigation }) {
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDate(false);
     setDate(moment(currentDate));
   };
 
   const onChangeStart = (event, selectedTime) => {
     const currentTime = selectedTime;
-    setShowStart(false);
     setStart(moment(currentTime));
   };
 
   const onChangeFinish = (event, selectedTime) => {
     console.log(selectedTime);
     const currentTime = selectedTime;
-    setShowFinish(false);
     setFinish(moment(currentTime));
   };
 
@@ -160,491 +158,528 @@ export default function Filters({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.textBox}>
-          <AvenirText text={"Find your prefect tutor!"} />
-        </View>
-
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => setShowDate(true)}
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.cardIcon}>
-            <Ionicons
-              name={"md-calendar"}
-              size={22}
-              color={Colors.secondaryLight}
-            />
+          <View style={styles.textBox}>
+            <AvenirText text={"Find your prefect tutor!"} />
           </View>
-          <AvenirText
-            style={styles.buttonTextCard}
-            text={getDateString(date)}
-          />
-        </TouchableOpacity>
 
-        <View style={styles.double}>
           <TouchableOpacity
-            style={[styles.textInput, { width: "48%" }]}
+            style={styles.textInput}
             onPress={() => {
-              setShowStart(true);
+              setShowDate(true);
+              setShowStart(false);
               setShowFinish(false);
             }}
           >
             <View style={styles.cardIcon}>
               <Ionicons
-                name={"md-clock"}
+                name={"md-calendar"}
                 size={22}
                 color={Colors.secondaryLight}
               />
             </View>
             <AvenirText
               style={styles.buttonTextCard}
-              text={getTimeString(start)}
+              text={getDateString(date)}
             />
           </TouchableOpacity>
+
+          <View style={styles.double}>
+            <TouchableOpacity
+              style={[styles.textInput, { width: "48%" }]}
+              onPress={() => {
+                setShowStart(true);
+                setShowFinish(false);
+                setShowDate(false);
+              }}
+            >
+              <View style={styles.cardIcon}>
+                <Ionicons
+                  name={"md-clock"}
+                  size={22}
+                  color={Colors.secondaryLight}
+                />
+              </View>
+              <AvenirText
+                style={styles.buttonTextCard}
+                text={getTimeString(start)}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.textInput, { width: "48%" }]}
+              onPress={() => {
+                setShowFinish(true);
+                setShowStart(false);
+                setShowDate(false);
+              }}
+            >
+              <View style={styles.cardIcon}>
+                <Ionicons
+                  name={"md-clock"}
+                  size={22}
+                  color={Colors.secondaryLight}
+                />
+              </View>
+              <AvenirText
+                style={styles.buttonTextCard}
+                text={getTimeString(finish)}
+              />
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity
-            style={[styles.textInput, { width: "48%" }]}
-            onPress={() => {
-              setShowFinish(true);
-              setShowStart(false);
-            }}
+            style={styles.textInput}
+            onPress={() => navigation.navigate("Location")}
           >
             <View style={styles.cardIcon}>
               <Ionicons
-                name={"md-clock"}
+                name={"md-pin"}
                 size={22}
                 color={Colors.secondaryLight}
               />
             </View>
-            <AvenirText
-              style={styles.buttonTextCard}
-              text={getTimeString(finish)}
-            />
+            <AvenirText style={styles.buttonTextCard} text={address} />
           </TouchableOpacity>
-        </View>
 
-        <TouchableOpacity
-          style={styles.textInput}
-          onPress={() => navigation.navigate("Location")}
-        >
-          <View style={styles.cardIcon}>
-            <Ionicons name={"md-pin"} size={22} color={Colors.secondaryLight} />
+          <View style={styles.textBox}>
+            <AvenirText text={"I want a someone thats..."} />
           </View>
-          <AvenirText style={styles.buttonTextCard} text={address} />
-        </TouchableOpacity>
 
-        <View style={styles.textBox}>
-          <AvenirText text={"I want a someone thats..."} />
-        </View>
-
-        <View style={styles.primary}>
-          <YearCheckBox
-            state={local}
-            setState={setLocal}
-            id={true}
-            title={"in person"}
-          />
-          <YearCheckBox
-            state={local}
-            setState={setLocal}
-            id={false}
-            title={"remote"}
-          />
-        </View>
-        {local ? (
-          <>
-            <View style={styles.textBox}>
-              <AvenirText text={"Tutor within " + distance + "km"} />
-            </View>
-
-            <Slider
-              style={{ width: "100%", paddingVertical: 15 }}
-              maximumValue={100}
-              minimumValue={0}
-              step={1}
-              value={20}
-              thumbTintColor={"#f2f2f2"}
-              maximumTrackTintColor={"rgba(212,175,54,.5)"}
-              minimumTrackTintColor={"rgba(54,212,173,.5)"}
-              onValueChange={(x) => setDistance(x)}
-              onSlidingComplete={(x) => setDistance(x)}
+          <View style={styles.primary}>
+            <YearCheckBox
+              state={local}
+              setState={setLocal}
+              id={true}
+              title={"in person"}
             />
-          </>
+            <YearCheckBox
+              state={local}
+              setState={setLocal}
+              id={false}
+              title={"remote"}
+            />
+          </View>
+          {local ? (
+            <>
+              <View style={styles.textBox}>
+                <AvenirText text={"Tutor within " + distance + "km"} />
+              </View>
+
+              <Slider
+                style={{ width: "100%", paddingVertical: 15 }}
+                maximumValue={100}
+                minimumValue={0}
+                step={1}
+                value={20}
+                thumbTintColor={"#f2f2f2"}
+                maximumTrackTintColor={"rgba(212,175,54,.5)"}
+                minimumTrackTintColor={"rgba(54,212,173,.5)"}
+                onValueChange={(x) => setDistance(x)}
+                onSlidingComplete={(x) => setDistance(x)}
+              />
+            </>
+          ) : (
+            false
+          )}
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I want a..."} />
+          </View>
+
+          <View style={styles.primary}>
+            <YearCheckBox
+              state={type}
+              setState={setType}
+              id={true}
+              title={"teacher"}
+            />
+            <YearCheckBox
+              state={type}
+              setState={setType}
+              id={false}
+              title={"tutor"}
+            />
+          </View>
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I want to be tutored..."} />
+          </View>
+
+          <View style={styles.primary}>
+            <YearCheckBox
+              state={group}
+              setState={setGroup}
+              id={false}
+              title={"solo"}
+            />
+            <YearCheckBox
+              state={group}
+              setState={setGroup}
+              id={true}
+              title={"group"}
+            />
+          </View>
+
+          <View style={styles.textBox}>
+            <AvenirText
+              text={"I need a tutor that can teach primary school..."}
+            />
+          </View>
+
+          <View style={styles.primary}>
+            <YearCheckBox
+              state={year}
+              setState={setYear}
+              id={"k-2"}
+              title={"years k-2"}
+            />
+            <YearCheckBox
+              state={year}
+              setState={setYear}
+              id={"3-6"}
+              title={"years 3-6"}
+            />
+          </View>
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I need a tutor that can teach high school..."} />
+          </View>
+
+          <View style={styles.primary}>
+            <YearCheckBox
+              state={year}
+              setState={setYear}
+              id={"7-10"}
+              title={"years 7-10"}
+            />
+            <YearCheckBox
+              state={year}
+              setState={setYear}
+              id={"11-12"}
+              title={"years 11-12"}
+            />
+          </View>
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I need a tutor that can teach..."} />
+          </View>
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Maths"}
+            icon={"ios-calculator"}
+            id={2}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"English"}
+            icon={"ios-paper"}
+            id={6}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Science"}
+            icon={"md-beaker"}
+            id={3}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"PDHPE"}
+            icon={"md-football"}
+            id={5}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Economics"}
+            icon={"md-trending-up"}
+            id={1}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Coding"}
+            icon={"md-code-working"}
+            id={9}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Yoga"}
+            icon={"ios-body"}
+            id={8}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Dance"}
+            icon={"md-musical-notes"}
+            id={7}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Geography"}
+            icon={"md-globe"}
+            id={10}
+          />
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I need a language tutor that can teach ..."} />
+          </View>
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"French"}
+            icon={"ios-quote"}
+            id={11}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Spanish"}
+            icon={"ios-quote"}
+            id={12}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Japanese"}
+            icon={"ios-quote"}
+            id={13}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Arabic"}
+            icon={"ios-quote"}
+            id={14}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"German"}
+            icon={"ios-quote"}
+            id={15}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Chinese (Mandarin)"}
+            icon={"ios-quote"}
+            id={16}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Indonesian"}
+            icon={"ios-quote"}
+            id={17}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Hindi"}
+            icon={"ios-quote"}
+            id={18}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Modern Greek"}
+            icon={"ios-quote"}
+            id={19}
+          />
+
+          <View style={styles.textBox}>
+            <AvenirText text={"I need a music tutor that can teach..."} />
+          </View>
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Guitar"}
+            icon={"ios-musical-note"}
+            id={20}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Piano"}
+            icon={"ios-musical-note"}
+            id={21}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Trumpet"}
+            icon={"ios-musical-note"}
+            id={22}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Trombone"}
+            icon={"ios-musical-note"}
+            id={23}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Baritone"}
+            icon={"ios-musical-note"}
+            id={24}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Cello"}
+            icon={"ios-musical-note"}
+            id={25}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Clarinet"}
+            icon={"ios-musical-note"}
+            id={26}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Double bass"}
+            icon={"ios-musical-note"}
+            id={27}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Flute"}
+            icon={"ios-musical-note"}
+            id={28}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Violin"}
+            icon={"ios-musical-note"}
+            id={29}
+          />
+
+          <Subject
+            state={subject}
+            setState={setSubject}
+            title={"Viola"}
+            icon={"ios-musical-note"}
+            id={30}
+          />
+        </ScrollView>
+
+        <TouchableOpacity style={styles.button} onPress={() => validateSend()}>
+          <Text style={styles.buttonText}>Find</Text>
+        </TouchableOpacity>
+        {showDate ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowDate(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              timeZoneOffsetInMinutes={0}
+              value={date.toDate()}
+              mode={"date"}
+              is24Hour={true}
+              display="default"
+              onChange={onChangeDate}
+            />
+          </View>
         ) : (
           false
         )}
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I want a..."} />
-        </View>
-
-        <View style={styles.primary}>
-          <YearCheckBox
-            state={type}
-            setState={setType}
-            id={true}
-            title={"teacher"}
-          />
-          <YearCheckBox
-            state={type}
-            setState={setType}
-            id={false}
-            title={"tutor"}
-          />
-        </View>
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I want to be tutored..."} />
-        </View>
-
-        <View style={styles.primary}>
-          <YearCheckBox
-            state={group}
-            setState={setGroup}
-            id={false}
-            title={"solo"}
-          />
-          <YearCheckBox
-            state={group}
-            setState={setGroup}
-            id={true}
-            title={"group"}
-          />
-        </View>
-
-        <View style={styles.textBox}>
-          <AvenirText
-            text={"I need a tutor that can teach primary school..."}
-          />
-        </View>
-
-        <View style={styles.primary}>
-          <YearCheckBox
-            state={year}
-            setState={setYear}
-            id={"k-2"}
-            title={"years k-2"}
-          />
-          <YearCheckBox
-            state={year}
-            setState={setYear}
-            id={"3-6"}
-            title={"years 3-6"}
-          />
-        </View>
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I need a tutor that can teach high school..."} />
-        </View>
-
-        <View style={styles.primary}>
-          <YearCheckBox
-            state={year}
-            setState={setYear}
-            id={"7-10"}
-            title={"years 7-10"}
-          />
-          <YearCheckBox
-            state={year}
-            setState={setYear}
-            id={"11-12"}
-            title={"years 11-12"}
-          />
-        </View>
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I need a tutor that can teach..."} />
-        </View>
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Maths"}
-          icon={"ios-calculator"}
-          id={2}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"English"}
-          icon={"ios-paper"}
-          id={6}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Science"}
-          icon={"md-beaker"}
-          id={3}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"PDHPE"}
-          icon={"md-football"}
-          id={5}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Economics"}
-          icon={"md-trending-up"}
-          id={1}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Coding"}
-          icon={"md-code-working"}
-          id={9}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Yoga"}
-          icon={"ios-body"}
-          id={8}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Dance"}
-          icon={"md-musical-notes"}
-          id={7}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Geography"}
-          icon={"md-globe"}
-          id={10}
-        />
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I need a language tutor that can teach ..."} />
-        </View>
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"French"}
-          icon={"ios-quote"}
-          id={11}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Spanish"}
-          icon={"ios-quote"}
-          id={12}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Japanese"}
-          icon={"ios-quote"}
-          id={13}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Arabic"}
-          icon={"ios-quote"}
-          id={14}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"German"}
-          icon={"ios-quote"}
-          id={15}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Chinese (Mandarin)"}
-          icon={"ios-quote"}
-          id={16}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Indonesian"}
-          icon={"ios-quote"}
-          id={17}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Hindi"}
-          icon={"ios-quote"}
-          id={18}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Modern Greek"}
-          icon={"ios-quote"}
-          id={19}
-        />
-
-        <View style={styles.textBox}>
-          <AvenirText text={"I need a music tutor that can teach..."} />
-        </View>
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Guitar"}
-          icon={"ios-musical-note"}
-          id={20}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Piano"}
-          icon={"ios-musical-note"}
-          id={21}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Trumpet"}
-          icon={"ios-musical-note"}
-          id={22}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Trombone"}
-          icon={"ios-musical-note"}
-          id={23}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Baritone"}
-          icon={"ios-musical-note"}
-          id={24}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Cello"}
-          icon={"ios-musical-note"}
-          id={25}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Clarinet"}
-          icon={"ios-musical-note"}
-          id={26}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Double bass"}
-          icon={"ios-musical-note"}
-          id={27}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Flute"}
-          icon={"ios-musical-note"}
-          id={28}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Violin"}
-          icon={"ios-musical-note"}
-          id={29}
-        />
-
-        <Subject
-          state={subject}
-          setState={setSubject}
-          title={"Viola"}
-          icon={"ios-musical-note"}
-          id={30}
-        />
-      </ScrollView>
-
-      <TouchableOpacity style={styles.button} onPress={() => validateSend()}>
-        <Text style={styles.buttonText}>Find</Text>
-      </TouchableOpacity>
-      {showDate ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={date.toDate()}
-          mode={"date"}
-          is24Hour={true}
-          display="default"
-          onChange={onChangeDate}
-        />
-      ) : (
-        false
-      )}
-      {showStart ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={start.toDate()}
-          mode={"time"}
-          is24Hour={false}
-          display="default"
-          minuteInterval={5}
-          onChange={onChangeStart}
-        />
-      ) : (
-        false
-      )}
-      {showFinish ? (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={finish.toDate()}
-          mode={"time"}
-          is24Hour={false}
-          display="default"
-          minuteInterval={5}
-          onChange={onChangeFinish}
-        />
-      ) : (
-        false
-      )}
-    </View>
+        {showStart ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowStart(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={start.toDate()}
+              mode={"time"}
+              is24Hour={false}
+              display="default"
+              minuteInterval={5}
+              onChange={onChangeStart}
+            />
+          </View>
+        ) : (
+          false
+        )}
+        {showFinish ? (
+          <View style={styles.date}>
+            {Platform.OS === "ios" && (
+              <View style={styles.dateHeader}>
+                <TouchableOpacity onPress={() => setShowFinish(false)}>
+                  <Text style={{ fontSize: 18 }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={finish.toDate()}
+              mode={"time"}
+              is24Hour={false}
+              display="default"
+              minuteInterval={5}
+              onChange={onChangeFinish}
+            />
+          </View>
+        ) : (
+          false
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -699,7 +734,7 @@ const Subject = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     backgroundColor: "#fff",
   },
 
@@ -775,18 +810,39 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    position:"absolute",
-    right:15,
-    bottom:30,
+    position: "absolute",
+    right: 15,
+    bottom: 30,
     padding: 15,
     minWidth: 100,
     borderRadius: 30,
     overflow: "hidden",
-    backgroundColor: "rgba(54,212,173,1)",
+    backgroundColor: Colors.primaryLight,
+    zIndex: 4,
   },
   buttonText: {
     alignSelf: "center",
     fontSize: 18,
     color: "#fff",
+  },
+  dateHeader: {
+    width: "100%",
+    padding: 16,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: "#d3d3d3",
+    backgroundColor: "#f2f2f2",
+  },
+  date: {
+    shadowColor: "#000",
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 3,
+    zIndex: 1000,
+    backgroundColor: "#fff",
   },
 });

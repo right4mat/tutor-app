@@ -139,6 +139,7 @@ export default function Hire({ route, navigation }) {
             text={"Tell " + tutorName + " a little bit about your situation."}
           />
           <TextInput
+          returnKeyType='done'
             style={styles.textInput}
             multiline={true}
             numberOfLines={20}

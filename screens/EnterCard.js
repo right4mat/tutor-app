@@ -82,7 +82,7 @@ export default function EnterCard({navigation}) {
         <SafeAreaView style={{flex:1}}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-            <TextInput
+            <TextInput returnKeyType='done'
                 autoCompleteType='name'
                 placeholder="Name on card"
                 style={styles.textInput}
@@ -90,7 +90,7 @@ export default function EnterCard({navigation}) {
                 value={name}
             />
 
-            <TextInput
+            <TextInput returnKeyType='done'
                 autoCompleteType='cc-number'
                 placeholder="Number on the card"
                 style={styles.textInput}
@@ -100,7 +100,7 @@ export default function EnterCard({navigation}) {
             />
 
             <View style={styles.double}>
-                <TextInput
+                <TextInput returnKeyType='done'
                     autoCompleteType='cc-exp-month'
                     placeholder="Month"
                     style={[styles.textInput, {width:"48%"}]}
@@ -108,7 +108,7 @@ export default function EnterCard({navigation}) {
                     value={month}
                     keyboardType = 'numeric'
                 />
-                <TextInput
+                <TextInput returnKeyType='done'
                     autoCompleteType='cc-exp-year'
                     placeholder="Year"
                     style={[styles.textInput, {width:"48%"}]}
@@ -119,7 +119,7 @@ export default function EnterCard({navigation}) {
             </View>
 
             
-            <TextInput
+            <TextInput returnKeyType='done'
                 style={styles.textInput}
                 placeholder="cvv"
                 onChangeText={text => setCvv(text)}

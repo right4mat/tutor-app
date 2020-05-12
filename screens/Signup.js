@@ -7,6 +7,7 @@ import BoldText from '../components/boldText';
 import LongText from '../components/longText';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
+import * as WebBrowser from "expo-web-browser";
 
 import * as Facebook from 'expo-facebook';
 
@@ -53,16 +54,19 @@ export default function Signup({navigation}) {
                     <BoldText style={{fontSize:25, width: Layout.window.width*.8, marginBottom:15, }} text={"“Anyone who has never made a mistake has never tried anything new„"}/>
 
                     <TextInput 
+                    returnKeyType='done'
                     style={styles.textInput}
                     placeholder="First name"
                     onChangeText={text => setFirstName(text)}
                     />
                     <TextInput 
+                    returnKeyType='done'
                     style={styles.textInput}
                     placeholder="Last name"
                     onChangeText={text => setLastName(text)}
                     />
                     <TextInput 
+                    returnKeyType='done'
                     style={styles.textInput}
                     placeholder="Email"
                     onChangeText={text => setEmail(text)}
@@ -71,9 +75,11 @@ export default function Signup({navigation}) {
                         <AvenirText style={styles.buttonText} text={"Next"}/>
                     </TouchableOpacity>      
                 </View>
-                <View>
+                <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+                  "https://abc-nanny-services.flycricket.io/privacy.html"
+                )}>
                     <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
-                </View>
+                </TouchableOpacity>
             </KeyboardAvoidingView>
         </ImageBackground>
     </View>

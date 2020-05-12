@@ -67,28 +67,7 @@ export default function HomeScreen({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={styles.banner}>
-          <Image
-            style={styles.nannyThumb}
-            source={require("../assets/images/tutorIcon.png")}
-          />
-          <View style={styles.bannerInner}>
-            <LongText
-              style={{ flex: 1, fontSize: 20, flexWrap: "wrap", color: "#fff", textAlign:"center"}}
-              text={"Welcome "+firstName+' !'}
-            />
-            <TouchableOpacity
-              style={styles.bannerHeader}
-              onPress={() =>
-                WebBrowser.openBrowserAsync(
-                  "https://www.abcnannyservices.com.au/"
-                )
-              }
-            >
-              <AvenirText style={{ color: "#373737" }} text={"WANT TO BE A NANNY?"} />
-            </TouchableOpacity>
-          </View>
-        </View>
+
         <View style={{flex:1, minHeight:Layout.window.height*.4}}>
             { refreshing ? <Loading/> : <Jobs navigation={navigation}/> }
         </View>
@@ -173,3 +152,26 @@ const styles = StyleSheet.create({
       marginVertical:15
   }
 });
+
+/*        <View style={styles.banner}>
+          <Image
+            style={styles.nannyThumb}
+            source={require("../assets/images/tutorIcon.png")}
+          />
+          <View style={styles.bannerInner}>
+            <LongText
+              style={{ flex: 1, fontSize: 20, flexWrap: "wrap", color: "#fff", textAlign:"center"}}
+              text={"Welcome "+firstName+' !'}
+            />
+            <TouchableOpacity
+              style={styles.bannerHeader}
+              onPress={() =>
+                WebBrowser.openBrowserAsync(
+                  "https://www.abcnannyservices.com.au/"
+                )
+              }
+            >
+              <AvenirText style={{ color: "#373737" }} text={"WANT TO BE A NANNY?"} />
+            </TouchableOpacity>
+          </View>
+        </View>*/

@@ -16,6 +16,8 @@ import Context from '../context/Context';
 
 import {SaveUserData} from '../services/UserData';
 
+import * as WebBrowser from "expo-web-browser";
+
 export default function SignupFinish({route, navigation}) {
 
     const{loggedIn, setLoggedIn, setFirstName, setLastName,setPhone,setEmail,setLocation,setAddress, setIsStudent, setUserID, setLastFour} = React.useContext(Context);
@@ -112,6 +114,7 @@ export default function SignupFinish({route, navigation}) {
                         
                     <LongText style={{marginBottom:15,width:Layout.window.width*.8}} text={"(Password must be at least 8 charatures, including one number and a mixture of upper and lowercase)"}/>                       
                     <TextInput 
+                    returnKeyType='done'
                     style={styles.textInput}
                     placeholder="Password"
                     secureTextEntry={true}
@@ -121,6 +124,7 @@ export default function SignupFinish({route, navigation}) {
                     />                      
                     
                     <TextInput 
+                    returnKeyType='done'
                     style={styles.textInput}
                     placeholder="Phone"
                     onChangeText={(text)=>setPossiblePhone(text)}
@@ -219,9 +223,11 @@ export default function SignupFinish({route, navigation}) {
                         <AvenirText style={styles.buttonText} text={"Finish" }/>
                 </TouchableOpacity>      
                 
-                <View>
+                <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+                  "https://abc-nanny-services.flycricket.io/privacy.html"
+                )}>
                     <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
-                </View>
+                </TouchableOpacity>
             </View>
         </ImageBackground>
     </View>
