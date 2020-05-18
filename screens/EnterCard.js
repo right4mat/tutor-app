@@ -43,14 +43,14 @@ export default function EnterCard({navigation}) {
                 body: JSON.stringify(payload)
             })
     
-            const result = await response.text();
+            const result = await response.json();
     
             console.log(result)
     
-           /*if (result.result === 'success') 
+           if (result.result === 'success') 
                 return true;
             else 
-                alert(result.result);*/
+                alert(result.result);
             
     
         } catch (error) {
@@ -69,7 +69,8 @@ export default function EnterCard({navigation}) {
                 AsyncStorage.setItem('lastFour', l4);
                 setLastFour(l4);
                 //console.log(card);
-                await sendCustomerID({sessionID: await AsyncStorage.getItem('loggedIn'), payload:card, lastFour:l4, isStudent:isStudent});
+                sendCustomerID({sessionID: await AsyncStorage.getItem('loggedIn'), payload:card, lastFour:l4});
+                navigation.goBack();
 
             }
         }catch(e){

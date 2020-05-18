@@ -120,7 +120,8 @@ export default function Login({ route, navigation }) {
               placeholder="Email"
               autoCompleteType="email"
               value={email}
-              onChangeText={(text) => setPossibleEmail(text)}
+              autoCapitalize = 'none'
+              onChangeText={(text) => setPossibleEmail(text.toLowerCase())}
             />
             <TextInput
             returnKeyType='done'
@@ -138,7 +139,7 @@ export default function Login({ route, navigation }) {
               <AvenirText style={styles.buttonText} text={"Login"} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+          <TouchableOpacity style={{paddingHorizontal:15}} onPress={()=> WebBrowser.openBrowserAsync(
                   "https://abc-nanny-services.flycricket.io/privacy.html"
                 )}>
             <LongText

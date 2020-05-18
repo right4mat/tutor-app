@@ -5,10 +5,11 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   AsyncStorage,
   TouchableOpacity,
   Image,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import AvenirText from "../components/avenirText";
@@ -31,10 +32,64 @@ export default function LinksScreen({ navigation }) {
 
   const logout = async () => {
     try {
+      const response = await fetch(
+        "https://lsdsoftware.io/abctutors/logout.php",
+        {
+          method: "post",
+          body: JSON.stringify({
+            sessionID: await AsyncStorage.getItem("loggedIn"),
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.result === "success");
+      else alert(result.result);
+
       await AsyncStorage.clear();
       setLoggedIn(false);
     } catch (error) {
       console.warn(error.message);
+    }
+  };
+
+  const confirmDelete = () => {
+    Alert.alert("Confirm", "Are you sure you want to delete your account?", [
+      {
+        text: "NO",
+        onPress: () => console.warn("NO Pressed"),
+      },
+      {
+        text: "YES",
+        onPress: () => {
+          deleteAccount();
+          logout();
+        },
+        style: "cancel",
+      },
+    ]);
+  };
+
+  const deleteAccount = async () => {
+    try {
+      const response = await fetch(
+        "https://lsdsoftware.io/abctutors/deleteaccount.php",
+        {
+          method: "post",
+          body: JSON.stringify({
+            sessionID: await AsyncStorage.getItem("loggedIn"),
+            isStudent: isStudent,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.result === "success") return true;
+      else alert(result.result);
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -75,33 +130,37 @@ export default function LinksScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <View style={styles.headerBanner}>
-        <View onPress={pickImage}>
-          <View style={styles.profilePic}>
-            {photo ? (
-              <Image
-                source={{
-                  uri: isStudent
-                    ? "https://lsdsoftware.io/abctutors/studentPhotos/small/" +
-                      photo + "?date=" + Date.now()
-                    : "https://lsdsoftware.io/abctutors/tutorPhotos/small/" +
-                      photo + "?date=" + Date.now(),
-                }}
-                style={{ width: 80, height: 80, resizeMode: "cover" }}
-              />
-            ) : (
-              <Ionicons
-                name={"md-person"}
-                size={50}
-                color="rgba(212,175,54,0.7)"
-              />
-            )}
-          </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <View style={styles.headerBanner}>
+          <View onPress={pickImage}>
+            <View style={styles.profilePic}>
+              {photo ? (
+                <Image
+                  source={{
+                    uri: isStudent
+                      ? "https://lsdsoftware.io/abctutors/studentPhotos/small/" +
+                        photo +
+                        "?date=" +
+                        Date.now()
+                      : "https://lsdsoftware.io/abctutors/tutorPhotos/small/" +
+                        photo +
+                        "?date=" +
+                        Date.now(),
+                  }}
+                  style={{ width: 80, height: 80, resizeMode: "cover" }}
+                />
+              ) : (
+                <Ionicons
+                  name={"md-person"}
+                  size={50}
+                  color="rgba(212,175,54,0.7)"
+                />
+              )}
+            </View>
             <TouchableOpacity onPress={pickImage} style={styles.editIcon}>
               <Ionicons
                 name={"ios-create"}
@@ -109,77 +168,87 @@ export default function LinksScreen({ navigation }) {
                 color="rgba(212,175,54,0.7)"
               />
             </TouchableOpacity>
+          </View>
+          <View style={styles.headerText}>
+            <AvenirText
+              style={{ fontSize: 40 }}
+              text={firstName + " " + lastName[0] + "."}
+            />
+            <AvenirText
+              style={{ fontSize: 18, color: "#d3d3d3" }}
+              text={email}
+            />
+          </View>
         </View>
-        <View style={styles.headerText}>
-          <AvenirText
-            style={{ fontSize: 40 }}
-            text={firstName + " " + lastName[0] + "."}
+        <OptionButton
+          icon="ios-paper"
+          label="My basic Info"
+          onPress={() => navigation.navigate("BasicInfo")}
+        />
+        {isStudent ? (
+          <OptionButton
+            icon="ios-card"
+            label="My card"
+            onPress={() => navigation.navigate("CardDetails")}
           />
-          <AvenirText style={{ fontSize: 18, color: "#d3d3d3" }} text={email} />
-        </View>
-      </View>
-      <OptionButton
-        icon="ios-paper"
-        label="My basic Info"
-        onPress={() => navigation.navigate("BasicInfo")}
-      />
-      {isStudent ? (
-        <OptionButton
-          icon="ios-card"
-          label="My card"
-          onPress={() => navigation.navigate("CardDetails")}
-        /> ) : (false) }
+        ) : (
+          false
+        )}
 
-      <OptionButton
-        icon="ios-key"
-        label="My password"
-        onPress={() => navigation.navigate("Password")}
-      />
-
-      <OptionButton
-        icon="md-calendar"
-        label="My sessions"
-        onPress={() => navigation.navigate("JobList")}
-      />
-
-      {isStudent ? (
         <OptionButton
-        icon="ios-cash"
-        label="My billing period"
-        onPress={() => navigation.navigate("BillingPeriod")}
-      />
-      ) : (
-        <OptionButton
-          icon="ios-cash"
-          label="My pay period"
-          onPress={() => navigation.navigate("PayPeriod")}
+          icon="ios-key"
+          label="My password"
+          onPress={() => navigation.navigate("Password")}
         />
-      )}
 
-      {isStudent ? (
         <OptionButton
-          icon="ios-people"
-          label="My tutors"
-          onPress={() => navigation.navigate("MyTutors")}
+          icon="md-calendar"
+          label="My sessions"
+          onPress={() => navigation.navigate("JobList")}
         />
-      ) : (
-        <OptionButton
-          icon="ios-people"
-          label="My students"
-          onPress={() => navigation.navigate("MyStudents")}
-        />
-      )}
-      
-      <OptionButton icon="md-help" label="Help" onPress={() => navigation.navigate("Help")} />
-      <OptionButton icon="ios-log-out" label="Logout" onPress={logout} />
 
-      <OptionButton
-        icon="ios-trash"
-        label="Delete account"
-        onPress={() => alert("this will delete your account")}
-        isLastOption
-      />
-    </ScrollView>
+        {isStudent ? (
+          <OptionButton
+            icon="ios-cash"
+            label="My billing period"
+            onPress={() => navigation.navigate("BillingPeriod")}
+          />
+        ) : (
+          <OptionButton
+            icon="ios-cash"
+            label="My pay period"
+            onPress={() => navigation.navigate("PayPeriod")}
+          />
+        )}
+
+        {isStudent ? (
+          <OptionButton
+            icon="ios-people"
+            label="My tutors"
+            onPress={() => navigation.navigate("MyTutors")}
+          />
+        ) : (
+          <OptionButton
+            icon="ios-people"
+            label="My students"
+            onPress={() => navigation.navigate("MyStudents")}
+          />
+        )}
+
+        <OptionButton
+          icon="md-help"
+          label="Help"
+          onPress={() => navigation.navigate("Help")}
+        />
+        <OptionButton icon="ios-log-out" label="Logout" onPress={logout} />
+
+        <OptionButton
+          icon="ios-trash"
+          label="Delete account"
+          onPress={() => confirmDelete()}
+          isLastOption
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }

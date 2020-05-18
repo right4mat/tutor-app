@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "tutor-app-v3",
+    "name": "ABC Nanny Services Tutoring",
     "slug": "tutor-app-v3",
+    "privacy": "public",
     "platforms": [
       "ios",
       "android",
@@ -12,7 +13,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#fff"
     },
@@ -23,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.abcnannyservices.abctutors"
+    },
+    "android": {
+      "package": "com.abcnannyservices.abctutors",
+      "versionCode": 1
     },
     "description": ""
   }

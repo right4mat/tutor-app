@@ -215,19 +215,22 @@ export default function SignupFinish({route, navigation}) {
                       renderLeftButton={()  => false}
                       renderRightButton={() => false}
                   />
-                  </View>                  
-
-                </View>
-
-                <TouchableOpacity style={styles.button} onPress={()=>add(signup)} >
+ 
+ <TouchableOpacity style={styles.button} onPress={()=>add(signup)} >
                         <AvenirText style={styles.buttonText} text={"Finish" }/>
-                </TouchableOpacity>      
+                </TouchableOpacity> 
+                  </View> 
+
                 
-                <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+                <TouchableOpacity style={{paddingHorizontal:15}} onPress={()=> WebBrowser.openBrowserAsync(
                   "https://abc-nanny-services.flycricket.io/privacy.html"
                 )}>
                     <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
-                </TouchableOpacity>
+                </TouchableOpacity>                 
+
+                </View>
+
+                
             </View>
         </ImageBackground>
     </View>
@@ -270,6 +273,7 @@ const styles = StyleSheet.create({
     width:Layout.window.width*.8
 },
   button:{
+    alignSelf: 'center',
     marginBottom: 15,
     padding:15,
     borderRadius: 30,

@@ -16,7 +16,7 @@ export default function LoginLanding({navigation}) {
   return (
     <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
-        <ImageBackground source={require('../assets/images/background.png')} style={styles.image}>
+        <ImageBackground style={{flex:1}} source={require('../assets/images/background.png')} style={styles.image}>
         <View style={styles.innerContainer}>
         <View style={styles.header}>
             <ImageBackground source={require('../assets/images/LandingLogo.png')} style={styles.logoImg} resizeMode="contain">

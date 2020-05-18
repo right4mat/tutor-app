@@ -160,7 +160,7 @@ export default function HomeScreen({ navigation }) {
             {Object.keys(tutors).length ? (
               <Tutors tutors={tutors} filters={payload()} />
             ) : (
-              false
+              <AvenirText style={{color:"#d3d3d3",fontSize:25, alignSelf:"center",marginTop:"50%"}} text={ "There are no tutors near you."}/>
             )}
           </View>
         </View>
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     paddingHorizontal: 15,
-    paddingTop:5
+    paddingTop: Platform.OS === 'ios' ? 5 : 30
   },
   logo: {
     width: 70,

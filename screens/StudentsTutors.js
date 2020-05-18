@@ -19,6 +19,7 @@ import Context from "../context/Context";
 import Colors from "../constants/Colors";
 
 import { UpdateUser } from "../services/UserData";
+import Layout from "../constants/Layout";
 
 export default function StudentsTutors({ navigation }) {
   const { isStudent, location } = React.useContext(Context);
@@ -142,27 +143,29 @@ export default function StudentsTutors({ navigation }) {
   return (
     <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
-      {!isStudent ? (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          data={users}
-          renderItem={({ item }) => <Student student={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          data={users}
-          renderItem={({ item }) => <Tutor tutor={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      )}
+      {users.length ?
+        (!isStudent ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            data={users}
+            renderItem={({ item }) => <Student student={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            data={users}
+            renderItem={({ item }) => <Tutor tutor={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        )) : <AvenirText style={{color:"#d3d3d3",fontSize:25, alignSelf:"center",marginTop:"50%"}} text={ isStudent ? "You have no tutors yet!" : "You have no students yet!"}/>
+      }
     </View>
     </SafeAreaView>
   );
@@ -173,6 +176,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 15,
+    
+    
   },
   profilePicContainer: {
     height: 60,

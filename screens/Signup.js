@@ -69,13 +69,15 @@ export default function Signup({navigation}) {
                     returnKeyType='done'
                     style={styles.textInput}
                     placeholder="Email"
-                    onChangeText={text => setEmail(text)}
+                    autoCompleteType="email"
+                    autoCapitalize = 'none'
+                    onChangeText={(text) => setEmail(text.toLowerCase())}
                     />
                     <TouchableOpacity style={styles.button} onPress={()=>validateSignup()} >
                         <AvenirText style={styles.buttonText} text={"Next"}/>
                     </TouchableOpacity>      
                 </View>
-                <TouchableOpacity onPress={()=> WebBrowser.openBrowserAsync(
+                <TouchableOpacity style={{paddingHorizontal:15}} onPress={()=> WebBrowser.openBrowserAsync(
                   "https://abc-nanny-services.flycricket.io/privacy.html"
                 )}>
                     <LongText style={{color:'grey'}} text={"If you continue you declare you have read and accepted the Disclaimer and Privacy Policy"} />   
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems:"center",
     flexDirection:"column",
     backgroundColor: "rgba(255,255,255,.9)",
-    padding:0,
+    paddingHorizontal:15,
     margin:0
   },
   image: {
