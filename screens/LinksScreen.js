@@ -121,7 +121,8 @@ export default function LinksScreen({ navigation }) {
       );
       await SendPhoto(resizedPhoto.base64);
       const photoName = userID + ".jpg";
-      setPhoto(photoName);
+      setPhoto(photoName+"?date=" +
+      Math.random().toString(36).substring(7));
       await AsyncStorage.setItem("photo", photoName);
       console.log(userID);
     } catch (E) {
@@ -143,13 +144,9 @@ export default function LinksScreen({ navigation }) {
                   source={{
                     uri: isStudent
                       ? "https://lsdsoftware.io/abctutors/studentPhotos/small/" +
-                        photo +
-                        "?date=" +
-                        Date.now()
+                        photo
                       : "https://lsdsoftware.io/abctutors/tutorPhotos/small/" +
-                        photo +
-                        "?date=" +
-                        Date.now(),
+                        photo,
                   }}
                   style={{ width: 80, height: 80, resizeMode: "cover" }}
                 />
